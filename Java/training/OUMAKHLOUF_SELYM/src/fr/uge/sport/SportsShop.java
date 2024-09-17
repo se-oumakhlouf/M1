@@ -66,6 +66,7 @@ public class SportsShop {
 				);
   }
   
+//   utiliser des sets ?
   public static boolean sameItems(SportsShop shop1, SportsShop shop2) {
   	var distinctShop1 = shop1.articles.stream().distinct().toList();
   	var distinctShop2 = shop2.articles.stream().distinct().toList();
