@@ -2,9 +2,11 @@ package fr.uge.sport;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -66,12 +68,10 @@ public class SportsShop {
 				);
   }
   
-//   utiliser des sets ?
   public static boolean sameItems(SportsShop shop1, SportsShop shop2) {
-  	var distinctShop1 = shop1.articles.stream().distinct().toList();
-  	var distinctShop2 = shop2.articles.stream().distinct().toList();
-  	if (distinctShop1.size() != distinctShop2.size()) return false;
-  	return distinctShop1.containsAll(distinctShop2);
+  	Set<Sportswear> articlesShop1 = new HashSet<>(shop1.articles);
+  	Set<Sportswear> articlesShop2 = new HashSet<>(shop2.articles);
+  	return articlesShop1.equals(articlesShop2);
   }
   
   @Override
