@@ -17,7 +17,6 @@ public class Main {
 	shop1.add(shirt1);
 	shop1.add(shoePair1);
 	shop1.add(shoePair2);
-	shop1.add(shoePair2);
 
 	
 	var shop2 = new SportsShop("Jaude");
@@ -37,20 +36,23 @@ public class Main {
 	System.out.println("\nQuestion 14 : (shop1 - totalPrice)");
 	System.out.println(shop1.totalPrice());
 	
-	System.out.println("\nQuestion 7 : (shop1 - onSale)");
+	System.out.println("\nQuestion 15 : (shop1 - onSale)");
 	System.out.println(shop1.onSale());
 	
-	System.out.println("\nQuestion 8 : (shop2 - shoesBySize)");
+	System.out.println("\nQuestion -- : (shop2 - shoesBySize)");
 	System.out.println(shop2.shoesBySize());
 	
-	System.out.println("\nQuestion 9 : (shop2 - selectedItems)");
+	System.out.println("\nQuestion 16 : (shop2 - selectedItems)");
 	System.out.println(shop2.selectedItems(SportsShop::priceTooHigh));
 	
-	System.out.println("\nQuestion 10 : (shop2 - occurences)");
+	System.out.println("\nQuestion 17 : (shop2 - occurences)");
 	System.out.println(shop2.occurrences());
 	
-//	System.out.println("\nQuestion 11 : (sameItems)");
-//	System.out.println(SportsShop.sameItems(shop1, shop2));
+	System.out.println("\nQuestion 18 : (shop2 - get)");
+	System.out.println(shop2.get(new ShoePair("Nike", "black", 38, 300))); // 2
+	
+	System.out.println("\nQuestion 19 : (sameItems)");
+	System.out.println(SportsShop.sameItems(shop1, shop2));
 	
   }
 }
