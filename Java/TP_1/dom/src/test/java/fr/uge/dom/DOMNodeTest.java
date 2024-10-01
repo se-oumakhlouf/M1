@@ -140,82 +140,82 @@ public class DOMNodeTest {
     }
   }
 
-//  @Nested
-//  public class Q2 {
-//    @Test
-//    public void qualityOfImplementation() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("foo", Map.of());
-//      assertAll(
-//          () -> assertTrue(DOMNode.class.isInterface()),
-//          () -> assertTrue(DOMNode.class.accessFlags().contains(AccessFlag.PUBLIC)),
-//          () -> assertTrue(DOMDocument.class.accessFlags().contains(AccessFlag.PUBLIC)),
-//          () -> assertTrue(DOMDocument.class.accessFlags().contains(AccessFlag.FINAL)),
-//          () -> assertFalse(node.getClass().accessFlags().contains(AccessFlag.PUBLIC)),
-//          () -> assertTrue(node.getClass().accessFlags().contains(AccessFlag.FINAL))
-//      );
-//    }
-//
-//    @Test
-//    public void implementationHasPublicConstructors() {
-//      var node = new DOMDocument().createElement("foo", Map.of());
-//      assertEquals(0, node.getClass().getConstructors().length);
-//    }
-//
-//    @Test
-//    public void implementationFieldsArePrivate() {
-//      var node = new DOMDocument().createElement("foo", Map.of());
-//      var fields = node.getClass().getDeclaredFields();
-//      assertTrue(Arrays.stream(fields).allMatch(f -> f.accessFlags().contains(AccessFlag.PRIVATE)));
-//    }
-//
-//    @Test
-//    public void implementationFieldsThatAreEitherTheNameACollectionOrTheDomDocumentAreFinal() {
-//      var node = new DOMDocument().createElement("foo", Map.of());
-//      var fields = node.getClass().getDeclaredFields();
-//      assertTrue(Arrays.stream(fields)
-//          .filter(f -> f.getName().equals("name") || f.getType() == DOMDocument.class || f.getType().getPackageName().equals("java.util"))
-//          .allMatch(f -> f.accessFlags().contains(AccessFlag.FINAL)));
-//    }
-//
-//    @Test
-//    public void interfaceHasOnlyOneImplementation() {
-//      var permittedSubclasses = DOMNode.class.getPermittedSubclasses();
-//      assertTrue(permittedSubclasses != null && permittedSubclasses.length == 1);
-//    }
-//
-//    @Test
-//    public void interfaceMethodsLeakNonPublicTypes() {
-//      assertTrue(Arrays.stream(DOMNode.class.getMethods())
-//          .allMatch(m -> m.getReturnType().accessFlags().contains(AccessFlag.PUBLIC) &&
-//              Arrays.stream(m.getParameterTypes()).allMatch(p -> p.accessFlags().contains(AccessFlag.PUBLIC))));
-//    }
-//
-//    @Test
-//    public void documentMethodsLeakNonPublicTypes() {
-//      assertTrue(Arrays.stream(DOMDocument.class.getMethods())
-//          .allMatch(m -> m.getReturnType().accessFlags().contains(AccessFlag.PUBLIC) &&
-//              Arrays.stream(m.getParameterTypes()).allMatch(p -> p.accessFlags().contains(AccessFlag.PUBLIC))));
-//    }
-//
-//    @Test
-//    public void interfaceHasTooManyPublicMethods() {
-//      var methods = Arrays.stream(DOMNode.class.getMethods())
-//          .filter(m -> m.getDeclaringClass() != Object.class)
-//          .map(Method::getName)
-//          .collect(toSet());
-//      assertTrue(Set.of("name", "attributes", "children", "appendChild").containsAll(methods), "" + methods);
-//    }
-//
-//    @Test
-//    public void documentHasTooManyPublicMethods() {
-//      var methods = Arrays.stream(DOMDocument.class.getMethods())
-//          .filter(m -> m.getDeclaringClass() != Object.class)
-//          .map(Method::getName)
-//          .collect(toSet());
-//      assertTrue(Set.of("createElement", "getElementById").containsAll(methods), "" + methods);
-//    }
-//  }
+  @Nested
+  public class Q2 {
+    @Test
+    public void qualityOfImplementation() {
+      var document = new DOMDocument();
+      var node = document.createElement("foo", Map.of());
+      assertAll(
+          () -> assertTrue(DOMNode.class.isInterface()),
+          () -> assertTrue(DOMNode.class.accessFlags().contains(AccessFlag.PUBLIC)),
+          () -> assertTrue(DOMDocument.class.accessFlags().contains(AccessFlag.PUBLIC)),
+          () -> assertTrue(DOMDocument.class.accessFlags().contains(AccessFlag.FINAL)),
+          () -> assertFalse(node.getClass().accessFlags().contains(AccessFlag.PUBLIC)),
+          () -> assertTrue(node.getClass().accessFlags().contains(AccessFlag.FINAL))
+      );
+    }
+
+    @Test
+    public void implementationHasPublicConstructors() {
+      var node = new DOMDocument().createElement("foo", Map.of());
+      assertEquals(0, node.getClass().getConstructors().length);
+    }
+
+    @Test
+    public void implementationFieldsArePrivate() {
+      var node = new DOMDocument().createElement("foo", Map.of());
+      var fields = node.getClass().getDeclaredFields();
+      assertTrue(Arrays.stream(fields).allMatch(f -> f.accessFlags().contains(AccessFlag.PRIVATE)));
+    }
+
+    @Test
+    public void implementationFieldsThatAreEitherTheNameACollectionOrTheDomDocumentAreFinal() {
+      var node = new DOMDocument().createElement("foo", Map.of());
+      var fields = node.getClass().getDeclaredFields();
+      assertTrue(Arrays.stream(fields)
+          .filter(f -> f.getName().equals("name") || f.getType() == DOMDocument.class || f.getType().getPackageName().equals("java.util"))
+          .allMatch(f -> f.accessFlags().contains(AccessFlag.FINAL)));
+    }
+
+    @Test
+    public void interfaceHasOnlyOneImplementation() {
+      var permittedSubclasses = DOMNode.class.getPermittedSubclasses();
+      assertTrue(permittedSubclasses != null && permittedSubclasses.length == 1);
+    }
+
+    @Test
+    public void interfaceMethodsLeakNonPublicTypes() {
+      assertTrue(Arrays.stream(DOMNode.class.getMethods())
+          .allMatch(m -> m.getReturnType().accessFlags().contains(AccessFlag.PUBLIC) &&
+              Arrays.stream(m.getParameterTypes()).allMatch(p -> p.accessFlags().contains(AccessFlag.PUBLIC))));
+    }
+
+    @Test
+    public void documentMethodsLeakNonPublicTypes() {
+      assertTrue(Arrays.stream(DOMDocument.class.getMethods())
+          .allMatch(m -> m.getReturnType().accessFlags().contains(AccessFlag.PUBLIC) &&
+              Arrays.stream(m.getParameterTypes()).allMatch(p -> p.accessFlags().contains(AccessFlag.PUBLIC))));
+    }
+
+    @Test
+    public void interfaceHasTooManyPublicMethods() {
+      var methods = Arrays.stream(DOMNode.class.getMethods())
+          .filter(m -> m.getDeclaringClass() != Object.class)
+          .map(Method::getName)
+          .collect(toSet());
+      assertTrue(Set.of("name", "attributes", "children", "appendChild").containsAll(methods), "" + methods);
+    }
+
+    @Test
+    public void documentHasTooManyPublicMethods() {
+      var methods = Arrays.stream(DOMDocument.class.getMethods())
+          .filter(m -> m.getDeclaringClass() != Object.class)
+          .map(Method::getName)
+          .collect(toSet());
+      assertTrue(Set.of("createElement", "getElementById").containsAll(methods), "" + methods);
+    }
+  }
 
 
 //  @Nested

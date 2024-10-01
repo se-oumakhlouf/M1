@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="fr.uge.dom.DOMNodeTest$Q1" time="0.623" tests="11" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="23"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/selym/M1/Java/TP_1/dom/target/test-classes:/home/selym/M1/Java/TP_1/dom/target/classes:/home/selym/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.0/junit-jupiter-api-5.11.0.jar:/home/selym/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/selym/.m2/repository/org/junit/platform/junit-platform-commons/1.11.0/junit-platform-commons-1.11.0.jar:/home/selym/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="23"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/jdk-23/lib"/>
+    <property name="sun.java.command" value="/home/selym/M1/Java/TP_1/dom/target/surefire/surefirebooter-20241001203725474_3.jar /home/selym/M1/Java/TP_1/dom/target/surefire 2024-10-01T20-37-25_287-jvmRun1 surefire-20241001203725474_1tmp surefire_0-20241001203725474_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/selym/M1/Java/TP_1/dom/target/test-classes:/home/selym/M1/Java/TP_1/dom/target/classes:/home/selym/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.0/junit-jupiter-api-5.11.0.jar:/home/selym/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/selym/.m2/repository/org/junit/platform/junit-platform-commons/1.11.0/junit-platform-commons-1.11.0.jar:/home/selym/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/selym"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-09-17"/>
+    <property name="java.home" value="/usr/lib/jvm/jdk-23"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/selym/M1/Java/TP_1/dom"/>
+    <property name="style.color" value="always"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/selym/M1/Java/TP_1/dom/target/surefire/surefirebooter-20241001203725474_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="23+37-2369"/>
+    <property name="user.name" value="selym"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.1.0-25-amd64"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/selym/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="23"/>
+    <property name="user.dir" value="/home/selym/M1/Java/TP_1/dom"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="23+37-2369"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="67.0"/>
+  </properties>
+  <testcase name="createElementPreconditions" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.029"/>
+  <testcase name="createElementWithAttributes" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.006"/>
+  <testcase name="createElementWithAttributesPreconditions" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.002"/>
+  <testcase name="twoElementsCanNotBeEquals" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.002"/>
+  <testcase name="attributesIsAnUnmodifiableMap" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.001"/>
+  <testcase name="createElement" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.001"/>
+  <testcase name="createElementWithALotOfAttributes" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.549"/>
+  <testcase name="createElementWithDifferentAttributes" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.004"/>
+  <testcase name="createElementWithAnEmptyAttributes" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.001"/>
+  <testcase name="elementAttributesIsNotModifiableAfterCreation" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.0"/>
+  <testcase name="createTwoElements" classname="fr.uge.dom.DOMNodeTest$Q1" time="0.001"/>
+</testsuite>
