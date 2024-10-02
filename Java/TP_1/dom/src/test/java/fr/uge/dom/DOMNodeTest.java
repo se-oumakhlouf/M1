@@ -217,68 +217,67 @@ public class DOMNodeTest {
     }
   }
 
+  @Nested
+  public class Q3 {
+    @Test
+    public void createElementWithAnId() {
+      var document = new DOMDocument();
+      var node = document.createElement("div", Map.of("id", "foo42"));
 
-//  @Nested
-//  public class Q3 {
-//    @Test
-//    public void createElementWithAnId() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("div", Map.of("id", "foo42"));
-//
-//      assertSame(node, document.getElementById("foo42"));
-//    }
-//
-//    @Test
-//    public void createSeveralElementsWithTheSameId() {
-//      var document = new DOMDocument();
-//      var node1 = document.createElement("div", Map.of("id", "id12"));
-//      document.createElement("span", Map.of("id", "id12"));
-//
-//      assertSame(node1, document.getElementById("id12"));
-//    }
-//
-//    @Test
-//    public void getElementByIdFastEnough() {
-//      var document = new DOMDocument();
-//      for(var i = 0; i < 1_000_000; i++) {
-//        document.createElement("div", Map.of("id", "id" + i));
-//      }
-//
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
-//        for(var i = 0; i < 1_000_000; i++) {
-//          var id = "id" + i;
-//          var node = document.getElementById(id);
-//          assertEquals(id, node.attributes().get("id"));
-//        }
-//      });
-//    }
-//
-//    @Test
-//    public void elementNotFound() {
-//      var document = new DOMDocument();
-//      assertNull(document.getElementById("hello"));
-//    }
-//
-//    @Test
-//    public void createAnElementsWithAnIdWhichIsNotAString() {
-//      var document = new DOMDocument();
-//      assertThrows(IllegalArgumentException.class, () -> document.createElement("div", Map.of("id", 12)));
-//    }
-//
-//    @Test
-//    public void createAnElementsWithAnIdWhichIsAnEmptyString() {
-//      var document = new DOMDocument();
-//      assertThrows(IllegalArgumentException.class, () -> document.createElement("div", Map.of("id", "")));
-//    }
-//
-//    @Test
-//    public void getElementByIdPrecondition() {
-//      var document = new DOMDocument();
-//      assertThrows(NullPointerException.class, () -> document.getElementById(null));
-//    }
-//  }
-//
-//
+      assertSame(node, document.getElementById("foo42"));
+    }
+
+    @Test
+    public void createSeveralElementsWithTheSameId() {
+      var document = new DOMDocument();
+      var node1 = document.createElement("div", Map.of("id", "id12"));
+      document.createElement("span", Map.of("id", "id12"));
+
+      assertSame(node1, document.getElementById("id12"));
+    }
+
+    @Test
+    public void getElementByIdFastEnough() {
+      var document = new DOMDocument();
+      for(var i = 0; i < 1_000_000; i++) {
+        document.createElement("div", Map.of("id", "id" + i));
+      }
+
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
+        for(var i = 0; i < 1_000_000; i++) {
+          var id = "id" + i;
+          var node = document.getElementById(id);
+          assertEquals(id, node.attributes().get("id"));
+        }
+      });
+    }
+
+    @Test
+    public void elementNotFound() {
+      var document = new DOMDocument();
+      assertNull(document.getElementById("hello"));
+    }
+
+    @Test
+    public void createAnElementsWithAnIdWhichIsNotAString() {
+      var document = new DOMDocument();
+      assertThrows(IllegalArgumentException.class, () -> document.createElement("div", Map.of("id", 12)));
+    }
+
+    @Test
+    public void createAnElementsWithAnIdWhichIsAnEmptyString() {
+      var document = new DOMDocument();
+      assertThrows(IllegalArgumentException.class, () -> document.createElement("div", Map.of("id", "")));
+    }
+
+    @Test
+    public void getElementByIdPrecondition() {
+      var document = new DOMDocument();
+      assertThrows(NullPointerException.class, () -> document.getElementById(null));
+    }
+  }
+
+
 //  @Nested
 //  public class Q4 {
 //    @Test
