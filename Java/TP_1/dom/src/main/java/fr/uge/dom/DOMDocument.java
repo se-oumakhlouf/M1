@@ -1,6 +1,8 @@
 package fr.uge.dom;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -12,7 +14,7 @@ public final class DOMDocument {
 		Objects.requireNonNull(name);
 		var map = Map.copyOf(attributes);
 		checkAttributes(map);
-		DOMNode node = new NodeImpl(name, map);
+		DOMNode node = new NodeImpl(name, map, this);
 
 		if (attributes.containsKey("id")) {
 			var id = attributes.get("id");
@@ -45,5 +47,6 @@ public final class DOMDocument {
 		Objects.requireNonNull(id);
 		return idMap.get(id);
 	}
+	
 
 }
