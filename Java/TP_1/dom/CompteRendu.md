@@ -1,3 +1,6 @@
+### OUMAKHLOUF Selym
+
+
 ###############
 ### Exercice 2
 ###############
@@ -214,7 +217,120 @@ public final class DOMDocument {
 On souhaite que la liste renvoyé par children() soit non-modifiable pour garantir l'intégrité des données
 Cela limite les erreures et les incohérences
 
-du code ici
+package fr.uge.dom;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+final class NodeImpl implements DOMNode {
+
+	private final String name;
+	private final Map<String, Object> attributes;
+	private final List<DOMNode> childList = new ArrayList<>();
+	private final DOMDocument document;
+
+	NodeImpl(String name, Map<String, Object> attributes, DOMDocument document) {
+		this.name = name;
+		this.attributes = attributes;
+		this.document = document;
+	}
+
+	public String name() {
+		return this.name;
+	}
+
+	public Map<String, Object> attributes() {
+		return this.attributes;
+	}
+
+	public void appendChild(DOMNode child) {
+		Objects.requireNonNull(child);
+		if (child instanceof NodeImpl node && this.document.equals(node.document)) {
+			childList.add(child);
+		} else {
+			throw new IllegalStateException("Child node must be from the same document as the Parent node");
+		}
+
+	}
+
+	public List<DOMNode> children() {
+		return Collections.unmodifiableList(this.childList);
+	}
+
+}
+
+package fr.uge.dom;
+
+import java.util.List;
+import java.util.Map;
+
+public sealed interface DOMNode permits NodeImpl {
+
+	String name();
+
+	Map<String, Object> attributes();
+
+	void appendChild(DOMNode child);
+
+	List<DOMNode> children();
+
+}
+
+package fr.uge.dom;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+public final class DOMDocument {
+
+	private final Map<String, DOMNode> idMap = new HashMap<String, DOMNode>(); // <id, node>
+
+	public DOMNode createElement(String name, Map<String, Object> attributes) {
+		Objects.requireNonNull(name);
+		var map = Map.copyOf(attributes);
+		checkAttributes(map);
+		DOMNode node = new NodeImpl(name, map, this);
+
+		if (attributes.containsKey("id")) {
+			var id = attributes.get("id");
+			if (id instanceof String idString && !idString.isEmpty()) {
+					idMap.putIfAbsent(idString, node);
+			} else {
+				throw new IllegalArgumentException("ID must be a non-empty string");
+			}
+		}
+		return node;
+	}
+
+	private static void checkAttributes(Map<String, Object> attributes) {
+		attributes.forEach((name, attribute) -> {
+			switch (attribute) {
+			case String _:
+			case Boolean _:
+			case Float _:
+			case Double _:
+			case Integer _:
+			case Long _:
+				break;
+			default:
+				throw new IllegalArgumentException();
+			}
+		});
+	}
+
+	public DOMNode getElementById(String id) {
+		Objects.requireNonNull(id);
+		return idMap.get(id);
+	}
+	
+
+}
 
 --
 
@@ -225,11 +341,276 @@ du code ici
 ######################	
 	Question 5 :
 	
+		L'implantation de appendChild a un bug, un nœud peut appartenir à plusieurs parents, par exemple en écrivant ceci.
+		
+          var document = new DOMDocument();
+          var child = document.createElement("bar", Map.of());
+          var parent1 = document.createElement("parent1", Map.of());
+          var parent2 = document.createElement("parent2", Map.of());
+          parent1.appendChild(child);
+          parent2.appendChild(child);
+
+		La spécification de appendChild indique que lorsque l'on ajoute un nœud à un parent, si celui-ci a déjà un parent, alors il est d'abord retiré de l'ancien parent avant d'être ajouté en tant qu'enfant du nouveau parent.
+		Implanter ce comportement.
+		Vérifier que les tests JUnit marqués "Q5" passent.
 	
+--
+
+package fr.uge.dom;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+final class NodeImpl implements DOMNode {
+
+	private final String name;
+	private final Map<String, Object> attributes;
+	private final List<DOMNode> childList = new ArrayList<>();
+	private final DOMDocument document;
+	private DOMNode parent;
+
+	NodeImpl(String name, Map<String, Object> attributes, DOMDocument document) {
+		this.name = name;
+		this.attributes = attributes;
+		this.document = document;
+		this.parent = null;
+	}
+
+	public String name() {
+		return this.name;
+	}
+
+	public Map<String, Object> attributes() {
+		return this.attributes;
+	}
+
+	public void appendChild(DOMNode child) {
+		Objects.requireNonNull(child);
+		if (child instanceof NodeImpl node && this.document.equals(node.document)) {
+			if (node.parent != null) {
+				((NodeImpl) node.parent).removeChild(child);
+			}
+			node.parent = this;
+			childList.add(node);
+		} else {
+			throw new IllegalStateException("Child node must be from the same document as the Parent node");
+		}
+
+	}
+
+	public List<DOMNode> children() {
+		return Collections.unmodifiableList(this.childList);
+	}
 	
+	private void removeChild(DOMNode child) {
+		Objects.requireNonNull(child);
+		childList.remove(child);
+	}
+
+}
+
+--
+
+######################	
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+######################	
+	Question 6 :
 	
+		On veut maintenant afficher les nœuds (le nom, les attributs et les enfants) au format HTML.
+		
+			var document = new DOMDocument();
+			var parent = document.createElement("foo", Map.of());
+			var child = document.createElement("bar", Map.of("enable", true));
+			System.out.println(child);  // <bar enable="true"></bar>
+			parent.appendChild(child);
+			System.out.println(parent);  // <foo><bar enable="true"></bar></foo>
+		      
+		Implanter l'affichage pour que le code ci-dessus fonctionne.
+		Vérifier que les tests JUnit marqués "Q6" passent.
+		Note : comment éviter d'allouer plein de chaînes de caractères intermédiaires ?
 	
+--
+
+Pour éviter d'allouer pleins de chaînes de caractères intermédiaires on utilise un StringBuilder
+
+Ajout de la méthode toString ->
+
+package fr.uge.dom;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+final class NodeImpl implements DOMNode {
+
+	private final String name;
+	private final Map<String, Object> attributes;
+	private final List<DOMNode> childList = new ArrayList<>();
+	private final DOMDocument document;
+	private DOMNode parent;
+
+	NodeImpl(String name, Map<String, Object> attributes, DOMDocument document) {
+		this.name = name;
+		this.attributes = attributes;
+		this.document = document;
+		this.parent = null;
+	}
+
+	public String name() {
+		return this.name;
+	}
+
+	public Map<String, Object> attributes() {
+		return this.attributes;
+	}
+
+	public void appendChild(DOMNode child) {
+		Objects.requireNonNull(child);
+		if (child instanceof NodeImpl node && this.document.equals(node.document)) {
+			if (node.parent != null) {
+				((NodeImpl) node.parent).removeChild(child);
+			}
+			node.parent = this;
+			childList.add(node);
+		} else {
+			throw new IllegalStateException("Child node must be from the same document as the Parent node");
+		}
+
+	}
+
+	public List<DOMNode> children() {
+		return Collections.unmodifiableList(this.childList);
+	}
+
+	private void removeChild(DOMNode child) {
+		Objects.requireNonNull(child);
+		childList.remove(child);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("<").append(name);
+		attributes.forEach((key, value) -> {
+			builder.append(" ").append(key).append("=\"").append(value.toString()).append("\"");
+		});
+		builder.append(">");
+		
+		childList.forEach(child -> builder.append(child.toString()));
+		builder.append("</").append(name).append(">");
+		return builder.toString();
+	}
+
+}
+
+--
+
+######################	
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+######################	
+	Question 7 :
 	
+		En fait, si on demande plusieurs fois l'affichage, on va à chaque fois recalculer celui-ci, on souhaite améliorer cela en ajoutant un cache pour que le calcul pour un nœud ne soit pas fait plus souvent que nécessaire.
+		Pour cela, on ajoute un champ cache qui va contenir la chaîne de caractères correspondant à l'affichage, donc si on demande de faire l'affichage plusieurs fois, la même chaîne de caractères va être renvoyée.
+		Modifier votre code pour implanter cette amélioration.
+		Vérifier que les tests JUnit marqués "Q7" passent.
+		
+--
+
+package fr.uge.dom;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+final class NodeImpl implements DOMNode {
+
+	private final String name;
+	private final Map<String, Object> attributes;
+	private final List<DOMNode> childList = new ArrayList<>();
+	private final DOMDocument document;
+	private DOMNode parent;
+	private String cache;  										// <- Ajout de cette ligne 
+
+	NodeImpl(String name, Map<String, Object> attributes, DOMDocument document) {
+		this.name = name;
+		this.attributes = attributes;
+		this.document = document;
+		this.parent = null;
+		this.cache = null;
+	}
+
+	public String name() {
+		return this.name;
+	}
+
+	public Map<String, Object> attributes() {
+		return this.attributes;
+	}
+
+	public void appendChild(DOMNode child) {
+		Objects.requireNonNull(child);
+		if (child instanceof NodeImpl node && this.document.equals(node.document)) {
+			if (node.parent != null) {
+				((NodeImpl) node.parent).removeChild(child);
+			}
+			node.parent = this;
+			childList.add(node);
+			this.cache = null;											// <- Ajout de cette ligne 
+		} else {
+			throw new IllegalStateException("Child node must be from the same document as the Parent node");
+		}
+
+	}
+
+	public List<DOMNode> children() {
+		return Collections.unmodifiableList(this.childList);
+	}
+
+	private void removeChild(DOMNode child) {
+		Objects.requireNonNull(child);
+		childList.remove(child);
+	}
+
+	@Override
+	public String toString() {
+		if (this.cache != null) return cache;				// <- Ajout de cette ligne 
+		
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("<").append(name);
+		attributes.forEach((key, value) -> {
+			builder.append(" ").append(key).append("=\"").append(value.toString()).append("\"");
+		});
+		builder.append(">");
+		
+		childList.forEach(child -> builder.append(child.toString()));
+		builder.append("</").append(name).append(">");
+		this.cache = builder.toString();					// <- Ajout de cette ligne 
+		return this.cache;
+	}
+
+}
+
+--
+
+######################	
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		
 	
 	
 	

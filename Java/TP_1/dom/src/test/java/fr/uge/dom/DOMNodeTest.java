@@ -278,226 +278,226 @@ public class DOMNodeTest {
   }
 
 
-//  @Nested
-//  public class Q4 {
-//    @Test
-//    public void appendChild() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var child = document.createElement("bar", Map.of());
-//      parent.appendChild(child);
-//
-//      assertEquals(List.of(child), parent.children());
-//    }
-//
-//    @Test
-//    public void appendChildren() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var child1 = document.createElement("bar", Map.of());
-//      parent.appendChild(child1);
-//      var child2 = document.createElement("bar", Map.of());
-//      parent.appendChild(child2);
-//
-//      assertEquals(List.of(child1, child2), parent.children());
-//    }
-//
-//    @Test
-//    public void childrenIsUnmodifiable() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var child = document.createElement("bar", Map.of());
-//      parent.appendChild(child);
-//      var node = document.createElement("baz", Map.of());
-//
-//      assertThrows(UnsupportedOperationException.class, () -> parent.children().add(node));
-//    }
-//
-//    @Test
-//    public void childrenIsAView() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var children = parent.children();
-//
-//      var child = document.createElement("bar", Map.of());
-//      parent.appendChild(child);
-//      assertEquals(List.of(child), children);
-//    }
-//
-//    @Test
-//    public void appendChildDifferentDocuments() {
-//      var parent = new DOMDocument().createElement("foo", Map.of());
-//      var child = new DOMDocument().createElement("bar", Map.of());
-//
-//      assertThrows(IllegalStateException.class, () -> parent.appendChild(child));
-//    }
-//
-//    @Test
-//    public void appendChildPrecondition() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("foo", Map.of());
-//
-//      assertThrows(NullPointerException.class, () -> node.appendChild(null));
-//    }
-//  }
-//
-//  @Nested
-//  public class Q5 {
-//    @Test
-//    public void appendChildRemoveItFromPreviousParent() {
-//      var document = new DOMDocument();
-//      var parent1 = document.createElement("foo", Map.of());
-//      var child = document.createElement("bar", Map.of());
-//      parent1.appendChild(child);
-//
-//      var parent2 = document.createElement("baz", Map.of());
-//      parent2.appendChild(child);
-//
-//      assertAll(
-//          () -> assertEquals(List.of(), parent1.children()),
-//          () -> assertEquals(List.of(child), parent2.children())
-//      );
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q6 {
-//    @Test
-//    public void createElementWithNoAttributesText() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("div", Map.of());
-//
-//      assertEquals("""
-//        <div></div>\
-//        """, "" + node);
-//    }
-//
-//    @Test
-//    public void createElementWithAStringAttributeText() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("div", Map.of("foo", "bar"));
-//
-//      assertEquals("""
-//        <div foo="bar"></div>\
-//        """, "" + node);
-//    }
-//
-//    @Test
-//    public void createElementWithAnIntegerAttributeText() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("div", Map.of("hello", 42));
-//
-//      assertEquals("""
-//        <div hello="42"></div>\
-//        """, "" + node);
-//    }
-//
-//    @Test
-//    public void createElementWithSeveralAttributesText() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("div", Map.of("a", 4.2, "b", false));
-//      var text = "" + node;
-//
-//      assertTrue(
-//          """
-//          <div a="4.2" b="false"></div>\
-//          """.equals(text) ||
-//              """
-//              <div b="false" a="4.2"></div>\
-//              """.equals(text));
-//    }
-//
-//    @Test
-//    public void createElementWithSeveralAttributesText2() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("div", Map.of("b", false, "a", 4.2));
-//      var text = "" + node;
-//
-//      assertTrue(
-//          """
-//          <div a="4.2" b="false"></div>\
-//          """.equals(text) ||
-//              """
-//              <div b="false" a="4.2"></div>\
-//              """.equals(text));
-//    }
-//
-//    @Test
-//    public void appendChildText() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var child = document.createElement("bar", Map.of());
-//      parent.appendChild(child);
-//
-//      assertEquals(
-//          """
-//           <foo><bar></bar></foo>\
-//           """,
-//          "" + parent);
-//    }
-//
-//    @Test
-//    public void appendChildrenText() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var child1 = document.createElement("bar", Map.of());
-//      parent.appendChild(child1);
-//      var child2 = document.createElement("bar", Map.of());
-//      parent.appendChild(child2);
-//
-//      assertEquals(
-//          """
-//           <foo><bar></bar><bar></bar></foo>\
-//           """,
-//          "" + parent);
-//    }
-//
-//    @Test
-//    public void appendChildrenWithAttributesText() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var child1 = document.createElement("bar", Map.of("baz", "3"));
-//      parent.appendChild(child1);
-//      var child2 = document.createElement("bar", Map.of("baz", "7"));
-//      parent.appendChild(child2);
-//
-//      assertEquals(
-//          """
-//           <foo><bar baz="3"></bar><bar baz="7"></bar></foo>\
-//           """,
-//          "" + parent);
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q7 {
-//    @Test
-//    public void textRepresentationIsCached() {
-//      var document = new DOMDocument();
-//      var node = document.createElement("foo", Map.of());
-//
-//      var text = node.toString();
-//      var text2 = node.toString();
-//      assertSame(text, text2);
-//    }
-//
-//    @Test
-//    public void childParentTextRepresentationIsCached() {
-//      var document = new DOMDocument();
-//      var parent = document.createElement("foo", Map.of());
-//      var child = document.createElement("bar", Map.of());
-//      parent.appendChild(child);
-//
-//      assertAll(
-//          () -> assertSame(child.toString(), child.toString()),
-//          () -> assertSame(parent.toString(), parent.toString())
-//      );
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q4 {
+    @Test
+    public void appendChild() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var child = document.createElement("bar", Map.of());
+      parent.appendChild(child);
+
+      assertEquals(List.of(child), parent.children());
+    }
+
+    @Test
+    public void appendChildren() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var child1 = document.createElement("bar", Map.of());
+      parent.appendChild(child1);
+      var child2 = document.createElement("bar", Map.of());
+      parent.appendChild(child2);
+
+      assertEquals(List.of(child1, child2), parent.children());
+    }
+
+    @Test
+    public void childrenIsUnmodifiable() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var child = document.createElement("bar", Map.of());
+      parent.appendChild(child);
+      var node = document.createElement("baz", Map.of());
+
+      assertThrows(UnsupportedOperationException.class, () -> parent.children().add(node));
+    }
+
+    @Test
+    public void childrenIsAView() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var children = parent.children();
+
+      var child = document.createElement("bar", Map.of());
+      parent.appendChild(child);
+      assertEquals(List.of(child), children);
+    }
+
+    @Test
+    public void appendChildDifferentDocuments() {
+      var parent = new DOMDocument().createElement("foo", Map.of());
+      var child = new DOMDocument().createElement("bar", Map.of());
+
+      assertThrows(IllegalStateException.class, () -> parent.appendChild(child));
+    }
+
+    @Test
+    public void appendChildPrecondition() {
+      var document = new DOMDocument();
+      var node = document.createElement("foo", Map.of());
+
+      assertThrows(NullPointerException.class, () -> node.appendChild(null));
+    }
+  }
+
+  @Nested
+  public class Q5 {
+    @Test
+    public void appendChildRemoveItFromPreviousParent() {
+      var document = new DOMDocument();
+      var parent1 = document.createElement("foo", Map.of());
+      var child = document.createElement("bar", Map.of());
+      parent1.appendChild(child);
+
+      var parent2 = document.createElement("baz", Map.of());
+      parent2.appendChild(child);
+
+      assertAll(
+          () -> assertEquals(List.of(), parent1.children()),
+          () -> assertEquals(List.of(child), parent2.children())
+      );
+    }
+  }
+
+
+  @Nested
+  public class Q6 {
+    @Test
+    public void createElementWithNoAttributesText() {
+      var document = new DOMDocument();
+      var node = document.createElement("div", Map.of());
+
+      assertEquals("""
+        <div></div>\
+        """, "" + node);
+    }
+
+    @Test
+    public void createElementWithAStringAttributeText() {
+      var document = new DOMDocument();
+      var node = document.createElement("div", Map.of("foo", "bar"));
+
+      assertEquals("""
+        <div foo="bar"></div>\
+        """, "" + node);
+    }
+
+    @Test
+    public void createElementWithAnIntegerAttributeText() {
+      var document = new DOMDocument();
+      var node = document.createElement("div", Map.of("hello", 42));
+
+      assertEquals("""
+        <div hello="42"></div>\
+        """, "" + node);
+    }
+
+    @Test
+    public void createElementWithSeveralAttributesText() {
+      var document = new DOMDocument();
+      var node = document.createElement("div", Map.of("a", 4.2, "b", false));
+      var text = "" + node;
+
+      assertTrue(
+          """
+          <div a="4.2" b="false"></div>\
+          """.equals(text) ||
+              """
+              <div b="false" a="4.2"></div>\
+              """.equals(text));
+    }
+
+    @Test
+    public void createElementWithSeveralAttributesText2() {
+      var document = new DOMDocument();
+      var node = document.createElement("div", Map.of("b", false, "a", 4.2));
+      var text = "" + node;
+
+      assertTrue(
+          """
+          <div a="4.2" b="false"></div>\
+          """.equals(text) ||
+              """
+              <div b="false" a="4.2"></div>\
+              """.equals(text));
+    }
+
+    @Test
+    public void appendChildText() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var child = document.createElement("bar", Map.of());
+      parent.appendChild(child);
+
+      assertEquals(
+          """
+           <foo><bar></bar></foo>\
+           """,
+          "" + parent);
+    }
+
+    @Test
+    public void appendChildrenText() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var child1 = document.createElement("bar", Map.of());
+      parent.appendChild(child1);
+      var child2 = document.createElement("bar", Map.of());
+      parent.appendChild(child2);
+
+      assertEquals(
+          """
+           <foo><bar></bar><bar></bar></foo>\
+           """,
+          "" + parent);
+    }
+
+    @Test
+    public void appendChildrenWithAttributesText() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var child1 = document.createElement("bar", Map.of("baz", "3"));
+      parent.appendChild(child1);
+      var child2 = document.createElement("bar", Map.of("baz", "7"));
+      parent.appendChild(child2);
+
+      assertEquals(
+          """
+           <foo><bar baz="3"></bar><bar baz="7"></bar></foo>\
+           """,
+          "" + parent);
+    }
+  }
+
+
+  @Nested
+  public class Q7 {
+    @Test
+    public void textRepresentationIsCached() {
+      var document = new DOMDocument();
+      var node = document.createElement("foo", Map.of());
+
+      var text = node.toString();
+      var text2 = node.toString();
+      assertSame(text, text2);
+    }
+
+    @Test
+    public void childParentTextRepresentationIsCached() {
+      var document = new DOMDocument();
+      var parent = document.createElement("foo", Map.of());
+      var child = document.createElement("bar", Map.of());
+      parent.appendChild(child);
+
+      assertAll(
+          () -> assertSame(child.toString(), child.toString()),
+          () -> assertSame(parent.toString(), parent.toString())
+      );
+    }
+  }
+
+
 //  @Nested
 //  public class Q8 {
 //    @Test
