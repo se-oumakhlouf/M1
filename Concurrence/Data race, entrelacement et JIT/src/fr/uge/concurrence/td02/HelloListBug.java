@@ -43,9 +43,3 @@ public class HelloListBug {
 // 		T2 écrit à l'index i, T2 est deschedulé
 //		T1 est schedulé, T1 écrit par dessus l'écriture de T2 à l'index i
 
-// Question 4 :
-
-
-// Question 4 :
-//
-
