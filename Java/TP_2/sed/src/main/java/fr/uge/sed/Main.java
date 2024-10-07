@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		String test = "*foo**\n";
-		test = test.replace("*", "*".repeat(2));
+		test.toUpperCase();
 		System.out.println(test);
 	}
 

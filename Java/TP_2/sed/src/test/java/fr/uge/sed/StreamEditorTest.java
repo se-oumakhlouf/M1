@@ -318,19 +318,19 @@ public class StreamEditorTest {
     }
   }
 
-//  @Nested
-//  public class Q4 {
-//    @Test
-//    public void ifTheImplementationUsesALambdaProxyTheInterfaceShouldBeFunctional() throws IOException {
-//      var transformerClass = StreamEditor.createTransformer("u").getClass();
-//      if (transformerClass.isHidden()) {
-//        var transformerInterface = transformerClass.getInterfaces()[0];
-//        assertTrue(transformerInterface.isAnnotationPresent(FunctionalInterface.class));
-//      }
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q4 {
+    @Test
+    public void ifTheImplementationUsesALambdaProxyTheInterfaceShouldBeFunctional() throws IOException {
+      var transformerClass = StreamEditor.createTransformer("u").getClass();
+      if (transformerClass.isHidden()) {
+        var transformerInterface = transformerClass.getInterfaces()[0];
+        assertTrue(transformerInterface.isAnnotationPresent(FunctionalInterface.class));
+      }
+    }
+  }
+
+
 //  @Nested
 //  public class Q5 {
 //    @Test
