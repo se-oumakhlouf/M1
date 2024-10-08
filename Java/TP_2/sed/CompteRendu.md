@@ -344,7 +344,85 @@ public final class StreamEditor {
 		
 --
 
+En java, on utilise des records pour simuler des tuples
 
+```java
+
+package fr.uge.sed;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Locale;
+import java.util.Objects;
+
+public final class StreamEditor {
+
+	private StreamEditor() {
+		throw new AssertionError();
+	}
+
+	public final static Transformer createTransformer(String command) {
+		Objects.requireNonNull(command);
+		Transformer transformer = line -> line;
+		int index = 0;
+		while (index < command.length()) {
+			TransformerIndexTuple parsed = parse(command, transformer, index);
+			transformer = parsed.transformer();
+			index = parsed.index();
+		}
+		return transformer;
+	}
+
+	public final static void rewrite(BufferedReader reader, Writer writer, Transformer transformer) throws IOException {
+		Objects.requireNonNull(reader);
+		Objects.requireNonNull(writer);
+		Objects.requireNonNull(transformer);
+		String line;
+		String newLine;
+
+		while ((line = reader.readLine()) != null) {
+			newLine = transformer.transform(line);
+			writer.write(newLine);
+			writer.write("\n");
+		}
+		reader.close();
+		return;
+	}
+
+	public static TransformerIndexTuple parse(String command, Transformer transformer, int index) {
+		var currentCommand = command.charAt(index);
+		Transformer newTransformer;
+
+		switch (currentCommand) {
+			case 'l' -> newTransformer = line -> line.toLowerCase(Locale.ROOT);
+			case 'u' -> newTransformer = line -> line.toUpperCase(Locale.ROOT);
+			case '*' -> {
+				newTransformer = line -> line.replace("*", "*".repeat(command.charAt(index + 1) - '0'));
+				return new TransformerIndexTuple(line -> newTransformer.transform(transformer.transform(line)), index + 2);
+			}
+			default -> throw new IllegalArgumentException("Unknow command : " + currentCommand);
+		}
+		return new TransformerIndexTuple(line -> newTransformer.transform(transformer.transform(line)), index + 1);
+	}
+
+}
+
+package fr.uge.sed;
+
+import java.util.Objects;
+
+public record TransformerIndexTuple(Transformer transformer, int index) {
+	
+	public TransformerIndexTuple {
+		Objects.requireNonNull(transformer);
+		if (index < 0) {
+			throw new IllegalArgumentException("Negative index");
+		}
+	}
+}
+
+```
 
 --
 		
@@ -353,4 +431,38 @@ public final class StreamEditor {
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ######################
+	# Question 6 :	
+		En fait, le code précédent est la façon fonctionnelle de voir la décomposition en transformer, on peut aussi écrire une version plus objet des choses. En POO, on va encapsuler les mutations, ici, la mutation est l'index qui nous indique là où décoder/parser le prochain transformer dans la commande. Encapsuler la mutation revient donc à déclarer une classe Parser avec un champ mutable qui va être modifié à chaque fois que l'on décode une transformation.
+		On a de plus besoin en plus d'une méthode pour savoir si on est arrivé à la fin de la chaîne de caractères (appelée ici, canParse())
+		
+		  static final class Parser {
+		    private final String commands;
+		    private int index;
+		
+		    Parser(String commands) {
+		      this.commands = commands;
+		    }
+		
+		    boolean canParse() {
+		      return index < commands.length;
+		    }
+		
+		    Transformer parse(Transformer t) {
+		      // TODO
+		    }
+		  }
+		    
+		
+		Écrire la classe Parser et modifier la méthode createTransformer(commande) pour utiliser le parser (l'idée est de faire une boucle tant que canParse renvoie vrai et envoyer le précédent transformer à parse() qui retourne le nouveau transformer.
+		Vérifier que les tests marqués "Q6" passent.
+		Note : on peut remarquer qu'il y a un modificateur static devant le nom de la classe Parser, on verra la semaine prochaine en cours pourquoi.
+		
+--
+
+
+--
+
+######################
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	

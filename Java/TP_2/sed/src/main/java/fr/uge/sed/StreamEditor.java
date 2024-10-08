@@ -14,12 +14,14 @@ public final class StreamEditor {
 
 	public final static Transformer createTransformer(String command) {
 		Objects.requireNonNull(command);
-		return switch (command.charAt(0)) {
-			case 'l' -> line -> line.toLowerCase(Locale.ROOT) ;
-			case 'u' -> line -> line.toUpperCase(Locale.ROOT);
-			case '*' -> line -> line.replace("*", "*".repeat(command.charAt(1) - '0'));
-			default -> throw new IllegalArgumentException("Unexpected value: " + command.charAt(0));
-		};
+		Transformer transformer = line -> line;
+		int index = 0;
+		while (index < command.length()) {
+			TransformerIndexTuple parsed = parse(command, transformer, index);
+			transformer = parsed.transformer();
+			index = parsed.index();
+		}
+		return transformer;
 	}
 
 	public final static void rewrite(BufferedReader reader, Writer writer, Transformer transformer) throws IOException {
@@ -36,6 +38,22 @@ public final class StreamEditor {
 		}
 		reader.close();
 		return;
+	}
+
+	public static TransformerIndexTuple parse(String command, Transformer transformer, int index) {
+		var currentCommand = command.charAt(index);
+		Transformer newTransformer;
+
+		switch (currentCommand) {
+			case 'l' -> newTransformer = line -> line.toLowerCase(Locale.ROOT);
+			case 'u' -> newTransformer = line -> line.toUpperCase(Locale.ROOT);
+			case '*' -> {
+				newTransformer = line -> line.replace("*", "*".repeat(command.charAt(index + 1) - '0'));
+				return new TransformerIndexTuple(line -> newTransformer.transform(transformer.transform(line)), index + 2);
+			}
+			default -> throw new IllegalArgumentException("Unknow command : " + currentCommand);
+		}
+		return new TransformerIndexTuple(line -> newTransformer.transform(transformer.transform(line)), index + 1);
 	}
 
 }

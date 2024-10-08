@@ -331,83 +331,83 @@ public class StreamEditorTest {
   }
 
 
-//  @Nested
-//  public class Q5 {
-//    @Test
-//    public void rewriteOneLineUpperCaseThenLowerCase() throws IOException {
-//      var transformer = StreamEditor.createTransformer("ul");
-//      var stringReader = new StringReader("hEllo\n");
-//      var writer = new CharArrayWriter();
-//      try(var reader = new BufferedReader(stringReader)) {
-//        StreamEditor.rewrite(reader, writer, transformer);
-//      }
-//      assertEquals("hello\n", writer.toString());
-//    }
-//
-//    @Test
-//    public void rewriteOneLineLowerCaseThenUpperCase() throws IOException {
-//      var transformer = StreamEditor.createTransformer("lu");
-//      var stringReader = new StringReader("HeLlo\n");
-//      var writer = new CharArrayWriter();
-//      try(var reader = new BufferedReader(stringReader)) {
-//        StreamEditor.rewrite(reader, writer, transformer);
-//      }
-//      assertEquals("HELLO\n", writer.toString());
-//    }
-//
-//    @Test
-//    public void rewriteOneLineStarTwoThenUpperCase() throws IOException {
-//      var transformer = StreamEditor.createTransformer("*2u");
-//      var stringReader =
-//          new StringReader("*foo**\n");
-//      var writer = new CharArrayWriter();
-//      try(var reader = new BufferedReader(stringReader)) {
-//        StreamEditor.rewrite(reader, writer, transformer);
-//      }
-//      assertEquals("**FOO****\n", writer.toString());
-//    }
-//
-//    @Test
-//    public void rewriteOneLineUpperCaseThenStarNine() throws IOException {
-//      var transformer = StreamEditor.createTransformer("u*9");
-//      var stringReader = new StringReader("*foo**\n");
-//      var writer = new CharArrayWriter();
-//      try(var reader = new BufferedReader(stringReader)) {
-//        StreamEditor.rewrite(reader, writer, transformer);
-//      }
-//      assertEquals("*********FOO******************\n", writer.toString());
-//    }
-//
-//    @Test
-//    public void rewriteSeveralLinesLowerCaseThenUpperCaseThenAgain() throws IOException {
-//      var transformer = StreamEditor.createTransformer("lulu");
-//      var reader = new StringReader("""
-//          fOO
-//          bAr
-//          Baz
-//          """);
-//      var writer = new CharArrayWriter();
-//      try(var bufferedReader = new BufferedReader(reader)) {
-//        StreamEditor.rewrite(bufferedReader, writer, transformer);
-//      }
-//      assertEquals("""
-//          FOO
-//          BAR
-//          BAZ
-//          """, writer.toString());
-//    }
-//
-//    @Test
-//    public void rewriteOneLineNoCommand() throws IOException {
-//      var transformer = StreamEditor.createTransformer("");
-//      var stringReader = new StringReader("HeLLo\n");
-//      var writer = new CharArrayWriter();
-//      try(var reader = new BufferedReader(stringReader)) {
-//        StreamEditor.rewrite(reader, writer, transformer);
-//      }
-//      assertEquals("HeLLo\n", writer.toString());
-//    }
-//  }
+  @Nested
+  public class Q5 {
+    @Test
+    public void rewriteOneLineUpperCaseThenLowerCase() throws IOException {
+      var transformer = StreamEditor.createTransformer("ul");
+      var stringReader = new StringReader("hEllo\n");
+      var writer = new CharArrayWriter();
+      try(var reader = new BufferedReader(stringReader)) {
+        StreamEditor.rewrite(reader, writer, transformer);
+      }
+      assertEquals("hello\n", writer.toString());
+    }
+
+    @Test
+    public void rewriteOneLineLowerCaseThenUpperCase() throws IOException {
+      var transformer = StreamEditor.createTransformer("lu");
+      var stringReader = new StringReader("HeLlo\n");
+      var writer = new CharArrayWriter();
+      try(var reader = new BufferedReader(stringReader)) {
+        StreamEditor.rewrite(reader, writer, transformer);
+      }
+      assertEquals("HELLO\n", writer.toString());
+    }
+
+    @Test
+    public void rewriteOneLineStarTwoThenUpperCase() throws IOException {
+      var transformer = StreamEditor.createTransformer("*2u");
+      var stringReader =
+          new StringReader("*foo**\n");
+      var writer = new CharArrayWriter();
+      try(var reader = new BufferedReader(stringReader)) {
+        StreamEditor.rewrite(reader, writer, transformer);
+      }
+      assertEquals("**FOO****\n", writer.toString());
+    }
+
+    @Test
+    public void rewriteOneLineUpperCaseThenStarNine() throws IOException {
+      var transformer = StreamEditor.createTransformer("u*9");
+      var stringReader = new StringReader("*foo**\n");
+      var writer = new CharArrayWriter();
+      try(var reader = new BufferedReader(stringReader)) {
+        StreamEditor.rewrite(reader, writer, transformer);
+      }
+      assertEquals("*********FOO******************\n", writer.toString());
+    }
+
+    @Test
+    public void rewriteSeveralLinesLowerCaseThenUpperCaseThenAgain() throws IOException {
+      var transformer = StreamEditor.createTransformer("lulu");
+      var reader = new StringReader("""
+          fOO
+          bAr
+          Baz
+          """);
+      var writer = new CharArrayWriter();
+      try(var bufferedReader = new BufferedReader(reader)) {
+        StreamEditor.rewrite(bufferedReader, writer, transformer);
+      }
+      assertEquals("""
+          FOO
+          BAR
+          BAZ
+          """, writer.toString());
+    }
+
+    @Test
+    public void rewriteOneLineNoCommand() throws IOException {
+      var transformer = StreamEditor.createTransformer("");
+      var stringReader = new StringReader("HeLLo\n");
+      var writer = new CharArrayWriter();
+      try(var reader = new BufferedReader(stringReader)) {
+        StreamEditor.rewrite(reader, writer, transformer);
+      }
+      assertEquals("HeLLo\n", writer.toString());
+    }
+  }
 //
 //
 //  @Nested
