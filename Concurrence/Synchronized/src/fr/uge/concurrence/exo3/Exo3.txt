@@ -1,0 +1,7 @@
+Exo3 : 
+
+	1 - Pourquoi a-t-on besoin d'une classe thread-safe pour réaliser ce programme ? 
+		Quelles doivent être les méthodes fournies par cette classe (on dit que c'est le "contrat" de la classe) ? 
+		
+			On a besoin d'une classe thread-safe pour récupérer une valeur max
+			de tout les threads au lieu que chaque thread soit isolés
