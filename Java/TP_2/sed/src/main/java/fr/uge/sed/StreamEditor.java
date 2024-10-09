@@ -8,19 +8,57 @@ import java.util.Objects;
 
 public final class StreamEditor {
 
+	private final Transformer t;
+
+	static final class Parser {
+		private final String commands;
+		private int index;
+
+		Parser(String commands) {
+			this.commands = commands;
+		}
+
+		boolean canParse() {
+			return index < commands.length();
+		}
+
+		Transformer parse(Transformer t) {
+
+			Transformer newTransformer;
+			var currentCommand = commands.charAt(index);
+
+			switch (currentCommand) {
+				case 'l' -> newTransformer = line -> line.toLowerCase(Locale.ROOT);
+				case 'u' -> newTransformer = line -> line.toUpperCase(Locale.ROOT);
+				case '*' -> {
+					if (index + 1 >= commands.length())
+						throw new IllegalArgumentException("Missing number after '*'");
+
+					int repeatCount = commands.charAt(index + 1) - '0';
+					newTransformer = line -> line.replace("*", "*".repeat(repeatCount));
+					index += 2;
+					return line -> newTransformer.transform(t.transform(line));
+				}
+				default -> throw new IllegalArgumentException("Unknow command : " + currentCommand);
+			}
+			index++;
+			return line -> newTransformer.transform(t.transform(line));
+		}
+	}
+
 	private StreamEditor() {
 		throw new AssertionError();
 	}
 
-	public final static Transformer createTransformer(String command) {
-		Objects.requireNonNull(command);
+	public final static Transformer createTransformer(String commands) {
+		Objects.requireNonNull(commands);
 		Transformer transformer = line -> line;
-		int index = 0;
-		while (index < command.length()) {
-			TransformerIndexTuple parsed = parse(command, transformer, index);
-			transformer = parsed.transformer();
-			index = parsed.index();
+
+		var parser = new Parser(commands);
+		while (parser.canParse()) {
+			transformer = parser.parse(transformer);
 		}
+
 		return transformer;
 	}
 
@@ -37,23 +75,6 @@ public final class StreamEditor {
 			writer.write("\n");
 		}
 		reader.close();
-		return;
-	}
-
-	public static TransformerIndexTuple parse(String command, Transformer transformer, int index) {
-		var currentCommand = command.charAt(index);
-		Transformer newTransformer;
-
-		switch (currentCommand) {
-			case 'l' -> newTransformer = line -> line.toLowerCase(Locale.ROOT);
-			case 'u' -> newTransformer = line -> line.toUpperCase(Locale.ROOT);
-			case '*' -> {
-				newTransformer = line -> line.replace("*", "*".repeat(command.charAt(index + 1) - '0'));
-				return new TransformerIndexTuple(line -> newTransformer.transform(transformer.transform(line)), index + 2);
-			}
-			default -> throw new IllegalArgumentException("Unknow command : " + currentCommand);
-		}
-		return new TransformerIndexTuple(line -> newTransformer.transform(transformer.transform(line)), index + 1);
 	}
 
 }
