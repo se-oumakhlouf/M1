@@ -478,119 +478,119 @@ public class SliceTest {
   }
 
 
-//  @Nested
-//  public class Q6 {
-//    @Test
-//    public void reversedSubSliceOfStrings() {
-//      var array = new String[]{ "foo", "bar", "baz", "whizz" };
-//      var slice = Slice.of(array, 1, 4);
-//      var reversed = slice.reversed();
-//      var subSlice = reversed.subSlice(1, 3);
-//      assertAll(
-//          () -> assertEquals(2, subSlice.size()),
-//          () -> assertEquals("baz", subSlice.get(0)),
-//          () -> assertEquals("bar", subSlice.get(1))
-//      );
-//    }
-//
-//    @Test
-//    public void reversedSubSliceOfIntegers() {
-//      var array = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-//      var slice = Slice.of(array, 3, 8);
-//      var reversed = slice.reversed();
-//      var subSlice = reversed.subSlice(0, 4);
-//      assertAll(
-//          () -> assertEquals(4, subSlice.size()),
-//          () -> assertEquals(7, subSlice.get(0)),
-//          () -> assertEquals(6, subSlice.get(1)),
-//          () -> assertEquals(5, subSlice.get(2)),
-//          () -> assertEquals(4, subSlice.get(3))
-//      );
-//    }
-//
-//    @Test
-//    public void reversedSubSliceWithNull() {
-//      var array = new String[] { "foo", null, "bar" };
-//      var slice = Slice.of(array, 0, array.length);
-//      var reversed = slice.reversed();
-//      var subSlice = reversed.subSlice(1, 3);
-//      assertAll(
-//          () -> assertEquals(2, subSlice.size()),
-//          () -> assertNull(subSlice.get(0)),
-//          () -> assertEquals("foo", subSlice.get(1))
-//      );
-//    }
-//
-//    @Test
-//    public void reversedSubSliceEmpty() {
-//      var array = new String[] { "foo", "bar" };
-//      var slice = Slice.of(array, 1, 1);
-//      var subSlice = slice.reversed().subSlice(0, 0);
-//      assertEquals(0, subSlice.size());
-//    }
-//
-//    @Test
-//    public void qualityOfImplementation() {
-//      var array = new String[] { "foo", "bar" };
-//      var slice = Slice.of(array, 0, array.length);
-//      assertSame(slice.reversed().getClass(), slice.reversed().subSlice(1, 2).getClass());
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q7 {
-//    @Test
-//    public void reversedSliceOfStrings() {
-//      var array = new String[] { "foo", "bar", "baz", "whizz" };
-//      var slice = Slice.of(array, 1, 3);
-//      var reversed = slice.reversed();
-//      assertEquals("[baz, bar]", reversed.toString());
-//    }
-//
-//    @Test
-//    public void reversedSliceOfIntegers() {
-//      var array = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-//      var slice = Slice.of(array, 4, 9);
-//      var reversed = slice.reversed();
-//      assertEquals("[8, 7, 6, 5, 4]", reversed.toString());
-//    }
-//
-//    @Test
-//    public void reversedSliceSingleton() {
-//      var array = new String[] { "foo", "bar" };
-//      var slice = Slice.of(array, 1, 2);
-//      var reversed = slice.reversed();
-//      assertEquals("[bar]", reversed.toString());
-//    }
-//
-//    @Test
-//    public void reversedSliceWithNull() {
-//      var array = new String[] { "foo", null, "bar" };
-//      var slice = Slice.of(array, 0, array.length);
-//      var reversed = slice.reversed();
-//      assertEquals("[bar, null, foo]", reversed.toString());
-//    }
-//
-//    @Test
-//    public void reversedSliceEmpty() {
-//      var array = new String[] { "foo", "bar" };
-//      var slice = Slice.of(array, 1, 1);
-//      var reversed = slice.reversed();
-//      assertEquals("[]", reversed.toString());
-//    }
-//
-//    @Test
-//    public void reversedSliceIsAView() {
-//      var array = new String[] { "foo", "bar" };
-//      var slice = Slice.of(array, 0, 2);
-//      var reversed = slice.reversed();
-//      array[1] = "hello";
-//      assertEquals("[hello, foo]", reversed.toString());
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q6 {
+    @Test
+    public void reversedSubSliceOfStrings() {
+      var array = new String[]{ "foo", "bar", "baz", "whizz" };
+      var slice = Slice.of(array, 1, 4);
+      var reversed = slice.reversed();
+      var subSlice = reversed.subSlice(1, 3);
+      assertAll(
+          () -> assertEquals(2, subSlice.size()),
+          () -> assertEquals("baz", subSlice.get(0)),
+          () -> assertEquals("bar", subSlice.get(1))
+      );
+    }
+
+    @Test
+    public void reversedSubSliceOfIntegers() {
+      var array = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      var slice = Slice.of(array, 3, 8);
+      var reversed = slice.reversed();
+      var subSlice = reversed.subSlice(0, 4);
+      assertAll(
+          () -> assertEquals(4, subSlice.size()),
+          () -> assertEquals(7, subSlice.get(0)),
+          () -> assertEquals(6, subSlice.get(1)),
+          () -> assertEquals(5, subSlice.get(2)),
+          () -> assertEquals(4, subSlice.get(3))
+      );
+    }
+
+    @Test
+    public void reversedSubSliceWithNull() {
+      var array = new String[] { "foo", null, "bar" };
+      var slice = Slice.of(array, 0, array.length);
+      var reversed = slice.reversed();
+      var subSlice = reversed.subSlice(1, 3);
+      assertAll(
+          () -> assertEquals(2, subSlice.size()),
+          () -> assertNull(subSlice.get(0)),
+          () -> assertEquals("foo", subSlice.get(1))
+      );
+    }
+
+    @Test
+    public void reversedSubSliceEmpty() {
+      var array = new String[] { "foo", "bar" };
+      var slice = Slice.of(array, 1, 1);
+      var subSlice = slice.reversed().subSlice(0, 0);
+      assertEquals(0, subSlice.size());
+    }
+
+    @Test
+    public void qualityOfImplementation() {
+      var array = new String[] { "foo", "bar" };
+      var slice = Slice.of(array, 0, array.length);
+      assertSame(slice.reversed().getClass(), slice.reversed().subSlice(1, 2).getClass());
+    }
+  }
+
+
+  @Nested
+  public class Q7 {
+    @Test
+    public void reversedSliceOfStrings() {
+      var array = new String[] { "foo", "bar", "baz", "whizz" };
+      var slice = Slice.of(array, 1, 3);
+      var reversed = slice.reversed();
+      assertEquals("[baz, bar]", reversed.toString());
+    }
+
+    @Test
+    public void reversedSliceOfIntegers() {
+      var array = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      var slice = Slice.of(array, 4, 9);
+      var reversed = slice.reversed();
+      assertEquals("[8, 7, 6, 5, 4]", reversed.toString());
+    }
+
+    @Test
+    public void reversedSliceSingleton() {
+      var array = new String[] { "foo", "bar" };
+      var slice = Slice.of(array, 1, 2);
+      var reversed = slice.reversed();
+      assertEquals("[bar]", reversed.toString());
+    }
+
+    @Test
+    public void reversedSliceWithNull() {
+      var array = new String[] { "foo", null, "bar" };
+      var slice = Slice.of(array, 0, array.length);
+      var reversed = slice.reversed();
+      assertEquals("[bar, null, foo]", reversed.toString());
+    }
+
+    @Test
+    public void reversedSliceEmpty() {
+      var array = new String[] { "foo", "bar" };
+      var slice = Slice.of(array, 1, 1);
+      var reversed = slice.reversed();
+      assertEquals("[]", reversed.toString());
+    }
+
+    @Test
+    public void reversedSliceIsAView() {
+      var array = new String[] { "foo", "bar" };
+      var slice = Slice.of(array, 0, 2);
+      var reversed = slice.reversed();
+      array[1] = "hello";
+      assertEquals("[hello, foo]", reversed.toString());
+    }
+  }
+
+
 //  @Nested
 //  public class Q8 {
 //    @Test

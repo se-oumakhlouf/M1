@@ -13,7 +13,7 @@ public interface Slice<E> {
 	E get(int index);
 
 	Slice<E> subSlice(int from, int to);
-	
+
 	void replaceAll(UnaryOperator<E> operator);
 
 	static <E> Slice<E> of(E[] elements, int from, int to) {
@@ -37,7 +37,8 @@ public interface Slice<E> {
 
 			@Override
 			public Slice<E> subSlice(int from, int to) {
-				throw new UnsupportedOperationException();
+				Objects.checkFromToIndex(from, to, size());
+				return Slice.this.subSlice(size() - to, size() - from).reversed();
 			}
 
 			public Slice<E> reversed() {
@@ -46,30 +47,22 @@ public interface Slice<E> {
 
 			@Override
 			public String toString() {
-				return "["
-						+ IntStream.range(0, size()).mapToObj(this::get).map(Object::toString).collect(Collectors.joining(", "))
+				// String.valueOf transforme les null en "null"
+				return "[" + IntStream.range(0, size()).mapToObj(i -> String.valueOf(get(i))).collect(Collectors.joining(", "))
 						+ "]";
 			}
 
 			@Override
 			public void replaceAll(UnaryOperator<E> operator) {
 				Objects.requireNonNull(operator);
-				for (int i = 0; i < size(); i++) {
-					int originalIndex = size() - 1 - i;
-					E originalElem = Slice.this.get(originalIndex);
-					E newValue = operator.apply(originalElem);
-					
-					((SliceImpl<E>) Slice.this).set(originalIndex, newValue);
-				}
-				
+				Slice.this.replaceAll(operator);
 			}
-
 
 		};
 	}
 
 	final class SliceImpl<E> implements Slice<E> {
-		private final E[] elements;
+		private E[] elements;
 		private final int from;
 		private final int to;
 
@@ -89,11 +82,6 @@ public interface Slice<E> {
 			Objects.checkIndex(index, size());
 			return elements[from + index];
 		}
-		
-		private void set(int index, E value) {
-			Objects.checkIndex(index, size());
-			elements[from + index] = value;
-		}
 
 		@Override
 		public String toString() {
@@ -111,8 +99,7 @@ public interface Slice<E> {
 		public void replaceAll(UnaryOperator<E> operator) {
 			Objects.requireNonNull(operator);
 			for (int i = 0; i < size(); i++) {
-				E newValue = operator.apply(get(i));
-				set(i, newValue);
+				elements[i + from] = operator.apply(get(i));
 			}
 		}
 	}
