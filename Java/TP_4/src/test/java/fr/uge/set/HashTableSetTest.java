@@ -358,41 +358,41 @@ public class HashTableSetTest {
     }
   }
 
-//
-//  @Nested
-//  class Q6 {
-//
-//    @Test
-//    public void shouldAddOne() {
-//      var set = new HashTableSet<Integer>();
-//      set.add(1);
-//      assertEquals(1, set.size());
-//    }
-//
-//    @Test
-//    public void shouldAddAString() {
-//      var set = new HashTableSet<String>();
-//      set.add("foo");
-//      assertEquals(1, set.size());
-//    }
-//
-//    @Test
-//    public void shouldForEachWithTheRightType() {
-//      var set = new HashTableSet<Integer>();
-//      set.add(1);
-//      set.forEach(element -> assertEquals(1, Math.min(element, 10)));
-//    }
-//
-//    @Test
-//    public void shouldForEachWithTheRightType2() {
-//      var set = new HashTableSet<String>();
-//      set.add("foo");
-//      set.add("five");
-//      set.add("fallout");
-//      set.forEach(element -> assertTrue(element.startsWith("f")));
-//    }
-//  }
-//
+
+  @Nested
+  class Q6 {
+
+    @Test
+    public void shouldAddOne() {
+      var set = new HashTableSet<Integer>();
+      set.add(1);
+      assertEquals(1, set.size());
+    }
+
+    @Test
+    public void shouldAddAString() {
+      var set = new HashTableSet<String>();
+      set.add("foo");
+      assertEquals(1, set.size());
+    }
+
+    @Test
+    public void shouldForEachWithTheRightType() {
+      var set = new HashTableSet<Integer>();
+      set.add(1);
+      set.forEach(element -> assertEquals(1, Math.min(element, 10)));
+    }
+
+    @Test
+    public void shouldForEachWithTheRightType2() {
+      var set = new HashTableSet<String>();
+      set.add("foo");
+      set.add("five");
+      set.add("fallout");
+      set.forEach(element -> assertTrue(element.startsWith("f")));
+    }
+  }
+
 //  @Nested
 //  class Q7 {
 //
