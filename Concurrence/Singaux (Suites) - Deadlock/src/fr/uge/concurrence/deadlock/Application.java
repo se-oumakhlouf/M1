@@ -8,14 +8,6 @@ public class Application {
 
 		var temperature = new Temperature(rooms.size());
 
-//		var temperatures = new ArrayList<Integer>();
-//
-//		for (String room : rooms) {
-//			var temperature = Heat4J.retrieveTemperature(room);
-//			System.out.println("Temperature in room " + room + " : " + temperature);
-//			temperatures.add(temperature);
-//		}
-
 		for (int i = 0; i < rooms.size(); i++) {
 			var index = i;
 			Thread.ofPlatform().start(() -> {
@@ -26,7 +18,6 @@ public class Application {
 						System.out.println("Temperature in room " + room + " : " + temp);
 						temperature.add(temp);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
