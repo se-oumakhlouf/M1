@@ -3,6 +3,19 @@ package fr.uge.concurrence.deadlock;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
+/* Quel est le problème du code ci-dessus ? Dans quelle(s) condition(s) se produit-il ?
+ * 
+ * Il y a des forts risques d'obtenir un deadlock dans ce code
+ * 
+ * Scénario : 
+ * 	Philosophe 0 acquiert fork 0 et commencer à essayer d'acquérir fork 1
+ *  Philosophe 1 acquiert fork 1 et commencer à essayer d'acquérir fork 2
+ *  Philosophe 2 acquiert fork 2 et commencer à essayer d'acquérir fork 3
+ *  Philosophe 3 acquiert fork 3 et commencer à essayer d'acquérir fork 4
+ *  Philosophe 4 acquiert fork 4 et commencer à essayer d'acquérir fork 0
+ *  		-- deadlock --
+ */
+
 public class PhilosopherDinner {
   private final Object[] forks;
 
@@ -27,9 +40,9 @@ public class PhilosopherDinner {
   }
 
   public static void main(String[] args) {
-    var dinner = newPhilosopherDinner(5);
-    IntStream.range(0, 5).forEach(i -> {
-      new Thread(() -> {
+    var dinner = newPhilosopherDinner(5); // Array [5] d'objet représentant des fourchettes
+    IntStream.range(0, 5).forEach(i -> {	// 5 Threads -> boucle infinie
+      new Thread(() -> {									// eat -> prend sa fourchette + fourcette de droite
         for (;;) {
           dinner.eat(i);
         }
