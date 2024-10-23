@@ -18,17 +18,19 @@ public class Vote {
 	}
 
 	private String computeWinner() {
-		var score = -1;
-		String winner = null;
-		for (var e : votes.entrySet()) {
-			var key = e.getKey();
-			var value = e.getValue();
-			if (value > score || (value == score && key.compareTo(winner) < 0)) {
-				winner = key;
-				score = value;
+		synchronized (lock) {
+			var score = -1;
+			String winner = null;
+			for (var e : votes.entrySet()) {
+				var key = e.getKey();
+				var value = e.getValue();
+				if (value > score || (value == score && key.compareTo(winner) < 0)) {
+					winner = key;
+					score = value;
+				}
 			}
+			return winner;
 		}
-		return winner;
 	}
 
 	private void updateVotes() {
