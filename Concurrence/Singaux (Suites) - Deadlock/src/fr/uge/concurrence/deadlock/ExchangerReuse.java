@@ -26,6 +26,7 @@ public class ExchangerReuse<E> {
 					lock.wait();
 				}
 				state = State.START;
+				lock.notifyAll();
 				return second;
 			}
 
