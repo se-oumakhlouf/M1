@@ -46,9 +46,21 @@ public final class DedupVec<T> {
 		return dedupMap.containsKey(element);
 	}
 
-	public void addAll(DedupVec<T> dedupVec) {
-		Objects.requireNonNull(dedupVec);
-		dedupVec.dedupElements.forEach(this::add);
+	public void addAll(DedupVec<T> dedupVec2) {
+		boolean flag = false;
+		for (var key : dedupVec2.dedupMap.keySet()) {
+			if (this.dedupMap.putIfAbsent(key, key) != null) {
+				flag = true;
+			}
+		}
+		if (!flag) {
+			this.dedupElements.addAll(dedupVec2.dedupElements);
+		} else {
+			for (var elem : dedupVec2.dedupElements) {
+				var value = this.dedupMap.get(elem);
+				this.add(value);
+			}
+		}
 	}
 
 	static <E> Map<E, E> newMapFromSet(Set<E> set) {
