@@ -481,271 +481,271 @@ public class DedupVecTest {
   }
 
 
-//  @Nested
-//  public class Q5 {
-//    @Test
-//    public void newMapFromSet() {
-//      var set = Set.of("foo", "bar");
-//      var map = DedupVec.newMapFromSet(set);
-//      assertEquals(Map.of("foo", "foo", "bar", "bar"), map);
-//    }
-//
-//    @Test
-//    public void newMapFromSetMixedValues() {
-//      var set = Set.of("foo", 42);
-//      var map = DedupVec.newMapFromSet(set);
-//      assertEquals(Map.of("foo", "foo", 42, 42), map);
-//    }
-//
-//    @Test
-//    public void newMapFromSetEmpty() {
-//      var set = Set.of();
-//      var map = DedupVec.newMapFromSet(set);
-//      assertEquals(Map.of(), map);
-//    }
-//
-//    @Test
-//    public void newMapFromSetKeySet() {
-//      var set = IntStream.range(0, 10).boxed().collect(toSet());
-//      var map = DedupVec.newMapFromSet(set);
-//      assertEquals(set, map.keySet());
-//    }
-//
-//    @Test
-//    public void newMapFromSetValues() {
-//      var set = IntStream.range(0, 10).boxed().collect(toSet());
-//      var map = DedupVec.newMapFromSet(set);
-//      assertEquals(set, new HashSet<>(map.values()));
-//    }
-//
-//    @Test
-//    public void newMapFromFixedSetOfInteger() {
-//      var map = DedupVec.newMapFromSet(Set.of(1, 2, 3));
-//      assertAll(
-//          () -> assertEquals(Set.of(1, 2, 3), map.keySet()),
-//          () -> assertEquals(Set.of(1, 2, 3), Set.copyOf(map.values())),
-//          () -> assertEquals(Map.of(1, 1, 2, 2, 3, 3), map),
-//          () -> assertEquals(Set.of(Map.entry(1, 1), Map.entry(2, 2), Map.entry(3, 3)), map.entrySet())
-//      );
-//    }
-//
-//    @Test
-//    public void newMapFromFixedSetOfString() {
-//      var map = DedupVec.newMapFromSet(Set.of("foo", "bar", "baz"));
-//      assertAll(
-//          () -> assertEquals(Set.of("foo", "bar", "baz"), map.keySet()),
-//          () -> assertEquals(Set.of("foo", "bar", "baz"), Set.copyOf(map.values())),
-//          () -> assertEquals(Map.of("foo", "foo", "bar", "bar", "baz", "baz"), map),
-//          () -> assertEquals(Set.of(Map.entry("foo", "foo"), Map.entry("bar", "bar"), Map.entry("baz", "baz")), map.entrySet())
-//      );
-//    }
-//
-//    @Test
-//    public void newMapFromSetIsAView() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      set.add(42);
-//      assertEquals(Map.of(42, 42), map);
-//    }
-//
-//    @Test
-//    public void newMapFromSetKeySetIsAView() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      var keySet = map.keySet();
-//      set.add(42);
-//      assertEquals(set, keySet);
-//    }
-//
-//    @Test
-//    public void newMapFromSetValuesIsAView() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      var values = map.values();
-//      set.add(42);
-//      assertEquals(List.of(42), List.copyOf(values));
-//    }
-//
-//    @Test
-//    public void newMapFromSetEntrySetIsAView() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      var entrySet = map.entrySet();
-//      set.add(42);
-//      assertEquals(Set.of(Map.entry(42, 42)), entrySet);
-//    }
-//
-//    @Test
-//    public void newMapFromSetIsNonMutable() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      assertThrows(UnsupportedOperationException.class, () -> map.put(1, 1));
-//    }
-//
-//    @Test
-//    public void newMapFromSetKeySetIsNonMutable() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      var keySet = map.keySet();
-//      assertThrows(UnsupportedOperationException.class, () -> keySet.add(1));
-//    }
-//
-//    @Test
-//    public void newMapFromSetValuesIsNonMutable() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      var values = map.values();
-//      assertThrows(UnsupportedOperationException.class, () -> values.add(1));
-//    }
-//
-//    @Test
-//    public void newMapFromSetEntrySetIsNonMutable() {
-//      var set = new HashSet<Integer>();
-//      var map = DedupVec.newMapFromSet(set);
-//      var entrySet = map.entrySet();
-//      assertThrows(UnsupportedOperationException.class, () -> entrySet.add(Map.entry(42, 42)));
-//    }
-//
-//    @Test
-//    public void newMapFromSetOrder() {
-//      var set = Set.of("foo", "bar", "baz", "whizz", "fuzz");
-//      var map = DedupVec.newMapFromSet(set);
-//      assertEquals(new ArrayList<>(set), new ArrayList<>(map.keySet()));
-//    }
-//
-//    @Test
-//    public void newMapFromSetValuesOrder() {
-//      var set = IntStream.range(0, 10).boxed().collect(toSet());
-//      var map = DedupVec.newMapFromSet(set);
-//      assertEquals(new ArrayList<>(set), new ArrayList<>(map.values()));
-//    }
-//
-//    @Test
-//    public void newMapFromSetSizeIsFast() {
-//      var set = IntStream.range(0, 10_000).boxed().collect(toSet());
-//      var map = DedupVec.newMapFromSet(set);
-//
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
-//        for(var i = 0; i < 10_000; i++) {
-//          assertEquals(10_000, map.size());
-//        }
-//      });
-//    }
-//
-//    @Test
-//    public void newMapFromSetNullChecks() {
-//      var set = new HashSet<>(Arrays.asList("foo", null));
-//      var map = DedupVec.newMapFromSet(set);
-//      assertAll(
-//          () -> assertThrows(NullPointerException.class, () -> map.get(null)),
-//          () -> assertThrows(NullPointerException.class, () -> map.getOrDefault(null, "boom !"))
-//      );
-//    }
-//
-//    @Test
-//    public void newMapFromSetIsFastEnough() {
-//      var set = IntStream.range(0, 1_000_000).boxed().collect(toSet());
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
-//        for(var i = 0; i < 1_000; i++) {
-//          assertNotNull(DedupVec.newMapFromSet(set));
-//        }
-//      });
-//    }
-//
-//    @Test
-//    public void newMapFromSetIsAHelperMethod() {
-//      assertThrows(NoSuchMethodException.class, () -> DedupVec.class.getMethod("newMapFromSet", Set.class));
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q6 {
-//    @Test
-//    public void fromSetOfStrings() {
-//      var set = Set.of("foo");
-//      var dedupVec = DedupVec.fromSet(set);
-//
-//      assertAll(
-//          () -> assertEquals(1, dedupVec.size()),
-//          () -> assertEquals("foo", dedupVec.get(0))
-//      );
-//    }
-//
-//    @Test
-//    public void fromSetOfIntegers() {
-//      var list = List.of(1, 2, 4, 8, 16, -1);
-//      var set = new LinkedHashSet<>(list);
-//      var dedupVec = DedupVec.fromSet(set);
-//
-//      assertAll(
-//          () -> assertEquals(6, dedupVec.size()),
-//          () -> assertEquals(1, dedupVec.get(0)),
-//          () -> assertEquals(2, dedupVec.get(1)),
-//          () -> assertEquals(4, dedupVec.get(2)),
-//          () -> assertEquals(8, dedupVec.get(3)),
-//          () -> assertEquals(16, dedupVec.get(4)),
-//          () -> assertEquals(-1, dedupVec.get(5))
-//      );
-//    }
-//
-//    @Test
-//    public void fromSetThenAdd() {
-//      var dedupVec = DedupVec.fromSet(Set.of(4242));
-//      dedupVec.add(4242);
-//
-//      assertAll(
-//          () -> assertEquals(2, dedupVec.size()),
-//          () -> assertEquals(4242, dedupVec.get(0)),
-//          () -> assertEquals(4242, dedupVec.get(1)),
-//          () -> assertSame(dedupVec.get(0), dedupVec.get(1))
-//      );
-//    }
-//
-//    @Test
-//    public void fromSetWithSetMutatedAfterCreation() {
-//      var set = new HashSet<Integer>();
-//      var dedupVec = DedupVec.fromSet(set);
-//      set.add(1000);
-//
-//      assertEquals(0, dedupVec.size());
-//    }
-//
-//    @Test
-//    public void fromSetWithSetMutatedAfterCreationNotUsedForDeduplication() {
-//      record Value(int value) {}
-//      var set = new HashSet<Value>();
-//      set.add(new Value(11));
-//      var dedupVec = DedupVec.fromSet(set);
-//      var anotherValue = new Value(17);
-//      set.add(anotherValue);
-//      dedupVec.add(new Value(17));
-//      assertNotSame(anotherValue, dedupVec.get(1));
-//    }
-//
-//    // Revision: this test should pass
-//    //  @Test
-//    //  public void fromSetSignature() {
-//    //    Set<Integer> set = Set.of(1024);
-//    //    DedupVec<Object> dedupVec = DedupVec.fromSet(set);
-//    //
-//    //    assertAll(
-//    //        () -> assertEquals(1, dedupVec.size()),
-//    //        () -> assertEquals(1024, dedupVec.get(0)),
-//    //        () -> assertSame(set.iterator().next(), dedupVec.get(0))
-//    //    );
-//    //  }
-//
-//    @Test
-//    public void fromSetPreconditions() {
-//      assertAll(
-//          () -> assertThrows(NullPointerException.class, () -> DedupVec.fromSet(null)),
-//          () -> assertThrows(NullPointerException.class, () -> DedupVec.fromSet(Stream.of(null).collect(toSet())))
-//      );
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q5 {
+    @Test
+    public void newMapFromSet() {
+      var set = Set.of("foo", "bar");
+      var map = DedupVec.newMapFromSet(set);
+      assertEquals(Map.of("foo", "foo", "bar", "bar"), map);
+    }
+
+    @Test
+    public void newMapFromSetMixedValues() {
+      var set = Set.of("foo", 42);
+      var map = DedupVec.newMapFromSet(set);
+      assertEquals(Map.of("foo", "foo", 42, 42), map);
+    }
+
+    @Test
+    public void newMapFromSetEmpty() {
+      var set = Set.of();
+      var map = DedupVec.newMapFromSet(set);
+      assertEquals(Map.of(), map);
+    }
+
+    @Test
+    public void newMapFromSetKeySet() {
+      var set = IntStream.range(0, 10).boxed().collect(toSet());
+      var map = DedupVec.newMapFromSet(set);
+      assertEquals(set, map.keySet());
+    }
+
+    @Test
+    public void newMapFromSetValues() {
+      var set = IntStream.range(0, 10).boxed().collect(toSet());
+      var map = DedupVec.newMapFromSet(set);
+      assertEquals(set, new HashSet<>(map.values()));
+    }
+
+    @Test
+    public void newMapFromFixedSetOfInteger() {
+      var map = DedupVec.newMapFromSet(Set.of(1, 2, 3));
+      assertAll(
+          () -> assertEquals(Set.of(1, 2, 3), map.keySet()),
+          () -> assertEquals(Set.of(1, 2, 3), Set.copyOf(map.values())),
+          () -> assertEquals(Map.of(1, 1, 2, 2, 3, 3), map),
+          () -> assertEquals(Set.of(Map.entry(1, 1), Map.entry(2, 2), Map.entry(3, 3)), map.entrySet())
+      );
+    }
+
+    @Test
+    public void newMapFromFixedSetOfString() {
+      var map = DedupVec.newMapFromSet(Set.of("foo", "bar", "baz"));
+      assertAll(
+          () -> assertEquals(Set.of("foo", "bar", "baz"), map.keySet()),
+          () -> assertEquals(Set.of("foo", "bar", "baz"), Set.copyOf(map.values())),
+          () -> assertEquals(Map.of("foo", "foo", "bar", "bar", "baz", "baz"), map),
+          () -> assertEquals(Set.of(Map.entry("foo", "foo"), Map.entry("bar", "bar"), Map.entry("baz", "baz")), map.entrySet())
+      );
+    }
+
+    @Test
+    public void newMapFromSetIsAView() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      set.add(42);
+      assertEquals(Map.of(42, 42), map);
+    }
+
+    @Test
+    public void newMapFromSetKeySetIsAView() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      var keySet = map.keySet();
+      set.add(42);
+      assertEquals(set, keySet);
+    }
+
+    @Test
+    public void newMapFromSetValuesIsAView() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      var values = map.values();
+      set.add(42);
+      assertEquals(List.of(42), List.copyOf(values));
+    }
+
+    @Test
+    public void newMapFromSetEntrySetIsAView() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      var entrySet = map.entrySet();
+      set.add(42);
+      assertEquals(Set.of(Map.entry(42, 42)), entrySet);
+    }
+
+    @Test
+    public void newMapFromSetIsNonMutable() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      assertThrows(UnsupportedOperationException.class, () -> map.put(1, 1));
+    }
+
+    @Test
+    public void newMapFromSetKeySetIsNonMutable() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      var keySet = map.keySet();
+      assertThrows(UnsupportedOperationException.class, () -> keySet.add(1));
+    }
+
+    @Test
+    public void newMapFromSetValuesIsNonMutable() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      var values = map.values();
+      assertThrows(UnsupportedOperationException.class, () -> values.add(1));
+    }
+
+    @Test
+    public void newMapFromSetEntrySetIsNonMutable() {
+      var set = new HashSet<Integer>();
+      var map = DedupVec.newMapFromSet(set);
+      var entrySet = map.entrySet();
+      assertThrows(UnsupportedOperationException.class, () -> entrySet.add(Map.entry(42, 42)));
+    }
+
+    @Test
+    public void newMapFromSetOrder() {
+      var set = Set.of("foo", "bar", "baz", "whizz", "fuzz");
+      var map = DedupVec.newMapFromSet(set);
+      assertEquals(new ArrayList<>(set), new ArrayList<>(map.keySet()));
+    }
+
+    @Test
+    public void newMapFromSetValuesOrder() {
+      var set = IntStream.range(0, 10).boxed().collect(toSet());
+      var map = DedupVec.newMapFromSet(set);
+      assertEquals(new ArrayList<>(set), new ArrayList<>(map.values()));
+    }
+
+    @Test
+    public void newMapFromSetSizeIsFast() {
+      var set = IntStream.range(0, 10_000).boxed().collect(toSet());
+      var map = DedupVec.newMapFromSet(set);
+
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
+        for(var i = 0; i < 10_000; i++) {
+          assertEquals(10_000, map.size());
+        }
+      });
+    }
+
+    @Test
+    public void newMapFromSetNullChecks() {
+      var set = new HashSet<>(Arrays.asList("foo", null));
+      var map = DedupVec.newMapFromSet(set);
+      assertAll(
+          () -> assertThrows(NullPointerException.class, () -> map.get(null)),
+          () -> assertThrows(NullPointerException.class, () -> map.getOrDefault(null, "boom !"))
+      );
+    }
+
+    @Test
+    public void newMapFromSetIsFastEnough() {
+      var set = IntStream.range(0, 1_000_000).boxed().collect(toSet());
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
+        for(var i = 0; i < 1_000; i++) {
+          assertNotNull(DedupVec.newMapFromSet(set));
+        }
+      });
+    }
+
+    @Test
+    public void newMapFromSetIsAHelperMethod() {
+      assertThrows(NoSuchMethodException.class, () -> DedupVec.class.getMethod("newMapFromSet", Set.class));
+    }
+  }
+
+
+  @Nested
+  public class Q6 {
+    @Test
+    public void fromSetOfStrings() {
+      var set = Set.of("foo");
+      var dedupVec = DedupVec.fromSet(set);
+
+      assertAll(
+          () -> assertEquals(1, dedupVec.size()),
+          () -> assertEquals("foo", dedupVec.get(0))
+      );
+    }
+
+    @Test
+    public void fromSetOfIntegers() {
+      var list = List.of(1, 2, 4, 8, 16, -1);
+      var set = new LinkedHashSet<>(list);
+      var dedupVec = DedupVec.fromSet(set);
+
+      assertAll(
+          () -> assertEquals(6, dedupVec.size()),
+          () -> assertEquals(1, dedupVec.get(0)),
+          () -> assertEquals(2, dedupVec.get(1)),
+          () -> assertEquals(4, dedupVec.get(2)),
+          () -> assertEquals(8, dedupVec.get(3)),
+          () -> assertEquals(16, dedupVec.get(4)),
+          () -> assertEquals(-1, dedupVec.get(5))
+      );
+    }
+
+    @Test
+    public void fromSetThenAdd() {
+      var dedupVec = DedupVec.fromSet(Set.of(4242));
+      dedupVec.add(4242);
+
+      assertAll(
+          () -> assertEquals(2, dedupVec.size()),
+          () -> assertEquals(4242, dedupVec.get(0)),
+          () -> assertEquals(4242, dedupVec.get(1)),
+          () -> assertSame(dedupVec.get(0), dedupVec.get(1))
+      );
+    }
+
+    @Test
+    public void fromSetWithSetMutatedAfterCreation() {
+      var set = new HashSet<Integer>();
+      var dedupVec = DedupVec.fromSet(set);
+      set.add(1000);
+
+      assertEquals(0, dedupVec.size());
+    }
+
+    @Test
+    public void fromSetWithSetMutatedAfterCreationNotUsedForDeduplication() {
+      record Value(int value) {}
+      var set = new HashSet<Value>();
+      set.add(new Value(11));
+      var dedupVec = DedupVec.fromSet(set);
+      var anotherValue = new Value(17);
+      set.add(anotherValue);
+      dedupVec.add(new Value(17));
+      assertNotSame(anotherValue, dedupVec.get(1));
+    }
+
+    // Revision: this test should pass
+    //  @Test
+    //  public void fromSetSignature() {
+    //    Set<Integer> set = Set.of(1024);
+    //    DedupVec<Object> dedupVec = DedupVec.fromSet(set);
+    //
+    //    assertAll(
+    //        () -> assertEquals(1, dedupVec.size()),
+    //        () -> assertEquals(1024, dedupVec.get(0)),
+    //        () -> assertSame(set.iterator().next(), dedupVec.get(0))
+    //    );
+    //  }
+
+    @Test
+    public void fromSetPreconditions() {
+      assertAll(
+          () -> assertThrows(NullPointerException.class, () -> DedupVec.fromSet(null)),
+          () -> assertThrows(NullPointerException.class, () -> DedupVec.fromSet(Stream.of(null).collect(toSet())))
+      );
+    }
+  }
+
+
 //  @Nested
 //  public class Q8 {
 //    @Test
