@@ -1,8 +1,12 @@
 package fr.uge.runlist;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 public class RunList<E> {
 
@@ -19,6 +23,13 @@ public class RunList<E> {
 	public E get(int index) {
 		return null;
 	}
+
+	public void forEach(Consumer<E> function) {
+	}
+	
+//	public Object asList() {
+//		return null;
+//	}
 
 	public static <F> RunList<F> newRunLengthList() {
 		return new RunList<F>() {
@@ -52,6 +63,21 @@ public class RunList<E> {
 				}
 				return null;
 			}
+
+//			public void forEach(Consumer<F> function) {
+//				Objects.requireNonNull(function);
+//				for (var elem : list) {
+//					for (int i = 0; i < elem.count; i++)
+//						function.accept((F) elem.element);
+//				}
+//			}
+
+			@SuppressWarnings("unchecked")
+			public void forEach(Consumer<F> function) {
+				Objects.requireNonNull(function);
+				list.forEach(elem -> IntStream.range(0, elem.count).forEach(notUsed -> function.accept((F) elem.element)));
+			}
+
 		};
 	}
 
@@ -91,6 +117,11 @@ public class RunList<E> {
 			}
 
 		};
+		
+		
 	}
+
+
+
 
 }

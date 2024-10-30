@@ -430,262 +430,262 @@ public class RunListTest {
   }
 
 
-//  @Nested
-//  public class Q4 {
-//    @Test
-//    public void runListOfStringForEach() {
-//      var runList = RunList.<String>newRunLengthList();
-//      runList.addRun("foo", 2);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "foo"), result);
-//    }
-//
-//    @Test
-//    public void runListOfLocalTimeForEach() {
-//      var runList = RunList.<LocalTime>newRunLengthList();
-//      runList.addRun(LocalTime.of(10, 0), 1);
-//      var result = new ArrayList<LocalTime>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of(LocalTime.of(10, 0)), result);
-//    }
-//
-//    @Test
-//    public void runListWithTwoStringsForEach() {
-//      var runList = RunList.<String>newRunLengthList();
-//      runList.addRun("foo", 1);
-//      runList.addRun("bar", 1);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "bar"), result);
-//    }
-//
-//    @Test
-//    public void runListWithThreeStringsForEach() {
-//      var runList = RunList.<String>newRunLengthList();
-//      runList.addRun("foo", 2);
-//      runList.addRun("bar", 1);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "foo", "bar"), result);
-//    }
-//
-//    @Test
-//    public void runListOfSeveralStringForEach() {
-//      var runList = RunList.<String>newRunLengthList();
-//      runList.addRun("foo", 2);
-//      runList.addRun("bar", 1);
-//      runList.addRun("baz", 4);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "foo", "bar", "baz", "baz", "baz", "baz"), result);
-//    }
-//
-//    @Test
-//    public void runListOfSeveralLocalTimeForEach() {
-//      var runList = RunList.<LocalTime>newRunLengthList();
-//      runList.addRun(LocalTime.of(12, 0), 3);
-//      runList.addRun(LocalTime.of(14, 30), 1);
-//      var result = new ArrayList<LocalTime>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of(
-//          LocalTime.of(12, 0),
-//          LocalTime.of(12, 0),
-//          LocalTime.of(12, 0),
-//          LocalTime.of(14, 30)), result);
-//    }
-//
-//    @Test
-//    public void runListSingletonForEach() {
-//      var runList = RunList.<String>newRunLengthList();
-//      runList.addRun("hello", 1);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("hello"), result);
-//    }
-//
-//    @Test
-//    public void runListEmptyForEach() {
-//      var runList = RunList.newRunLengthList();
-//      runList.forEach(_ -> fail());
-//    }
-//
-//    @Test
-//    public void runListALotForEach() {
-//      var runList = RunList.<Integer>newRunLengthList();
-//      for (var i = 0; i < 1_000_000; i++) {
-//        runList.addRun(i, 1);
-//      }
-//      var box = new Object() {
-//        int count;
-//      };
-//      runList.forEach(i -> assertEquals(box.count++, i));
-//    }
-//
-//    @Test
-//    public void runListALot2ForEach() {
-//      var runList = RunList.<Integer>newRunLengthList();
-//      for (var i = 0; i < 1_000_000; i++) {
-//        runList.addRun(i, 2);
-//      }
-//      var box = new Object() {
-//        int count;
-//      };
-//      runList.forEach(i -> assertEquals(box.count++ / 2, i));
-//    }
-//
-//    @Test
-//    public void runListALot3ForEach() {
-//      var runList = RunList.<Integer>newRunLengthList();
-//      for (var i = 0; i < 1_000_000; i++) {
-//        runList.addRun(i, 3);
-//      }
-//      var box = new Object() {
-//        int count;
-//      };
-//      runList.forEach(i -> assertEquals(box.count++ / 3, i));
-//    }
-//
-//    @Test
-//    public void runListForEachPreconditions() {
-//      var runList = RunList.newRunLengthList();
-//      assertThrows(NullPointerException.class, () -> runList.forEach(null));
-//    }
-//  }
-//
-//
-//  @Nested
-//  public class Q6 {
-//    @Test
-//    public void runListOfStringForEach() {
-//      var runList = RunList.<String>newBinarySearchList();
-//      runList.addRun("foo", 2);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "foo"), result);
-//    }
-//
-//    @Test
-//    public void runListOfLocalTimeForEach() {
-//      var runList = RunList.<LocalTime>newBinarySearchList();
-//      runList.addRun(LocalTime.of(10, 0), 1);
-//      var result = new ArrayList<LocalTime>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of(LocalTime.of(10, 0)), result);
-//    }
-//
-//    @Test
-//    public void runListWithTwoStringsForEach() {
-//      var runList = RunList.<String>newBinarySearchList();
-//      runList.addRun("foo", 1);
-//      runList.addRun("bar", 1);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "bar"), result);
-//    }
-//
-//    @Test
-//    public void runListWithThreeStringsForEach() {
-//      var runList = RunList.<String>newBinarySearchList();
-//      runList.addRun("foo", 2);
-//      runList.addRun("bar", 1);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "foo", "bar"), result);
-//    }
-//
-//    @Test
-//    public void runListOfSeveralStringForEach() {
-//      var runList = RunList.<String>newBinarySearchList();
-//      runList.addRun("foo", 2);
-//      runList.addRun("bar", 1);
-//      runList.addRun("baz", 4);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("foo", "foo", "bar", "baz", "baz", "baz", "baz"), result);
-//    }
-//
-//    @Test
-//    public void runListOfSeveralLocalTimeForEach() {
-//      var runList = RunList.<LocalTime>newBinarySearchList();
-//      runList.addRun(LocalTime.of(12, 0), 3);
-//      runList.addRun(LocalTime.of(14, 30), 1);
-//      var result = new ArrayList<LocalTime>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of(
-//          LocalTime.of(12, 0),
-//          LocalTime.of(12, 0),
-//          LocalTime.of(12, 0),
-//          LocalTime.of(14, 30)), result);
-//    }
-//
-//    @Test
-//    public void runListSingletonForEach() {
-//      var runList = RunList.<String>newBinarySearchList();
-//      runList.addRun("hello", 1);
-//      var result = new ArrayList<String>();
-//      runList.forEach(result::add);
-//      assertEquals(List.of("hello"), result);
-//    }
-//
-//    @Test
-//    public void runListEmptyForEach() {
-//      var runList = RunList.newBinarySearchList();
-//      runList.forEach(_ -> fail());
-//    }
-//
-//    @Test
-//    public void runListALotForEach() {
-//      var runList = RunList.<Integer>newBinarySearchList();
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
-//        for (var i = 0; i < 1_000_000; i++) {
-//          runList.addRun(i, 1);
-//        }
-//      });
-//      var box = new Object() {
-//        int count;
-//      };
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
-//        runList.forEach(i -> assertEquals(box.count++, i));
-//      });
-//    }
-//
-//    @Test
-//    public void runListALot2ForEach() {
-//      var runList = RunList.<Integer>newBinarySearchList();
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
-//        for (var i = 0; i < 1_000_000; i++) {
-//          runList.addRun(i, 2);
-//        }
-//      });
-//      var box = new Object() {
-//        int count;
-//      };
-//      runList.forEach(i -> assertEquals(box.count++ / 2, i));
-//    }
-//
-//    @Test
-//    public void runListALot3ForEach() {
-//      var runList = RunList.<Integer>newBinarySearchList();
-//      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
-//        for (var i = 0; i < 1_000_000; i++) {
-//          runList.addRun(i, 3);
-//        }
-//      });
-//      var box = new Object() {
-//        int count;
-//      };
-//      runList.forEach(i -> assertEquals(box.count++ / 3, i));
-//    }
-//
-//    @Test
-//    public void runListForEachPreconditions() {
-//      var runList = RunList.newBinarySearchList();
-//      assertThrows(NullPointerException.class, () -> runList.forEach(null));
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q4 {
+    @Test
+    public void runListOfStringForEach() {
+      var runList = RunList.<String>newRunLengthList();
+      runList.addRun("foo", 2);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "foo"), result);
+    }
+
+    @Test
+    public void runListOfLocalTimeForEach() {
+      var runList = RunList.<LocalTime>newRunLengthList();
+      runList.addRun(LocalTime.of(10, 0), 1);
+      var result = new ArrayList<LocalTime>();
+      runList.forEach(result::add);
+      assertEquals(List.of(LocalTime.of(10, 0)), result);
+    }
+
+    @Test
+    public void runListWithTwoStringsForEach() {
+      var runList = RunList.<String>newRunLengthList();
+      runList.addRun("foo", 1);
+      runList.addRun("bar", 1);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "bar"), result);
+    }
+
+    @Test
+    public void runListWithThreeStringsForEach() {
+      var runList = RunList.<String>newRunLengthList();
+      runList.addRun("foo", 2);
+      runList.addRun("bar", 1);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "foo", "bar"), result);
+    }
+
+    @Test
+    public void runListOfSeveralStringForEach() {
+      var runList = RunList.<String>newRunLengthList();
+      runList.addRun("foo", 2);
+      runList.addRun("bar", 1);
+      runList.addRun("baz", 4);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "foo", "bar", "baz", "baz", "baz", "baz"), result);
+    }
+
+    @Test
+    public void runListOfSeveralLocalTimeForEach() {
+      var runList = RunList.<LocalTime>newRunLengthList();
+      runList.addRun(LocalTime.of(12, 0), 3);
+      runList.addRun(LocalTime.of(14, 30), 1);
+      var result = new ArrayList<LocalTime>();
+      runList.forEach(result::add);
+      assertEquals(List.of(
+          LocalTime.of(12, 0),
+          LocalTime.of(12, 0),
+          LocalTime.of(12, 0),
+          LocalTime.of(14, 30)), result);
+    }
+
+    @Test
+    public void runListSingletonForEach() {
+      var runList = RunList.<String>newRunLengthList();
+      runList.addRun("hello", 1);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("hello"), result);
+    }
+
+    @Test
+    public void runListEmptyForEach() {
+      var runList = RunList.newRunLengthList();
+      runList.forEach(_ -> fail());
+    }
+
+    @Test
+    public void runListALotForEach() {
+      var runList = RunList.<Integer>newRunLengthList();
+      for (var i = 0; i < 1_000_000; i++) {
+        runList.addRun(i, 1);
+      }
+      var box = new Object() {
+        int count;
+      };
+      runList.forEach(i -> assertEquals(box.count++, i));
+    }
+
+    @Test
+    public void runListALot2ForEach() {
+      var runList = RunList.<Integer>newRunLengthList();
+      for (var i = 0; i < 1_000_000; i++) {
+        runList.addRun(i, 2);
+      }
+      var box = new Object() {
+        int count;
+      };
+      runList.forEach(i -> assertEquals(box.count++ / 2, i));
+    }
+
+    @Test
+    public void runListALot3ForEach() {
+      var runList = RunList.<Integer>newRunLengthList();
+      for (var i = 0; i < 1_000_000; i++) {
+        runList.addRun(i, 3);
+      }
+      var box = new Object() {
+        int count;
+      };
+      runList.forEach(i -> assertEquals(box.count++ / 3, i));
+    }
+
+    @Test
+    public void runListForEachPreconditions() {
+      var runList = RunList.newRunLengthList();
+      assertThrows(NullPointerException.class, () -> runList.forEach(null));
+    }
+  }
+
+
+  @Nested
+  public class Q6 {
+    @Test
+    public void runListOfStringForEach() {
+      var runList = RunList.<String>newBinarySearchList();
+      runList.addRun("foo", 2);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "foo"), result);
+    }
+
+    @Test
+    public void runListOfLocalTimeForEach() {
+      var runList = RunList.<LocalTime>newBinarySearchList();
+      runList.addRun(LocalTime.of(10, 0), 1);
+      var result = new ArrayList<LocalTime>();
+      runList.forEach(result::add);
+      assertEquals(List.of(LocalTime.of(10, 0)), result);
+    }
+
+    @Test
+    public void runListWithTwoStringsForEach() {
+      var runList = RunList.<String>newBinarySearchList();
+      runList.addRun("foo", 1);
+      runList.addRun("bar", 1);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "bar"), result);
+    }
+
+    @Test
+    public void runListWithThreeStringsForEach() {
+      var runList = RunList.<String>newBinarySearchList();
+      runList.addRun("foo", 2);
+      runList.addRun("bar", 1);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "foo", "bar"), result);
+    }
+
+    @Test
+    public void runListOfSeveralStringForEach() {
+      var runList = RunList.<String>newBinarySearchList();
+      runList.addRun("foo", 2);
+      runList.addRun("bar", 1);
+      runList.addRun("baz", 4);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("foo", "foo", "bar", "baz", "baz", "baz", "baz"), result);
+    }
+
+    @Test
+    public void runListOfSeveralLocalTimeForEach() {
+      var runList = RunList.<LocalTime>newBinarySearchList();
+      runList.addRun(LocalTime.of(12, 0), 3);
+      runList.addRun(LocalTime.of(14, 30), 1);
+      var result = new ArrayList<LocalTime>();
+      runList.forEach(result::add);
+      assertEquals(List.of(
+          LocalTime.of(12, 0),
+          LocalTime.of(12, 0),
+          LocalTime.of(12, 0),
+          LocalTime.of(14, 30)), result);
+    }
+
+    @Test
+    public void runListSingletonForEach() {
+      var runList = RunList.<String>newBinarySearchList();
+      runList.addRun("hello", 1);
+      var result = new ArrayList<String>();
+      runList.forEach(result::add);
+      assertEquals(List.of("hello"), result);
+    }
+
+    @Test
+    public void runListEmptyForEach() {
+      var runList = RunList.newBinarySearchList();
+      runList.forEach(_ -> fail());
+    }
+
+    @Test
+    public void runListALotForEach() {
+      var runList = RunList.<Integer>newBinarySearchList();
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
+        for (var i = 0; i < 1_000_000; i++) {
+          runList.addRun(i, 1);
+        }
+      });
+      var box = new Object() {
+        int count;
+      };
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
+        runList.forEach(i -> assertEquals(box.count++, i));
+      });
+    }
+
+    @Test
+    public void runListALot2ForEach() {
+      var runList = RunList.<Integer>newBinarySearchList();
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
+        for (var i = 0; i < 1_000_000; i++) {
+          runList.addRun(i, 2);
+        }
+      });
+      var box = new Object() {
+        int count;
+      };
+      runList.forEach(i -> assertEquals(box.count++ / 2, i));
+    }
+
+    @Test
+    public void runListALot3ForEach() {
+      var runList = RunList.<Integer>newBinarySearchList();
+      assertTimeoutPreemptively(Duration.ofMillis(1_000), () -> {
+        for (var i = 0; i < 1_000_000; i++) {
+          runList.addRun(i, 3);
+        }
+      });
+      var box = new Object() {
+        int count;
+      };
+      runList.forEach(i -> assertEquals(box.count++ / 3, i));
+    }
+
+    @Test
+    public void runListForEachPreconditions() {
+      var runList = RunList.newBinarySearchList();
+      assertThrows(NullPointerException.class, () -> runList.forEach(null));
+    }
+  }
+
+
 //  @Nested
 //  public class Q7 {
 //    public static Stream<Supplier<RunList<?>>> factory() {
