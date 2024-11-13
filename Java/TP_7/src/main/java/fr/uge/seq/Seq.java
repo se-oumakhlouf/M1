@@ -2,6 +2,7 @@ package fr.uge.seq;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -18,5 +19,7 @@ public interface Seq<E> {
 	E get(int i);
 	
 	<T> Seq<T> map(Function<? super E,? extends T> function);
+	
+	Optional<E> findFirst();
 
 }

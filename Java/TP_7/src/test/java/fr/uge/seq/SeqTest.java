@@ -284,64 +284,64 @@ public class SeqTest {
   }
 
 
-//  @Nested
-//  public class Q4  {
-//    @Test
-//    public void testFirstSimple() {
-//      assertAll(
-//          () -> assertEquals("1", Seq.from(List.of("1", "2")).findFirst().orElseThrow()),
-//          () -> assertEquals((Integer)11, Seq.from(List.of(11, 13)).findFirst().orElseThrow())
-//      );
-//    }
-//
-//    @Test
-//    public void testFirstEmpty() {
-//      assertAll(
-//          () -> assertTrue(Seq.from(List.of()).findFirst().isEmpty()),
-//          () -> assertFalse(Seq.from(List.of()).findFirst().isPresent())
-//      );
-//    }
-//
-//    @Test
-//    public void testFirstMap() {
-//      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" zorg"));
-//      var seq2 = Seq.from(List.of()).map(s -> s + " zorg");
-//      assertAll(
-//          () -> assertEquals("1 zorg", seq1.findFirst().orElseThrow()),
-//          () -> assertTrue(seq2.findFirst().isEmpty())
-//      );
-//    }
-//
-//    @Test
-//    public void testFirstMapCompose() {
-//      var seq1 = Seq.from(List.of("1", "3", "2"));
-//      var seq2 = seq1.map(Integer::parseInt);
-//      var seq3 = seq2.map(String::valueOf);
-//      assertEquals("1", seq3.findFirst().orElseThrow());
-//    }
-//
-//    @Test
-//    public void testFirstMapNotCalledIfEmpty() {
-//      var seq = Seq.from(List.of()).map(__ -> fail(""));
-//      assertTrue(seq.findFirst().isEmpty());
-//    }
-//
-//    @Test
-//    public void testFirstMapNotCalledMoreThanOnce() {
-//      var fun = new Object() {
-//        int counter;
-//        Object apply(Object o) {
-//          counter++;
-//          return o;
-//        }
-//      };
-//      var seq = Seq.from(List.of(1, 8, 45)).map(fun::apply);
-//      assertEquals(1, seq.findFirst().orElseThrow());
-//      assertEquals(1, fun.counter);
-//    }
-//  }
-//
-//
+  @Nested
+  public class Q4  {
+    @Test
+    public void testFirstSimple() {
+      assertAll(
+          () -> assertEquals("1", Seq.from(List.of("1", "2")).findFirst().orElseThrow()),
+          () -> assertEquals((Integer)11, Seq.from(List.of(11, 13)).findFirst().orElseThrow())
+      );
+    }
+
+    @Test
+    public void testFirstEmpty() {
+      assertAll(
+          () -> assertTrue(Seq.from(List.of()).findFirst().isEmpty()),
+          () -> assertFalse(Seq.from(List.of()).findFirst().isPresent())
+      );
+    }
+
+    @Test
+    public void testFirstMap() {
+      var seq1 = Seq.from(List.of("1", "3")).map(s -> s.concat(" zorg"));
+      var seq2 = Seq.from(List.of()).map(s -> s + " zorg");
+      assertAll(
+          () -> assertEquals("1 zorg", seq1.findFirst().orElseThrow()),
+          () -> assertTrue(seq2.findFirst().isEmpty())
+      );
+    }
+
+    @Test
+    public void testFirstMapCompose() {
+      var seq1 = Seq.from(List.of("1", "3", "2"));
+      var seq2 = seq1.map(Integer::parseInt);
+      var seq3 = seq2.map(String::valueOf);
+      assertEquals("1", seq3.findFirst().orElseThrow());
+    }
+
+    @Test
+    public void testFirstMapNotCalledIfEmpty() {
+      var seq = Seq.from(List.of()).map(__ -> fail(""));
+      assertTrue(seq.findFirst().isEmpty());
+    }
+
+    @Test
+    public void testFirstMapNotCalledMoreThanOnce() {
+      var fun = new Object() {
+        int counter;
+        Object apply(Object o) {
+          counter++;
+          return o;
+        }
+      };
+      var seq = Seq.from(List.of(1, 8, 45)).map(fun::apply);
+      assertEquals(1, seq.findFirst().orElseThrow());
+      assertEquals(1, fun.counter);
+    }
+  }
+
+
 //  @Nested
 //  public class Q5  {
 //    @Test

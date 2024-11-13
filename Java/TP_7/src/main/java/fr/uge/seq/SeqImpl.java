@@ -2,6 +2,7 @@ package fr.uge.seq;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
@@ -41,6 +42,14 @@ class SeqImpl<E, T> implements Seq<T> {
 		Objects.requireNonNull(function);
 		Function<?super E, ? extends A> cadeau = mapping.andThen(function);
 		return new SeqImpl<>(list, cadeau);
+	}
+
+	@Override
+	public Optional<T> findFirst() {
+		if (list.size() == 0) {
+			return Optional.empty();
+		}
+		return Optional.of(get(0));
 	}
 
 
