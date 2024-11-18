@@ -6,7 +6,7 @@ public class ThePriceIsRight {
 
 	private final int candidats;
 	private final int justePrix;
-	private final HashMap<String, Integer> mapPrix;
+	private final HashMap<Thread, Integer> mapPrix;
 	private int inscriptions;
 	private int minDistance;
 	private final Object lock = new Object();
@@ -25,31 +25,29 @@ public class ThePriceIsRight {
 
 	public boolean propose(int prix) {
 		synchronized (lock) {
-			inscriptions++;
-			if (inscriptions > candidats) {
-				return false;
-			}
-			if (inscriptions <= candidats) {
+			if (inscriptions < candidats) {
 				var dist = distance(prix);
-				mapPrix.putIfAbsent(Thread.currentThread().getName(), dist);
+				mapPrix.putIfAbsent(Thread.currentThread(), dist);
 				minDistance = minDistance > dist ? dist : minDistance;
-			}
-			if (inscriptions == candidats) {
-				lock.notifyAll();
+				inscriptions++;
+				if (inscriptions == candidats) {
+					lock.notifyAll();
+				}
+			} else {
+				return false;
 			}
 			while (inscriptions < candidats) {
 				try {
 					lock.wait();
 				} catch (InterruptedException e) {
-					var name = Thread.currentThread().getName();
-					mapPrix.remove(name);
+					mapPrix.remove(Thread.currentThread());
 					inscriptions = candidats + 1;
 					lock.notifyAll();
 					return false;
 				}
 			}
 			var threadRightPrice = mapMin();
-			if (Thread.currentThread().getName().equals(threadRightPrice)) {
+			if (Thread.currentThread().equals(threadRightPrice)) {
 				return true;
 			}
 			return false;
@@ -61,9 +59,9 @@ public class ThePriceIsRight {
 		return Math.abs(price - justePrix);
 	}
 
-	private String mapMin() {
+	private Thread mapMin() {
 		synchronized (lock) {
-			String thread = null;
+			Thread thread = null;
 			var min = Integer.MAX_VALUE;
 			for (var entry : mapPrix.entrySet()) {
 				var price = entry.getValue();
