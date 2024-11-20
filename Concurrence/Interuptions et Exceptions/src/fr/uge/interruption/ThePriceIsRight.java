@@ -6,29 +6,24 @@ public class ThePriceIsRight {
 
 	private final int candidats;
 	private final int justePrix;
-	private final HashMap<Thread, Integer> mapPrix;
+	private final HashMap<Thread, Integer> mapPrix; // Linked
 	private int inscriptions;
-	private int minDistance;
 	private final Object lock = new Object();
 
 	public ThePriceIsRight(int price, int participants) {
-		synchronized (lock) {
 			if (price <= 0 || participants <= 0) {
 				throw new IllegalArgumentException("price < 0 || participants < 0");
 			}
 			this.candidats = participants;
 			this.justePrix = price;
 			mapPrix = new HashMap<>();
-			minDistance = Integer.MAX_VALUE;
-		}
 	}
 
 	public boolean propose(int prix) {
 		synchronized (lock) {
 			if (inscriptions < candidats) {
 				var dist = distance(prix);
-				mapPrix.putIfAbsent(Thread.currentThread(), dist);
-				minDistance = minDistance > dist ? dist : minDistance;
+				mapPrix.putIfAbsent(Thread.currentThread(), dist); // faux
 				inscriptions++;
 				if (inscriptions == candidats) {
 					lock.notifyAll();
@@ -41,7 +36,7 @@ public class ThePriceIsRight {
 					lock.wait();
 				} catch (InterruptedException e) {
 					mapPrix.remove(Thread.currentThread());
-					inscriptions = candidats + 1;
+					inscriptions = candidats + 1; // flag boolean
 					lock.notifyAll();
 					return false;
 				}
@@ -59,6 +54,8 @@ public class ThePriceIsRight {
 		return Math.abs(price - justePrix);
 	}
 
+	
+	// stream
 	private Thread mapMin() {
 		synchronized (lock) {
 			Thread thread = null;
