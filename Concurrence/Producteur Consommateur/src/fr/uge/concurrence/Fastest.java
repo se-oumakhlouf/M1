@@ -20,23 +20,28 @@ public class Fastest {
 	 */
 	public Optional<Answer> retrieve() throws InterruptedException {
 		var queue = new ArrayBlockingQueue<Optional<Answer>>(10);
-
-		for (var site : Request.getAllSites()) {
-			Thread.ofPlatform().start(() -> {
+		var threads = new ArrayList<Thread>();
+		var sites = Request.getAllSites();
+		for (var site : sites) {
+			var thread = Thread.ofPlatform().start(() -> {
 				var request = new Request(site, item);
 				try {
 					var answer = request.request(timeoutMilliPerRequest);
 					queue.put(answer);
 				} catch (InterruptedException e) {
-					throw new AssertionError();
+					return;
 				}
 			});
+			threads.add(thread);
 		}
 
-		for (var site : Request.getAllSites()) {
+		for (int i = 0; i < sites.size(); i++) {
 			var elem = queue.take();
 			if (elem.isPresent()) {
-				// interrompre les Threads (mettre dans une liste)
+				System.out.println("An answer has been found.\nExiting all Threads");
+				for (var thread : threads) {
+					thread.interrupt();
+				}
 				return elem;
 			}
 		}
@@ -44,7 +49,7 @@ public class Fastest {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		var agregator = new Fastest("pikachu", 2_000);
+		var agregator = new Fastest("pikachu", 3_000);
 		var answer = agregator.retrieve();
 		System.out.println(answer); // Optional[pikachu@ebay.fr : 891]
 	}
