@@ -1,29 +1,33 @@
 package fr.uge.interruption;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class ThePriceIsRight {
 
 	private final int candidats;
 	private final int justePrix;
-	private final HashMap<Thread, Integer> mapPrix; // Linked
+	private final LinkedHashMap<Thread, Integer> mapPrix = new LinkedHashMap<>();
+	private boolean end;
 	private int inscriptions;
 	private final Object lock = new Object();
 
 	public ThePriceIsRight(int price, int participants) {
-			if (price <= 0 || participants <= 0) {
-				throw new IllegalArgumentException("price < 0 || participants < 0");
-			}
-			this.candidats = participants;
-			this.justePrix = price;
-			mapPrix = new HashMap<>();
+		if (price <= 0 || participants <= 0) {
+			throw new IllegalArgumentException("price < 0 || participants < 0");
+		}
+		this.candidats = participants;
+		this.justePrix = price;
 	}
 
 	public boolean propose(int prix) {
 		synchronized (lock) {
+			if (end) {
+				return false;
+			}
 			if (inscriptions < candidats) {
-				var dist = distance(prix);
-				mapPrix.putIfAbsent(Thread.currentThread(), dist); // faux
+				mapPrix.put(Thread.currentThread(), distance(prix));
 				inscriptions++;
 				if (inscriptions == candidats) {
 					lock.notifyAll();
@@ -31,43 +35,28 @@ public class ThePriceIsRight {
 			} else {
 				return false;
 			}
-			while (inscriptions < candidats) {
+			while (inscriptions < candidats && !end) {
 				try {
 					lock.wait();
 				} catch (InterruptedException e) {
 					mapPrix.remove(Thread.currentThread());
-					inscriptions = candidats + 1; // flag boolean
+					end = true;
 					lock.notifyAll();
 					return false;
 				}
 			}
-			var threadRightPrice = mapMin();
-			if (Thread.currentThread().equals(threadRightPrice)) {
-				return true;
-			}
-			return false;
+			var minEntry = mapMin();
+			return minEntry != null && Thread.currentThread().equals(minEntry.getKey());
 		}
-
 	}
 
 	private int distance(int price) {
 		return Math.abs(price - justePrix);
 	}
 
-	
-	// stream
-	private Thread mapMin() {
+	private Entry<Thread, Integer> mapMin() {
 		synchronized (lock) {
-			Thread thread = null;
-			var min = Integer.MAX_VALUE;
-			for (var entry : mapPrix.entrySet()) {
-				var price = entry.getValue();
-				if (min > price) {
-					min = price;
-					thread = entry.getKey();
-				}
-			}
-			return thread;
+			return mapPrix.entrySet().stream().min(Map.Entry.comparingByValue()).orElse(null);
 		}
 	}
 
