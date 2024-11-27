@@ -5,37 +5,41 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class CheapestPooledCancel {
-	
+
 	private final String item;
 
 	public CheapestPooledCancel(String item) {
 		this.item = item;
 	}
-	
+
 	/**
 	 * @return the cheapest price for item if it is sold
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public Optional<Answer> retrieve() throws InterruptedException {
-		
-		var nbSites = Request.getAllSites().size();
-		var executorService = Executors.newFixedThreadPool(nbSites);
+
+		var sites = Request.getAllSites();
+		var executorService = Executors.newFixedThreadPool(sites.size());
+		var scheduler = Executors.newScheduledThreadPool(sites.size());
 		var callables = new ArrayList<Callable<Answer>>();
-		
-		for (var site : Request.getAllSites()) {
+
+		for (var site : sites) {
+			var request = new RequestWithCancel(site, item);
+
 			callables.add(() -> {
-				var request = new RequestWithCancel(site, item);
 				var answer = request.request().get();
-				request.cancel();
 				return answer;
-				});
+			});
+
+			scheduler.schedule(() -> request.cancel(), 2, TimeUnit.SECONDS);
 		}
-		
+
 		var futures = executorService.invokeAll(callables);
 		var answers = new ArrayList<Answer>();
-		
+
 		for (var future : futures) {
 			switch (future.state()) {
 				case RUNNING -> throw new AssertionError("Sould not be there");
@@ -45,13 +49,14 @@ public class CheapestPooledCancel {
 			}
 		}
 		executorService.shutdownNow();
+		scheduler.shutdown();
 		return answers.stream().min(Comparator.comparingInt(Answer::price));
 	}
 
 	public static void main(String[] args) throws InterruptedException {
 		var agregator = new CheapestPooledCancel("pikachu");
 		var answer = agregator.retrieve();
-		System.out.println(answer); // Optional[pikachu@ebay.fr : 891]
+		System.out.println("Cheapest (cancel) : " + answer); // Optional[pikachu@ebay.fr : 891]
 	}
 
 }
