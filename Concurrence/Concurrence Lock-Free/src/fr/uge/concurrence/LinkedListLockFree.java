@@ -7,35 +7,37 @@ import java.util.function.Consumer;
 
 public class LinkedListLockFree<E> {
 
-	private AtomicReference<Link<E>> head; // mettre final et donc modifier le reste
+	private record Link<E>(E value, Link<E> next) {}
 
-	private record Link<E>(E value, AtomicReference<Link<E>> next) {
-		private Link {
-			Objects.requireNonNull(value);
-		}
-	}
+	private final AtomicReference<Link<E>> head = new AtomicReference<>();
 
 	public void addFirst(E value) {
 		Objects.requireNonNull(value);
-		head = new AtomicReference<>(new Link<>(value, head)); // compareAndSet
-	}
-
-	public void forEach(Consumer<? super E> consumer) {
-		Objects.requireNonNull(consumer);
-		for (var current = pollFirst(); current != null; current = pollFirst()) {
-			consumer.accept(current);
+		for (;;) {
+			var oldHead = head.get();
+			var newHead = new Link<>(value, oldHead);
+			if (head.compareAndSet(oldHead, newHead)) {
+				return;
+			}
 		}
 	}
-	
-  public E pollFirst() {
-    if (head == null) {
-        return null;
+
+  public void forEach(Consumer<? super E> consumer) {
+    Objects.requireNonNull(consumer);
+    for( var current = head.get(); current!=null; current = current.next ) {
+      consumer.accept(current.value);
     }
-    var current = head.get();
-    var value = current.value;
-    head = current.next;
-    return value;
-}  
+  }
+
+//	public E pollFirst() {
+//		if (head == null) {
+//			return null;
+//		}
+//		var current = head.get();
+//		var value = current.value;
+//		head = current.next;
+//		return value;
+//	}
 
 	public static void main(String[] args) {
 		var list = new LinkedList<String>();
