@@ -29,21 +29,30 @@ public class LinkedListLockFree<E> {
     }
   }
 
-//	public E pollFirst() {
-//		if (head == null) {
-//			return null;
-//		}
-//		var current = head.get();
-//		var value = current.value;
-//		head = current.next;
-//		return value;
-//	}
+	public E pollFirst() {
+		if (head == null) {
+			return null;
+		}
+		for (;;) {
+			var current = head.get();
+			var value = current.value;
+			if (head.compareAndSet(current, current.next)) {
+				return value;
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		var list = new LinkedList<String>();
 		list.addFirst("Noel");
 		list.addFirst("papa");
 		list.addFirst("petit");
+		list.forEach(System.out::println);
+		System.out.println("'''''");
+		list.pollFirst();
+		list.forEach(System.out::println);
+		System.out.println("'''''");
+		list.addFirst("chose");
 		list.forEach(System.out::println);
 	}
 
