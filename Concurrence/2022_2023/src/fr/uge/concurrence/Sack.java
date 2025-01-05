@@ -88,7 +88,6 @@ public class Sack {
 				} catch (InterruptedException e) {
 					return;
 				}
-				
 			}
 		});
 		
@@ -128,7 +127,6 @@ public class Sack {
 				} catch (InterruptedException e) {
 					return;
 				}
-				
 			}
 		});
 	}
