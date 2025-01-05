@@ -1,0 +1,37 @@
+Exo1: (chaque line += 2)
+
+ Pour chaque question, indiquez si vous pensez que l’affirmation est correcte ou si vous pensez qu’elle est fausse. Lors de l’exécution de MyClass, ...
+
+    1... le thread main peut être dé-schédulé entre les deux affectations dans l'appel au constructeur (line 37).
+    2... le thread1 peut être dé-schédulé entre les deux affectations dans son appel à la méthode set() (line 41).
+    3... le thread1 ne redonne pas le jeton du lock entre les deux affectations dans l'appel à la méthode set() (line 41).
+    4... l'ordre des affectations dans le code de set() peut être inversé (lignes 13 et 14).
+    5... l'ordre des deux dernières instructions du main peut être inversé (lignes 54 et 55).
+    6... on peut avoir l'affichage "1. mouse + duck".
+    7... on peut avoir l'affichage "1. bird + fish".
+    8... on peut avoir l'affichage "1. cat + fish".
+    9... on peut avoir l'affichage "1. bird + dog".
+    10... on peut avoir l'affichage "2. mouse + duck".
+    11... on peut avoir l'affichage "2. bird + duck".
+    12... l'affichage "3. ..." peut être autre chose que "3. mouse + duck".
+    13... le programme peut ne pas s'arreter.
+    14... si on dé-commente l'instruction thread1.join(); le programme ne s'arrête pas.
+    
+    
+    Réponse : 
+    
+    	1 - vraie
+    	2 - vraie
+    	3 - vraie, le thread1 garde le jeton du lock jusqu'à la fin de l'affectation
+    	4 - vraie, à l'intérieur d'une session critique les lignes peuvent être inversé
+    	5 - faux, car l.55 dépend de l.54
+    	6 - vraie, main thread1 de-schédulé pendant l'affichage "1. ", main schédulé et affecte "mouse, duck" (l.54)
+    			main dé-schédulé, thread1 schédulé, et finit l'affichage avec "mouse + duck"
+		7 - vraie, T1 (commence affichage puis stop) -> T2 -> T1 (finit affichage)
+		8 - vraie, T2 met "bird" -> T1 met "cat dog" -> T2 met "fish" -> T1 affiche
+		9 - vraie, symétrie de 8
+		10 - faux, à l'inverse de T1, on arrive à quizz.set("mouse", "duck") uniquement lorsque T2 meurt (t2.join)
+		11 - vraie
+		12 - vraie
+		13 - faux, t1 est daemon donc lorsque les autres threads (non daemon) s'arrête t1 ne s'arrête pas
+		14 - 

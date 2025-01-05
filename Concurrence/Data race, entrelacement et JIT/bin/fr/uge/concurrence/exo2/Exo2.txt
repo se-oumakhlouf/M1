@@ -1,0 +1,56 @@
+Exo2 : 
+
+	1 - Expliquer pourquoi la classe HonorBoard n'est pas thread-safe. 
+	
+			HonorBoard n'est pas thread-safe car il est possible de dé-schédulé 
+			 dans le set
+			 
+			On obtient Donald Mouse de la manière suivante : 
+				
+				T2 se fait complétement et affecte Donald Duck
+				T3 schédulé, T3 affiche "Donald"
+				T3 est dé-schédulé
+				T1 se fait complétement et affecte Mickey Mouse
+				T3 reprend et affiche "Mouse"
+				On obtient l'affichage Donald Mouse
+				
+	2 - Modifier le code de la classe HonorBoard pour la rendre thread-safe . 
+	
+			Pour rendre HonorBoard Thread-Safe il faut synchronized la méthode set
+			ainsi que l'affichage
+			
+	3 -  Maintenant que votre classe est thread-safe, peut-on remplacer la ligne :
+
+			System.out.println(board);
+		
+		par la ligne :
+		
+			System.out.println(board.firstName() + ' ' + board.lastName());
+		
+		avec les deux accesseurs définis comme d'habitude et en utilisant des bloc synchronized ?
+		
+			  public String firstName() {
+			    synchronized (lock) {
+			      return firstName;
+			    }
+			  }
+			
+			  public String lastName() {
+			    synchronized (lock) {
+			      return lastName;
+			    }
+			  }
+			
+		Vérifier en exécutant le code. La classe HonorBoard est-elle toujours thread-safe ? 
+		
+		
+		--
+			Non on ne peut pas remplacer car il est possible de dé-schédulé entre board.firstName() et
+			board.lastName() et d'obtenir un mauvais affichage si on schédule une affectation avant de 
+			reprendre l'affichage.
+			
+			Il peut aussi y avoir des problèmes avec le JIT
+			
+			Le code de la classe est Thread-Safe
+		--
+				
