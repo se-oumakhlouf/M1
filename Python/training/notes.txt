@@ -1,0 +1,100 @@
+Lucie Fouquet		2 4 0 4 3 2 4 1 3 1 0 2 2 4 1 0 2
+Augustin de la Gonzalez		3 0 4 1 2 4 2 3 1 3 2 3 2 3 4 1 0
+Margaret Boulanger du Munoz		3 4 1 1 2 2 2 1 4 0 0 1 0 0 2 3 0
+Christine Pires		4 4 2 4 2 4 2 1 0 4 3 2 0 2 1 1 3
+Alfred Robin		2 0 2 4 1 3 2 4 2 0 4 2 2 1 1 1 1
+Alix Perrin		0 3 1 2 0 2 2 1 2 4 4 4 4 3 0 0 2
+NoÃ«l Bourdon		3 3 4 0 2 2 3 3 2 0 2 0 0 1 1 2 1
+Vincent Marchand		0 1 4 3 0 2 4 0 4 0 0 3 3 1 0 0 3
+Denis-Ã‰mile Poulain		2 1 2 0 0 4 2 0 1 0 0 2 3 2 3 3 0
+Antoine Delahaye		2 3 0 4 0 1 2 3 3 2 0 0 1 3 4 4 1
+Alain Baron de Lopez		2 4 0 0 1 3 3 3 0 2 4 1 3 2 0 0 0
+Patricia-Josette Allain		0 1 3 1 2 1 4 2 1 2 0 2 2 0 4 3 2
+ClÃ©mence Georges		0 1 3 2 3 2 4 2 4 1 1 2 0 2 2 4 1
+Margaud Girard		1 1 2 3 3 2 1 3 4 4 2 3 0 0 3 2 0
+Lucy Philippe de Vaillant		4 2 3 3 2 0 3 0 1 2 1 2 3 1 4 2 4
+David Bigot		3 3 0 3 2 0 4 1 1 0 3 1 4 0 3 1 2
+AimÃ©-SÃ©bastien Klein		3 1 0 3 4 3 4 1 4 4 3 1 2 3 0 1 1
+Thibault Deschamps du Humbert		0 3 4 3 3 4 1 2 2 0 2 1 4 3 0 0 0
+Thibault Couturier		0 2 4 0 1 1 3 0 3 1 4 2 1 1 0 2 2
+Ã‰douard Mary-GÃ©rard		3 0 0 1 0 1 1 4 1 3 0 2 2 0 1 4 0
+BenoÃ®t Morvan		3 3 2 3 1 2 4 3 0 4 1 3 4 2 1 4 0
+Gabriel Normand		4 4 1 4 0 0 3 1 0 3 0 2 2 0 1 0 4
+AimÃ© Chartier		1 1 3 3 4 1 2 2 2 0 2 2 2 1 0 3 3
+Maryse LefÃ¨vre		3 0 0 1 4 0 2 1 0 0 0 4 4 4 4 3 0
+Georges Bouchet-Ã‰tienne		2 0 0 4 4 0 3 0 1 3 1 0 4 0 3 0 2
+Susanne Barthelemy-Thomas		1 0 2 4 4 3 1 2 1 2 0 2 2 2 0 1 4
+Thibaut Jacques		3 3 1 1 3 4 0 4 2 0 4 2 3 4 1 3 1
+Adrienne Marin		2 3 1 3 2 2 3 3 1 4 4 1 4 2 0 1 0
+Jeannine-Anne Collin		0 1 0 0 0 4 0 1 4 0 3 2 0 1 4 2 0
+Bertrand LabbÃ©		3 1 1 0 1 2 3 2 3 0 3 3 4 2 3 2 2
+Hortense Lamy		2 0 3 2 1 4 1 3 2 0 2 1 2 0 4 0 2
+HÃ©lÃ¨ne RiviÃ¨re		1 4 1 4 4 3 0 1 1 3 2 4 2 0 2 0 2
+Ã‰lÃ©onore-Bernadette Diaz		1 4 0 0 2 3 4 4 3 3 0 0 4 4 1 1 0
+Laetitia Wagner		2 2 4 2 4 2 4 2 0 1 3 3 3 0 3 4 4
+HonorÃ© Tanguy-Royer		2 0 2 4 3 2 1 4 0 4 1 1 2 2 1 2 4
+InÃ¨s Rousset		1 4 2 2 2 4 3 3 3 0 0 0 1 1 1 2 2
+RÃ©my Rousset		4 4 0 1 2 3 1 4 4 0 1 2 4 0 0 2 4
+RenÃ© du Rossi		2 3 4 3 2 4 1 4 2 4 3 4 4 0 2 1 1
+Valentine Vallet		1 2 3 2 2 3 4 4 0 2 3 1 2 2 1 1 2
+SÃ©bastien de la Laroche		2 3 4 2 2 4 1 1 0 3 0 2 1 0 0 4 1
+Bernard-Xavier Mace		1 2 2 3 3 1 4 1 0 2 2 4 3 3 3 0 2
+Susan Paul		1 1 0 4 3 2 1 4 2 4 4 3 4 4 4 0 1
+Jules-Louis Lefebvre		2 4 0 0 1 1 1 2 2 0 4 4 0 2 4 3 2
+Yves Marty-Thomas		4 0 0 3 3 2 0 3 1 2 0 2 3 1 4 0 2
+AndrÃ© de la Hebert		0 0 3 3 3 2 2 2 2 2 4 1 3 4 3 4 1
+Xavier Da Costa		0 2 1 2 1 0 0 2 2 4 2 4 3 0 1 3 0
+Adrienne Le Valette		3 0 2 1 3 2 3 2 4 3 4 0 4 1 0 2 3
+Bertrand Boulay		2 3 4 1 4 3 3 0 3 1 3 2 4 3 1 4 3
+CÃ©lina Hoareau		2 2 2 3 1 1 0 2 1 1 3 3 0 4 3 4 0
+Patricia Arnaud		1 3 4 3 2 3 3 0 3 4 4 1 3 3 3 2 4
+William Gilbert-Pichon		3 3 0 2 3 1 4 0 2 3 4 1 0 1 4 3 4
+Mathilde Gomez Le Boucher		2 0 0 4 1 0 3 3 3 0 3 3 2 0 1 3 2
+Madeleine Vallet-HervÃ©		1 3 0 3 1 2 0 3 3 1 1 4 0 0 2 4 2
+Margaret du Jean		0 1 2 2 3 0 3 4 2 3 2 0 3 0 0 3 2
+Michelle Aubert		2 2 0 2 0 3 0 2 2 0 0 0 4 1 2 0 2
+DorothÃ©e-Patricia Salmon		4 4 2 4 2 2 4 2 2 3 3 3 3 4 3 3 2
+Antoine-Thibaut Lesage		3 3 2 4 3 0 4 1 4 3 4 2 0 4 2 0 1
+Marie Neveu		3 1 0 1 3 4 2 4 3 1 3 3 0 0 2 3 4
+StÃ©phane Fournier		4 1 2 4 3 4 4 1 2 2 4 4 3 0 3 4 0
+Louis Legrand		0 4 0 1 1 3 2 0 2 3 4 4 3 1 1 1 2
+CÃ©line Germain		0 2 2 4 4 4 2 1 2 3 3 3 4 1 3 1 1
+Arnaude de Masse		3 1 4 0 3 1 1 0 3 0 3 4 0 2 1 0 4
+Margaret Bousquet		0 2 3 3 4 2 4 0 0 1 4 2 4 2 2 2 0
+AmÃ©lie de la Mercier		4 1 3 3 1 1 2 2 2 2 0 1 0 1 0 3 2
+Patricia Maillard-Toussaint		4 3 4 3 1 2 2 3 0 4 3 0 0 0 4 4 4
+Olivier Ollivier		2 4 4 0 2 1 0 0 1 3 2 3 1 0 0 0 2
+Alexandre Garnier de la Coste		3 3 3 4 2 0 1 3 2 1 2 2 0 1 0 0 0
+Thibault Bourdon		1 0 2 3 0 3 1 3 3 4 1 1 1 2 1 1 2
+AmÃ©lie Lopes-Guyon		0 0 4 1 2 3 2 0 3 0 4 2 4 0 1 3 4
+Roger Breton-Pascal		4 0 3 2 2 0 0 0 1 1 4 2 1 4 1 1 4
+SÃ©bastien Benoit-Muller		1 1 2 4 4 4 0 3 0 2 0 4 2 4 0 0 2
+Alice Carlier		4 2 1 4 2 3 4 1 4 2 2 1 1 1 2 3 0
+Claude Bernard		3 0 4 3 2 4 1 0 2 2 2 1 0 2 3 3 2
+Antoinette Humbert		4 3 4 4 1 3 1 3 1 1 1 1 2 4 1 1 2
+Lucas Brun-LÃ©vÃªque		1 3 4 1 2 1 1 3 3 1 2 1 1 4 0 1 0
+Zacharie Torres		0 1 1 2 2 2 0 2 3 4 0 3 1 0 1 0 2
+Antoinette Brunel		1 3 1 2 1 3 3 0 3 0 0 0 1 2 1 0 3
+Lucy Delorme de Bailly		0 0 4 3 2 4 4 0 2 1 3 4 0 3 0 1 1
+Maurice Perret		0 3 3 2 0 2 4 4 1 3 3 0 4 2 2 1 0
+Alexandrie Robert		3 0 1 1 1 4 3 0 4 2 2 3 1 2 1 4 2
+EugÃ¨ne Morel		3 3 4 4 2 4 0 2 4 1 4 3 1 0 4 0 1
+VÃ©ronique Gaudin-Leleu		4 3 0 1 0 4 3 2 1 0 0 1 4 0 3 2 1
+Denis Moreau		0 1 3 2 1 1 4 1 0 3 1 3 1 0 3 4 0
+OcÃ©ane Payet		1 3 1 4 4 4 3 2 2 1 0 0 3 0 0 1 2
+Philippe Evrard-Benard		4 2 4 2 2 2 4 4 2 1 0 2 2 3 4 0 1
+Nathalie Lopez		4 3 0 0 3 1 1 0 1 1 4 3 0 0 0 3 2
+Bertrand Collin		1 2 3 3 4 1 2 2 1 2 3 3 4 2 0 2 2
+Franck Courtois		4 4 0 2 0 0 2 1 1 1 0 2 0 3 2 3 1
+Louis Goncalves		2 2 0 0 2 2 2 4 3 2 1 4 2 2 1 2 1
+Ã‰douard Bodin		1 0 2 1 0 3 3 2 2 4 1 2 4 3 3 4 1
+Alix Maury		3 1 3 1 1 4 4 1 2 0 4 3 2 2 1 0 1
+Adrien du Marchand		4 0 3 1 3 3 3 1 4 3 0 4 3 1 4 3 2
+Isabelle Guillet de Duhamel		0 2 3 3 0 4 2 1 2 0 3 2 3 2 2 4 0
+Alain Cohen		1 4 2 2 0 3 3 4 1 4 2 4 4 3 3 0 4
+Richard Blot de la ClÃ©ment		3 1 3 2 1 2 2 2 3 1 3 4 4 0 4 0 3
+AdÃ¨le-Jacqueline Roy		4 4 4 0 1 1 2 3 4 1 0 3 0 0 0 1 0
+Raymond Nicolas de PrÃ©vost		3 3 4 4 2 1 4 2 2 1 0 2 4 3 2 1 3
+RenÃ©e de Bernier		3 1 1 3 2 2 1 0 0 3 2 1 3 4 2 4 3
+BenoÃ®t Blanchard		0 4 2 1 1 3 1 2 0 3 0 4 3 2 3 2 1
+AgnÃ¨s de la Coste		1 2 4 3 0 2 2 2 0 4 3 2 4 1 0 1 0
