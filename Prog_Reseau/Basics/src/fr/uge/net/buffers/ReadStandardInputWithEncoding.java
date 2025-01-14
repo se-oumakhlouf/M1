@@ -18,14 +18,18 @@ public class ReadStandardInputWithEncoding {
 		ReadableByteChannel in = Channels.newChannel(System.in);
 		var buffer = ByteBuffer.allocate(BUFFER_SIZE);
 		int read = 0;
+		int resize = 1;
 		while((read = in.read(buffer)) != -1) {
 			if (buffer.remaining() < read) {
-				System.out.println("max");
+				resize++;
+				var bufferResize = ByteBuffer.allocate(BUFFER_SIZE * resize);
+				buffer.flip();
+				bufferResize.put(buffer);
+				buffer = bufferResize;
 			}
 		}
 		buffer.flip();
-		cs.decode(buffer);
-		return cs.toString();
+		return cs.decode(buffer).toString();
 	}
 
 	public static void main(String[] args) throws IOException {
