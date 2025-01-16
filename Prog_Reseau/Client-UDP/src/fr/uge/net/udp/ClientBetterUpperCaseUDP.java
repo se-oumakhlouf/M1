@@ -9,7 +9,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class ClientBetterUpperCaseUDP {
 	private static final int MAX_PACKET_SIZE = 1024;
@@ -36,7 +35,7 @@ public class ClientBetterUpperCaseUDP {
 	public static Optional<ByteBuffer> encodeMessage(String msg, String charsetName) {
 		var buffer = ByteBuffer.allocate(MAX_PACKET_SIZE);
 		buffer.order(ByteOrder.BIG_ENDIAN);
-		
+
 		var encodeName = ASCII_CHARSET.encode(charsetName);
 		var encodeMsg = Charset.forName(charsetName).encode(msg);
 		int size = Integer.BYTES + encodeMsg.limit() + encodeName.limit(); // Integer.Bytes représentes la taille de Charset
@@ -64,30 +63,33 @@ public class ClientBetterUpperCaseUDP {
 	 *         Optional if the buffer cannot be decoded
 	 */
 	public static Optional<String> decodeMessage(ByteBuffer buffer) {
-		var bufferCharset = ByteBuffer.allocate(Integer.BYTES);
 		buffer.flip();
-		System.out.println("here");
-		while(bufferCharset.hasRemaining()) {
-			bufferCharset.put(buffer.get());
+		if (buffer.remaining() < Integer.BYTES) {
+			return Optional.empty();
 		}
-		bufferCharset.flip();
-		var size = Integer.parseInt(bufferCharset.toString());
+
+		buffer.order(ByteOrder.BIG_ENDIAN);
+		var size = buffer.getInt();
+		if (size < 0 || buffer.remaining() < size) {
+			return Optional.empty();
+		}
+
+		// decode directement le nom du charset qui se trouve entre position et position + size
+		var oldLimit = buffer.limit();
+		buffer.limit(buffer.position() + size);
+		var charsetName = ASCII_CHARSET.decode(buffer).toString();
+		buffer.limit(oldLimit);
 		
-		var bufferName = ByteBuffer.allocate(MAX_PACKET_SIZE);
-		for (int i = 0; i < size; i++) {
-			bufferName.put(buffer.get());
+		if (!Charset.isSupported(charsetName)) {
+			return Optional.empty();
 		}
-		bufferName.flip();
-		var charset = Charset.forName(bufferName.toString());
-		
-		var bufferMsg = ByteBuffer.allocate(MAX_PACKET_SIZE);
-		while(buffer.hasRemaining()) {
-			bufferMsg.put(buffer.get());
+		var charset = Charset.forName(charsetName);
+
+		if (!buffer.hasRemaining()) {
+			return Optional.empty();
 		}
-		bufferMsg.flip();
-		var message = charset.decode(bufferMsg).toString();
-		bufferCharset.clear();
-		bufferMsg.clear();
+
+		var message = charset.decode(buffer).toString();
 		return Optional.of(message);
 	}
 
