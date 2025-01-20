@@ -34,7 +34,7 @@ public class NetcatUDP {
 					dc.send(buffer, server);
 					var receiver = ByteBuffer.allocate(BUFFER_SIZE);
 					var sender = (InetSocketAddress) dc.receive(receiver);
-					System.out.println("Received " + receiver.capacity() + " bytes from " + sender);
+					System.out.println("Received " + receiver.position() + " bytes from " + sender);
 					receiver.flip();
 					var decode = cs.decode(receiver);
 					System.out.println(decode.toString());
