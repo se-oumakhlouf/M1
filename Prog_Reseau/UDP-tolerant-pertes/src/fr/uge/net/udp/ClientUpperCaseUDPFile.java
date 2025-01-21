@@ -39,51 +39,65 @@ public class ClientUpperCaseUDPFile {
 		var lines = Files.readAllLines(Path.of(inFilename), UTF8);
 		var upperCaseLines = new ArrayList<String>();
 
-		// TODO
-
-		var queue = new ArrayBlockingQueue<String>(10);
+		var queueSend = new ArrayBlockingQueue<String>(10);
+		var queueReceive = new ArrayBlockingQueue<String>(10);
 
 		try (DatagramChannel dc = DatagramChannel.open()) {
-
 			dc.bind(null);
 
-			for (var line : lines) {
-
-				Thread.ofPlatform().start(() -> {
-					try {
-						var buffer = UTF8.encode(line);
-						dc.send(buffer, server);
-						String msg;
-						while ((msg = queue.poll(timeout, TimeUnit.MILLISECONDS)) == null) {
-							System.out.println("Time out");
-							System.out.println("Sending request...");
-							buffer = UTF8.encode(line);
-							dc.send(buffer, server);
+			var sender = Thread.ofPlatform().start(() -> {
+				try {
+					for (var line : lines) {
+						queueSend.put(line);
+						var buffer = ByteBuffer.allocate(BUFFER_SIZE);
+						String toSend;
+						while ((toSend = queueSend.poll(timeout, TimeUnit.MILLISECONDS)) == null) {
+							System.out.println("Timeout Reached");
+							System.out.println("Retrying...");
+							queueSend.put(line);
 						}
-						System.out.println(msg);
-					} catch (IOException | InterruptedException e) {
-						return;
+						buffer.put(UTF8.encode(toSend));
+						buffer.flip();
+						dc.send(buffer, server);
+						buffer.clear();
+						System.out.println("Sent : " + toSend);
 					}
-				});
+				} catch (InterruptedException | IOException e) {
+					System.out.println("Error in sender thread");
+				}
+			});
 
-				Thread.ofPlatform().start(() -> {
-					try {
-						var receiver = ByteBuffer.allocate(BUFFER_SIZE);
-						var sender = (InetSocketAddress) dc.receive(receiver);
-						System.out.println("Received " + receiver.position() + " bytes from " + sender);
-						receiver.flip();
-						var upperCase = UTF8.decode(receiver).toString();
-						queue.put(upperCase);
-						upperCaseLines.add(upperCase);
-					} catch (InterruptedException | IOException e) {
-						return;
+			var receiver = Thread.ofPlatform().start(() -> {
+				try {
+					var buffer = ByteBuffer.allocate(BUFFER_SIZE);
+					while (!Thread.currentThread().isInterrupted()) {
+						if (dc.receive(buffer) != null) {
+							buffer.flip();
+							var response = UTF8.decode(buffer).toString();
+							buffer.clear();
+							System.out.println("Received : " + response);
+							queueReceive.put(response);
+						}
 					}
-				});
-				
+				} catch (IOException | InterruptedException e) {
+					System.out.println("Error in receiver thread");
+				}
+			});
+
+			for (var line : lines) {
+				var response = queueReceive.poll(timeout, TimeUnit.MILLISECONDS);
+				if (response == null) {
+					System.out.println("No response for line -> " + line);
+				} else {
+					System.out.println("Adding line : " + line + " -> " + response);
+					upperCaseLines.add(response);
+				}
 			}
-		
-		}
 
+			receiver.interrupt();
+			receiver.join();
+			sender.join();
+		}
 		// Write upperCaseLines to outFilename in UTF-8
 		Files.write(Path.of(outFilename), upperCaseLines, UTF8, CREATE, WRITE, TRUNCATE_EXISTING);
 	}
