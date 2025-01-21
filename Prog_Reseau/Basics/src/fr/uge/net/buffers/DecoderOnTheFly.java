@@ -1,15 +1,14 @@
 package fr.uge.net.buffers;
 
+import static java.nio.file.StandardOpenOption.READ;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
 import java.nio.file.Path;
-
-import static java.nio.file.StandardOpenOption.READ;
 
 public class DecoderOnTheFly {
 
