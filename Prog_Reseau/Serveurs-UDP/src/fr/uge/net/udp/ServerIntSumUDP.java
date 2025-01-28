@@ -5,6 +5,9 @@ import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.channels.AsynchronousCloseException;
+import java.nio.channels.ClosedByInterruptException;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.DatagramChannel;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,8 +30,10 @@ public class ServerIntSumUDP {
 
 	private final DatagramChannel dc;
 	private final ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+	private final ByteBuffer sendBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 
 	private final HashMap<ClientSession, Set<Integer>> data = new HashMap<>();
+	private final HashMap<ClientSession, Set<Integer>> dataIdPosOper = new HashMap<>();
 
 	public ServerIntSumUDP(int port) throws IOException {
 		dc = DatagramChannel.open();
@@ -42,39 +47,52 @@ public class ServerIntSumUDP {
 
 	public void serve() throws IOException {
 		buffer.order(ByteOrder.BIG_ENDIAN);
+		sendBuffer.order(ByteOrder.BIG_ENDIAN);
 		try {
 			for (;;) {
 				// receive request from client
 				buffer.clear();
-				var port = (InetSocketAddress) dc.receive(buffer);
+				var clientAddress = (InetSocketAddress) dc.receive(buffer);
 				buffer.flip();
+
+				if (buffer.remaining() < Byte.BYTES + Long.BYTES + Integer.BYTES * 3) {
+					logger.warning("Received invalid packet from " + clientAddress + ",  Packet size : " + buffer.remaining());
+					continue;
+				}
 
 				// read request -> byte, sessionID, idPosOper, totalOper, opValue
 				var op = buffer.get();
-				var session = new ClientSession(port, buffer.getLong());
+				var session = new ClientSession(clientAddress, buffer.getLong());
 				var idPosOper = buffer.getInt();
 				var totalOper = buffer.getInt();
 				var opValue = buffer.getInt();
-				logger.info("Received package from client " + session.client);
+				logger.info("Received package from client " + session.client + " -> " + idPosOper + ", " + totalOper + ", " + opValue);
 
 				if (op == 1) {
 
 					// _ indicates that the variable in the lambda expression is not used (-> no
 					// warnings)
 					var sessionSet = data.computeIfAbsent(session, _ -> new HashSet<Integer>());
-					sessionSet.add(opValue);
-
-					if (sessionSet.size() == totalOper - 1) {
+					var idPosSet = dataIdPosOper.computeIfAbsent(session, _ -> new HashSet<Integer>());
+					if (idPosSet.add(idPosOper) == true) {
+						sessionSet.add(opValue);
+					}
+					if (sessionSet.size() == totalOper) {
 						// RES package (RES = 3) -> byte, sessionID, sum
 						buffer.clear();
+						if (buffer.remaining() < Byte.BYTES + Long.BYTES * 2) {
+							logger.warning("Package RES too long");
+							continue;
+						}
 						buffer.put((byte) 3);
 						buffer.putLong(session.sessionID);
-						var sum = sessionSet.stream().mapToInt(Integer::valueOf).sum();
-						buffer.putInt(sum);
+						var sum = sessionSet.stream().mapToLong(value -> (long) value).sum();
+						buffer.putLong(sum);
 						buffer.flip();
-						dc.send(buffer, port);
-						logger.info("Sent package RES (= 3) -> " + 3 + ", " + session.sessionID + ", " + sum + " to client -> " + session.client);
-						break;
+						dc.send(buffer, clientAddress);
+						logger.info("Sent package RES (= 3) -> " + 3 + ", " + session.sessionID + ", " + sum + " to client -> "
+								+ session.client);
+						continue;
 					}
 
 				} else {
@@ -87,8 +105,9 @@ public class ServerIntSumUDP {
 				buffer.putLong(session.sessionID);
 				buffer.putInt(idPosOper);
 				buffer.flip();
-				dc.send(buffer, port);
-				logger.info("Sent package ACK (= 2) -> " + 2 + ", " + session.sessionID + ", " + idPosOper + " to client -> " + session.client + " on port " + port);
+				dc.send(buffer, clientAddress);
+				logger.info("Sent package ACK (= 2) -> " + 2 + ", " + session.sessionID + ", " + idPosOper + " to client -> "
+						+ session.client);
 
 			}
 		} finally {
@@ -108,11 +127,20 @@ public class ServerIntSumUDP {
 			logger.severe("The port number must be between 1024 and 65535");
 			return;
 		}
-		
+
 		try {
 			new ServerIntSumUDP(port).serve();
 		} catch (BindException e) {
 			logger.severe("Server could not bind on " + port + "\nAnother server is probably running on this port.");
+			return;
+		} catch (ClosedByInterruptException e) {
+			logger.info("Server was interrupted and stopped.");
+			return;
+		} catch (AsynchronousCloseException e) {
+			logger.info("Server channel was closed asynchronously.");
+			return;
+		} catch (ClosedChannelException e) {
+			logger.warning("The server channel was closed unexpectedly.");
 			return;
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Server stopped due to en I/O Exception.", e);
