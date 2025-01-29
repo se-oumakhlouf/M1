@@ -250,12 +250,112 @@ On vous propose trois architectures différentes pour le programme :
 ![](images/ex3-a.svg)
 
 **Architecture B**
+
 ![](images/ex3-b.svg)
 
 **Architecture C**
 ![](images/ex3-c.svg)
 
 Pour chacune d'entre elles, vous indiquerez les opérations que le programme devrait effectuer pour satisfaire chacun des besoins cités plus haut, sans jamais introduire de dangling-reference.
+
+**Architecture A**
+
+1. lister tous les salariés
+    - un parcours d'un `vector<Employee>`
+
+2. lister tous les départements
+    - parcours d'un `vector<Departement>`
+
+3. lister les personnes appartenant à un département précis
+    - dans l'architecture A il est précisé que c'est une collection de référence (-> pointillé) et il est possible de licensier un salarié donc, parcours d'un `vector<Employee*>` (pointeur) au lieu de référence pour éviter `dangling_reference`
+
+4. lister tous les managers
+    - parours d'un `vector<Employee>`
+
+5. lister les subordonnés d'un manager
+    - parcours d'un `vector<Employee>` pour trouver le manager puis encore une fois parcours d'un `vector<Employee>` pour afficher ces subordinates
+
+6. embaucher un nouveau salarié
+    - emplace_back() d'un `vector<Employee`>
+
+7. licencier un salarié
+    - parcours d'un `vector<Employee>` pour trouver et supprimer le salarié et suppression du pointeur correspondant dans son département
+
+8. changer un salarié de département
+    - suppression du pointeur dans l'ancien département et ajout dans le nouveau
+
+9. augmenter le salaire d'une personne
+    - modifier le champ correspondant à son salaire mensuel de la classe `Employee`
+
+10. afficher la somme totale payée pour les salaires par département
+    - pour chaque département, parcours d'un `vector<Departement>` et lecture des champs correspondant au salaire en utilisant les références vers les employées des départements
+
+**Architecture B**
+
+1. lister tous les salariés
+    - parcours d'un `vector<Employee>` pour chaque département
+
+2. lister tous les départements
+    - parcours d'un `vector<Departement>`
+
+3. lister les personnes appartenant à un département précis
+    - parcours d'un `vector<Departement>` pour trouver le département puis parcours d'un `vector<Employee>`
+
+4. lister tous les managers
+    - parcours d'un `vector<Employee>` pour chaque département pour identifier les managers parmis les employés
+
+5. lister les subordonnés d'un manager
+    - parcours de `vector<Departement>` dans lequel, pour chaque département parcours d'un `vector<Employee>` pour trouver le manager et ensuite parcours d'un `vector<Employee>` pour lister ses subordonnés
+
+6. embaucher un nouveau salarié
+    - trouver à quel département il va appartenir, puis l'inserer dans la collection d'`Employee` correspondante
+
+7. licencier un salarié
+    - parcourir les départements, trouver le salarié et le supprimer de la collection d'`Employee` correspondante et parcourir toutes les collections d'`Employee` surbordinates de tous les départements pour supprimer la référence de ce salarié sur chaque collection car un manager peut avoir un subordonné d'un autre département
+
+8. changer un salarié de département
+    - parcourir les départements, trouver le salarié, le déplacer de son département actuelle vers son nouveau département.
+
+9. augmenter le salaire d'une personne
+    - parcourir tous les départements, touver le salarié, modifier son champ `salaire_mensuel`
+
+10. afficher la somme totale payée pour les salaires par département.
+    - parcourir tous les départements, pour chaque département calculer la somme des salaires de ses employés
+
+**Architecture C**
+
+1. lister tous les salariés
+    - parcours récursif de la collection d'`Employee`
+
+2. lister tous les départements
+    - parcours de la collection de `Departements`
+
+3. lister les personnes appartenant à un département précis
+    - parcours récursif de la collection d'`Employee` et garder les employés correspondant au département choisi
+
+4. lister tous les managers
+    - parcours récursif de la collection d'`Employee` pour les employés ayant des subordonnées
+
+5. lister les subordonnés d'un manager
+    - parcours récursif de la collection d'`Employee` pour trouver le manager, puis parcours de sa collection de subordonnées
+
+6. embaucher un nouveau salarié
+    - si c'est un manager, on le rajoute à la collection d'`Employee`, sinon parcours récursif de la collection pour ajouter le salarié en tant que subordonnées aux managers correspondants
+    - ajouter une référence vers son département
+
+7. licencier un salarié
+    - supprimer le salarié de la collection d'`Employee` ou de subordonnées correspondant et supprimer la référence vers son département
+
+8. changer un salarié de département
+    - mettre à jour la référence de son département vers son nouveau département
+
+9. augmenter le salaire d'une personne
+    - parcours récursif de la collection d'`Employee` pour trouver la bonne personne et modifié son champ correspondant
+
+10. afficher la somme totale payée pour les salaires par département
+    - parcours récursif de la collection d'`Employee` et ajouter le salaire de chaque salarié aux calculs de somme en fonction de son département
+
+    
 
 ### 2. Compilation via CMake (10min)
 
