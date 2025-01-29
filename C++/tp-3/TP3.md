@@ -264,7 +264,7 @@ Pour chacune d'entre elles, vous indiquerez les opérations que le programme dev
     - un parcours d'un `vector<Employee>`
 
 2. lister tous les départements
-    - parcours d'un `vector<Departement>`
+    - parcours d'un `vector<Department>`
 
 3. lister les personnes appartenant à un département précis
     - dans l'architecture A il est précisé que c'est une collection de référence (-> pointillé) et il est possible de licensier un salarié donc, parcours d'un `vector<Employee*>` (pointeur) au lieu de référence pour éviter `dangling_reference`
@@ -288,7 +288,7 @@ Pour chacune d'entre elles, vous indiquerez les opérations que le programme dev
     - modifier le champ correspondant à son salaire mensuel de la classe `Employee`
 
 10. afficher la somme totale payée pour les salaires par département
-    - pour chaque département, parcours d'un `vector<Departement>` et lecture des champs correspondant au salaire en utilisant les références vers les employées des départements
+    - pour chaque département, parcours d'un `vector<Department>` et lecture des champs correspondant au salaire en utilisant les références vers les employées des départements
 
 **Architecture B**
 
@@ -296,16 +296,16 @@ Pour chacune d'entre elles, vous indiquerez les opérations que le programme dev
     - parcours d'un `vector<Employee>` pour chaque département
 
 2. lister tous les départements
-    - parcours d'un `vector<Departement>`
+    - parcours d'un `vector<Department>`
 
 3. lister les personnes appartenant à un département précis
-    - parcours d'un `vector<Departement>` pour trouver le département puis parcours d'un `vector<Employee>`
+    - parcours d'un `vector<Department>` pour trouver le département puis parcours d'un `vector<Employee>`
 
 4. lister tous les managers
     - parcours d'un `vector<Employee>` pour chaque département pour identifier les managers parmis les employés
 
 5. lister les subordonnés d'un manager
-    - parcours de `vector<Departement>` dans lequel, pour chaque département parcours d'un `vector<Employee>` pour trouver le manager et ensuite parcours d'un `vector<Employee>` pour lister ses subordonnés
+    - parcours de `vector<Department>` dans lequel, pour chaque département parcours d'un `vector<Employee>` pour trouver le manager et ensuite parcours d'un `vector<Employee>` pour lister ses subordonnés
 
 6. embaucher un nouveau salarié
     - trouver à quel département il va appartenir, puis l'inserer dans la collection d'`Employee` correspondante
