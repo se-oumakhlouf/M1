@@ -31,6 +31,19 @@ public:
         }
     }
 
+    void remove_employee(Employee &emp)
+    {
+        // parcourir les départements à la recherche de l'employé, et le supprimer; comme un
+        // employé travaille pour un seul département, on s'arrête après la première tentative fructueuse
+        for (auto &dep : _departments)
+            if (dep.remove_employee(emp))
+            {
+                std::cout << "removed employee " << emp.get_name() << std::endl;
+                dep.print_employees();
+                break;
+            }
+    }
+
 private:
     std::list<Department> _departments;
 };

@@ -23,9 +23,9 @@ int main()
 
     // TODO Q4.
     // Jacques est licencié...
-    // system.remove_employee(jacques);
-    // rd_dpt.print_employees();
-    // charline.print_subordinates();
+    system.remove_employee(jacques);
+    rd_dpt.print_employees();
+    charline.print_subordinates();
 
     return 0;
 }
