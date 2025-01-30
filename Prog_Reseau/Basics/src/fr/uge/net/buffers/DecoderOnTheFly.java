@@ -32,7 +32,7 @@ public class DecoderOnTheFly {
 		this.inputBufferCapacity = inputBufferCapacity;
 		// largest size needed for the output buffer, for this we need maxCharsPerByte
 		this.outputBufferCapacity = (int) Math.ceil(inputBufferCapacity * charsetDecoder.maxCharsPerByte());
-		byteBuffer = ByteBuffer.allocate(inputBufferCapacity);
+		byteBuffer = ByteBuffer.allocate(this.inputBufferCapacity);
 		charBuffer = CharBuffer.allocate(outputBufferCapacity);
 	}
 

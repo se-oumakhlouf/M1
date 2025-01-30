@@ -31,8 +31,8 @@ public class ServerIntSumUDP {
 	private final DatagramChannel dc;
 	private final ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
 
-	private final HashMap<ClientSession, Set<Integer>> data = new HashMap<>();
-	private final HashMap<ClientSession, Set<Integer>> dataIdPosOper = new HashMap<>();
+	private final HashMap<ClientSession, Set<Integer>> data = new HashMap<>(); // not a set, peut simplement faire un hashMap <ClientSession, Long> pour garder la somme
+	private final HashMap<ClientSession, Set<Integer>> dataIdPosOper = new HashMap<>(); // good
 
 	public ServerIntSumUDP(int port) throws IOException {
 		dc = DatagramChannel.open();
