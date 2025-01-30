@@ -8,9 +8,15 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
+
+//launch: 
+//java fr.uge.net.udp.nonblocking.ServerEcho 4545 
+//java -jar NetcatUDP.jar localhost 4545 UTF8
+
+//expected in terminal of NetcatUDP:
+//toto
+//String: toto   (<- echo from the serv)
 
 public class ServerEcho {
 	private static final Logger logger = Logger.getLogger(ServerEcho.class.getName());
@@ -21,7 +27,6 @@ public class ServerEcho {
 	private final ByteBuffer buffer = ByteBuffer.allocateDirect(BUFFER_SIZE);
 	private SocketAddress sender;
 	private int port;
-	private static final Charset UTF8 = StandardCharsets.UTF_8;
 
 	public ServerEcho(int port) throws IOException {
 		this.port = port;
@@ -67,8 +72,6 @@ public class ServerEcho {
 			return;
 		}
 		buffer.flip();
-		System.out.println("String: " + UTF8.decode(buffer).toString());
-		buffer.position(0);
 		key.interestOps(SelectionKey.OP_WRITE);
 	}
 
