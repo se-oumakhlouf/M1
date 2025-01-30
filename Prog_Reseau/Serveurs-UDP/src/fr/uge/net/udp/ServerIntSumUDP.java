@@ -30,7 +30,6 @@ public class ServerIntSumUDP {
 
 	private final DatagramChannel dc;
 	private final ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-	private final ByteBuffer sendBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 
 	private final HashMap<ClientSession, Set<Integer>> data = new HashMap<>();
 	private final HashMap<ClientSession, Set<Integer>> dataIdPosOper = new HashMap<>();
@@ -47,7 +46,6 @@ public class ServerIntSumUDP {
 
 	public void serve() throws IOException {
 		buffer.order(ByteOrder.BIG_ENDIAN);
-		sendBuffer.order(ByteOrder.BIG_ENDIAN);
 		try {
 			for (;;) {
 				// receive request from client
