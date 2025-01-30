@@ -31,8 +31,8 @@ public class ServerIntSumUDP {
 	private final DatagramChannel dc;
 	private final ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
 
-	private final HashMap<ClientSession, Set<Integer>> data = new HashMap<>(); // not a set, peut simplement faire un hashMap <ClientSession, Long> pour garder la somme
-	private final HashMap<ClientSession, Set<Integer>> dataIdPosOper = new HashMap<>(); // good
+	private final HashMap<ClientSession, Long> dataSum = new HashMap<>();
+	private final HashMap<ClientSession, Set<Integer>> dataIdPosOper = new HashMap<>();
 
 	public ServerIntSumUDP(int port) throws IOException {
 		dc = DatagramChannel.open();
@@ -64,18 +64,19 @@ public class ServerIntSumUDP {
 				var idPosOper = buffer.getInt();
 				var totalOper = buffer.getInt();
 				var opValue = buffer.getInt();
-				logger.info("Received package from client " + session.client + " -> " + idPosOper + ", " + totalOper + ", " + opValue);
+				logger.info(
+						"Received package from client " + session.client + " -> " + idPosOper + ", " + totalOper + ", " + opValue);
 
 				if (op == 1) {
 
 					// _ indicates that the variable in the lambda expression is not used (-> no
 					// warnings)
-					var sessionSet = data.computeIfAbsent(session, _ -> new HashSet<Integer>());
+					var sessionSet = dataSum.computeIfAbsent(session, _ -> 0L);
 					var idPosSet = dataIdPosOper.computeIfAbsent(session, _ -> new HashSet<Integer>());
 					if (idPosSet.add(idPosOper) == true) {
-						sessionSet.add(opValue);
+						sessionSet += opValue;
 					}
-					if (sessionSet.size() == totalOper) {
+					if (idPosSet.size() == totalOper) {
 						// RES package (RES = 3) -> byte, sessionID, sum
 						buffer.clear();
 						if (buffer.remaining() < Byte.BYTES + Long.BYTES * 2) {
@@ -84,7 +85,7 @@ public class ServerIntSumUDP {
 						}
 						buffer.put((byte) 3);
 						buffer.putLong(session.sessionID);
-						var sum = sessionSet.stream().mapToLong(value -> (long) value).sum();
+						var sum = dataSum.get(session);
 						buffer.putLong(sum);
 						buffer.flip();
 						dc.send(buffer, clientAddress);
