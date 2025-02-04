@@ -15,5 +15,5 @@ TEST_CASE("La fonction add_entry ajoute l'entrée uniquement si elle est valide,
 
     const auto jean_number = PhoneNumber { 5, 4, 3, 2, -1 };
     const auto jean_added  = phone_book.add_entry(PhoneBookEntry { "Jean", jean_number });
-    REQUIRE(true == jean_added);
+    REQUIRE(false == jean_added);
 }

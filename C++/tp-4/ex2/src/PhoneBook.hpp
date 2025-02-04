@@ -21,7 +21,7 @@ public:
         return true;
     }
 
-    PhoneNumber* get_number(std::string name)
+    const PhoneNumber* get_number(const std::string& name) const
     {
         for (auto& pbe : _pb)
         {
