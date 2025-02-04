@@ -1,0 +1,31 @@
+# !/bin/bash
+
+
+sFLAG=""
+qFLAG=""
+filter=""
+while [ $# -gt 0 ]                                                               
+do                                                                               
+    case "$1" in
+        -h | -help | --help )
+            echo "Usage: run_tests.sh [-q] [-s] [optional pattern]";
+            echo " -q / --quiet:  Output of failed tests is not printed.";                           
+            echo " -s / --stop-on-first-error:  The program stops as soon as one test fails, skipping remaining tests.";
+            exit 1;;
+        --stop-on-first-error | -s ) 
+            sFLAG="-DSTOP_ON_ERROR=1" ;;                                                                 
+        --quiet | -q ) 
+            qFLAG="-DQUIET=1" ;;
+        -qs | -sq )
+            sFLAG="-DSTOP_ON_ERROR=1";
+            qFLAG="-DQUIET=1" ;;
+        -* ) 
+            echo "Unrecognized option ${1}";
+            exit 2;;                                                                                                                           
+        * )   
+            filter=-DFILTER="$1";;                                         
+    esac                                                                         
+    shift                                                                        
+done   
+
+cmake -DTARGETS="@all_tests@" -DBUILD_PATH="@CMAKE_BINARY_DIR@" $sFLAG $qFLAG $filter -P "@CMAKE_CURRENT_SOURCE_DIR@/cmake/run_tests.cmake"
