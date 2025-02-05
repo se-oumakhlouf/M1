@@ -18,14 +18,14 @@ import java.util.logging.Logger;
 
 import static java.nio.file.StandardOpenOption.*;
 
-//use :
+// use :
 //$ java -jar ServerIdUpperCaseUDP.jar 4545 UTF-8
 //$ java -jar UDPProxy.jar 7777 localhost 4545 -no-swap 
 //$ java fr.uge.net.udp.nonblocking.ClientIdUpperCaseUDPBurst in.txt out.txt 300 localhost 7777
 
-public class ClientIdUpperCaseUDPOneByOne {
+public class ClientIdUpperCaseUDPBurst {
 
-	private static Logger logger = Logger.getLogger(ClientIdUpperCaseUDPOneByOne.class.getName());
+	private static Logger logger = Logger.getLogger(ClientIdUpperCaseUDPBurst.class.getName());
 	private static final Charset UTF8 = Charset.forName("UTF8");
 	private static final int BUFFER_SIZE = 1024;
 
@@ -41,10 +41,10 @@ public class ClientIdUpperCaseUDPOneByOne {
 	private final Selector selector;
 	private final SelectionKey uniqueKey;
 
-	// TODO add new fields
 	private final ByteBuffer receiver = ByteBuffer.allocate(BUFFER_SIZE);
-	private long currentId = 0;
 	private long lastSend = 0;
+	private int totalResponses = 0;
+	private final String[] isReceived;
 
 	private State state;
 
@@ -52,7 +52,7 @@ public class ClientIdUpperCaseUDPOneByOne {
 		System.out.println("Usage : ClientIdUpperCaseUDPOneByOne in-filename out-filename timeout host port ");
 	}
 
-	private ClientIdUpperCaseUDPOneByOne(List<String> lines, long timeout, InetSocketAddress serverAddress,
+	private ClientIdUpperCaseUDPBurst(List<String> lines, long timeout, InetSocketAddress serverAddress,
 			DatagramChannel dc, Selector selector, SelectionKey uniqueKey) {
 		this.lines = lines;
 		this.timeout = timeout;
@@ -62,9 +62,10 @@ public class ClientIdUpperCaseUDPOneByOne {
 		this.uniqueKey = uniqueKey;
 		this.state = State.SENDING;
 		this.receiver.order(ByteOrder.BIG_ENDIAN);
+		this.isReceived = new String[lines.size()];
 	}
 
-	public static ClientIdUpperCaseUDPOneByOne create(String inFilename, long timeout, InetSocketAddress serverAddress)
+	public static ClientIdUpperCaseUDPBurst create(String inFilename, long timeout, InetSocketAddress serverAddress)
 			throws IOException {
 		Objects.requireNonNull(inFilename);
 		Objects.requireNonNull(serverAddress);
@@ -77,7 +78,7 @@ public class ClientIdUpperCaseUDPOneByOne {
 		dc.bind(null);
 		var selector = Selector.open();
 		var uniqueKey = dc.register(selector, SelectionKey.OP_WRITE);
-		return new ClientIdUpperCaseUDPOneByOne(lines, timeout, serverAddress, dc, selector, uniqueKey);
+		return new ClientIdUpperCaseUDPBurst(lines, timeout, serverAddress, dc, selector, uniqueKey);
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -170,31 +171,35 @@ public class ClientIdUpperCaseUDPOneByOne {
 	 */
 
 	private void doRead() throws IOException {
-		receiver.clear();
-		var sender = dc.receive(receiver);
+		while (totalResponses != lines.size()) {
+			receiver.clear();
+			var sender = dc.receive(receiver);
 
-		if (sender == null) {
-			logger.warning("failed to receive");
-			return;
-		}
+			if (sender == null) {
+				state = State.SENDING;
+				break;
+			}
 
-		receiver.flip();
+			receiver.flip();
 
-		long id = receiver.getLong();
-		if (id != currentId) {
-			logger.warning("unexpected ID received: " + id + ", expected: " + currentId);
-			return;
-		}
+			int id = (int) receiver.getLong();
+			if (isReceived[id] != null) {
+				continue;
+			}
 
-		var upperCase = UTF8.decode(receiver).toString();
-		upperCaseLines.add(upperCase);
-		currentId++;
-
-		if (currentId >= lines.size()) {
-			state = State.FINISHED;
-		} else {
+			var upperCase = UTF8.decode(receiver).toString();
+			isReceived[id] = upperCase; // keep the order
+			totalResponses++;
 			state = State.SENDING;
 		}
+		if (totalResponses != lines.size()) {
+			return;
+		}
+		state = State.FINISHED;
+		for (var line : isReceived) {
+			upperCaseLines.add(line);
+		}
+		logger.info("All packages have been received.\nEnding...");
 
 	}
 
@@ -205,25 +210,36 @@ public class ClientIdUpperCaseUDPOneByOne {
 	 */
 
 	private void doWrite() throws IOException {
-		if (currentId >= lines.size()) {
-			state = State.FINISHED;
-			return;
-		}
 		var sender = ByteBuffer.allocate(BUFFER_SIZE);
 		sender.order(ByteOrder.BIG_ENDIAN);
 
-		sender.putLong(currentId);
-		sender.put(UTF8.encode(lines.get((int) currentId)));
+		for (int i = 0; i < lines.size(); i++) {
 
-		sender.flip();
+			if (isReceived[i] != null) {
+				continue;
+			}
 
-		dc.send(sender, serverAddress);
-		if (sender.hasRemaining()) {
-			logger.warning("failed to send");
-			return;
+			sender.clear();
+
+			sender.putLong((long) i);
+			sender.put(UTF8.encode(lines.get(i)));
+
+			sender.flip();
+			dc.send(sender, serverAddress);
+
+			if (sender.hasRemaining()) {
+				logger.warning("failed to send");
+				continue;
+			}
+
+			lastSend = System.currentTimeMillis();
 		}
-		lastSend = System.currentTimeMillis();
-		state = State.RECEIVING;
-	}
 
+		if (totalResponses == lines.size()) {
+			state = State.FINISHED;
+		} else {
+			state = State.RECEIVING;
+		}
+
+	}
 }
