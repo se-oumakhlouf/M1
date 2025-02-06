@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 // use :
 // java -jar ServerLongSumTCP.jar 7777
-// java fr.upem.net.tcp.ClientLongSum localhost 7777
+// java fr.uge.net.tcp.ClientLongSum localhost 7777
 
 // to test the case of a sudden connection lost // server closing
 // java -jar ServerLongSumTCP.jar -bug 7777 
@@ -51,9 +51,7 @@ public class ClientLongSum {
 		}
 
 		sendBuffer.flip();
-		while (sendBuffer.hasRemaining()) {
-			sc.write(sendBuffer);
-		}
+		sc.write(sendBuffer);
 
 		var storage = ByteBuffer.allocate(Long.BYTES).order(ByteOrder.BIG_ENDIAN);
 
