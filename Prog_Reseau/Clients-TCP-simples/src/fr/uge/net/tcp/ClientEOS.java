@@ -82,45 +82,27 @@ public class ClientEOS {
 		sc.write(buffer);
 		sc.shutdownOutput();
 
-		var receiver = ByteBuffer.allocate(BUFFER_SIZE);
 		var storage = ByteBuffer.allocate(BUFFER_SIZE);
 		int failure = 2;
-		int read = 0;
-		
-//		while (true) {
-//			if (!readFully(sc, storage)) {
-//				logger.info("Server close the connection too soon");
-//				return "fail";
-//			} else {
-//				if (!storage.hasRemaining()) {
-//					var tmp = ByteBuffer.allocate(BUFFER_SIZE * failure);
-//					failure += 2;
-//					storage.flip();
-//					tmp.put(storage);
-//					storage = tmp;
-//				}
-//			}
-//			sortir de la boucle
-//		}
 
-		while ((read = sc.read(receiver)) != -1) {
-			if (read == 0) {
-				if (!storage.hasRemaining()) {
-					var tmp = ByteBuffer.allocate(BUFFER_SIZE * failure);
-					failure += 2;
-					storage.flip();
-					tmp.put(storage);
-					storage = tmp.duplicate();
+		while (true) {
 
-				}
-				receiver.flip();
-				storage.put(receiver);
-				receiver.clear();
+			if (!readFully(sc, storage)) {
+				logger.info("Server closed the connection");
+				break;
 			}
+			
+			if (!storage.hasRemaining()) {
+				var tmp = ByteBuffer.allocate(BUFFER_SIZE * failure);
+				failure += 2;
+				storage.flip();
+				tmp.put(storage);
+				storage = tmp;
+			}
+
 		}
-		logger.info("fully received");
+		
 		storage.flip();
-		sc.shutdownInput();
 		sc.close();
 		return UTF8_CHARSET.decode(storage).toString();
 	}
