@@ -212,7 +212,9 @@ public class ClientIdUpperCaseUDPBurst {
 	private void doWrite() throws IOException {
 		var sender = ByteBuffer.allocate(BUFFER_SIZE);
 		sender.order(ByteOrder.BIG_ENDIAN);
-
+		// ne pas faire de boucle de send
+		// juste envoyer la ligne courante
+		// et passer à RECEIVING lorsque currentId = lines.size()
 		for (int i = 0; i < lines.size(); i++) {
 
 			if (isReceived[i] != null) {
