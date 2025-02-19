@@ -67,20 +67,20 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 3 ====================================" << std::endl;
     {
-        // LinkedList list1;
-        // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
-        // list1.push_back(Person { "Anthony", "Labarre" });
-        // ++(list1.front());
+        LinkedList list1;
+        list1.push_back(Person { "Victor", "Marsault" });
+        list1.push_back(Person { "Henri", "Dericke" });
+        list1.push_back(Person { "Anthony", "Labarre" });
+        ++(list1.front());
 
-        // LinkedList list2 { list1 }; // Copions list1
-        // ++(list2.front());
-        // std::cout << list2.size() << " | on attend:  3" << std::endl;
-        // std::cout << list2 << " | on attend { VM:2, HD:0, HD:0 } " << std::endl;
-        // // On a besoin de trois copies (les trois Person dans list1)
-        // assert_copy_count_since_last_check("Copy 1", 3);
-        // //                 et on a 6 Person en mémoire
-        // assert_mem_count("Copy 2", 6);
+        LinkedList list2 { list1 }; // Copions list1
+        ++(list2.front());
+        std::cout << list2.size() << " | on attend:  3" << std::endl;
+        std::cout << list2 << " | on attend { VM:2, HD:0, HD:0 } " << std::endl;
+        // On a besoin de trois copies (les trois Person dans list1)
+        assert_copy_count_since_last_check("Copy 1", 3);
+        //                 et on a 6 Person en mémoire
+        assert_mem_count("Copy 2", 6);
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("copy fin", 0);
@@ -88,22 +88,22 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 4 ====================================" << std::endl;
     {
-        // LinkedList list1;
-        // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
-        // list1.push_back(Person { "Anthony", "Labarre" });
-        // ++(list1.front());
+        LinkedList list1;
+        list1.push_back(Person { "Victor", "Marsault" });
+        list1.push_back(Person { "Henri", "Dericke" });
+        list1.push_back(Person { "Anthony", "Labarre" });
+        ++(list1.front());
 
-        // LinkedList list2 { std::move(list1) }; // Déplaçons list1 dans list2
-        // ++(list2.front());
-        // std::cout << list2.size() << " | on attend 3 " << std::endl;
-        // std::cout << list2 << " | on attend { VM:2, HD:0, AL:0 } " << std::endl;
-        // std::cout << list1.size() << " | on attend 0 " << std::endl;
-        // std::cout << list1 << " | on attend { }" << std::endl;
-        // // On a besoin d'aucune copie pour ce déplacement
-        // assert_no_copy_since_last_check("Move 1");
-        // //                 et on a 3 Person en mémoire
-        // assert_mem_count("Move 2", 3);
+        LinkedList list2 { std::move(list1) }; // Déplaçons list1 dans list2
+        ++(list2.front());
+        std::cout << list2.size() << " | on attend 3 " << std::endl;
+        std::cout << list2 << " | on attend { VM:2, HD:0, AL:0 } " << std::endl;
+        std::cout << list1.size() << " | on attend 0 " << std::endl;
+        std::cout << list1 << " | on attend { }" << std::endl;
+        // On a besoin d'aucune copie pour ce déplacement
+        assert_no_copy_since_last_check("Move 1");
+        //                 et on a 3 Person en mémoire
+        assert_mem_count("Move 2", 3);
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("Move fin", 0);

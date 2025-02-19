@@ -6,8 +6,6 @@
 class LinkedList
 {
 public:
-    LinkedList() = default;
-
     friend std::ostream& operator<<(std::ostream& o, const LinkedList& list);
 
     size_t size() const;
@@ -19,8 +17,17 @@ public:
 
     Person& front();
     const Person& front() const;
-    
+
+    void clear();
     ~LinkedList();
+
+    LinkedList() = default;
+
+    LinkedList(const LinkedList&);
+    LinkedList& operator=(const LinkedList&);
+
+    LinkedList(LinkedList&&);
+    LinkedList& operator=(LinkedList&&);
 
     // void concatenate_back(LinkedList);
 

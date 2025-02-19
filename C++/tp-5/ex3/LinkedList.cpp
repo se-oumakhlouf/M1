@@ -68,12 +68,65 @@ const Person& LinkedList::front() const
     return _front->value();
 }
 
-LinkedList::~LinkedList()
+void LinkedList::clear()
 {
     Link* tmp = nullptr;
-    for (Link* it = _front; it != nullptr; it = it->_next) {
+    for (Link* it = _front; it != nullptr; it = it->_next)
+    {
         delete tmp;
         tmp = it;
     }
     delete tmp;
+}
+
+LinkedList::~LinkedList()
+{
+    clear();
+}
+
+LinkedList::LinkedList(const LinkedList& other)
+{
+    for (Link* it = other._front; it != nullptr; it = it->_next)
+    {
+        push_back(it->value());
+    }
+}
+
+LinkedList& LinkedList::operator=(const LinkedList& other)
+{
+    if (this != &other)
+    {
+        clear();
+        for (Link* it = other._front; it != nullptr; it = it->_next)
+        {
+            push_back(it->value());
+        }
+    }
+    return *this;
+}
+
+LinkedList::LinkedList(LinkedList&& other)
+    : _front { other._front }
+    , _back { other._back }
+    , _size { other._size }
+{
+    other._front = nullptr;
+    other._back  = nullptr;
+    other._size  = 0;
+}
+
+LinkedList& LinkedList::operator=(LinkedList&& other)
+{
+    if (this != &other)
+    {
+        clear();
+        _front = other._front;
+        _back  = other._back;
+        _size  = other._size;
+
+        other._front = nullptr;
+        other._back  = nullptr;
+        other._size  = 0;
+    }
+    return *this;
 }
