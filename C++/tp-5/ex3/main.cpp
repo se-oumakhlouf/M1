@@ -111,29 +111,29 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 5 ====================================" << std::endl;
     {
-        // LinkedList list1;
-        // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
-        // LinkedList list2;
-        // list2.push_back(Person { "Anthony", "Labarre" });
-        // list2.push_back(Person { "Céline", "Noël" });
+        LinkedList list1;
+        list1.push_back(Person { "Victor", "Marsault" });
+        list1.push_back(Person { "Henri", "Dericke" });
+        LinkedList list2;
+        list2.push_back(Person { "Anthony", "Labarre" });
+        list2.push_back(Person { "Céline", "Noël" });
 
-        // list1.concatenate_back(list2);
-        // ++(list2.front());
-        // std::cout << list1 << " | on attend { VM:0, HD:0, AL:0, CN:0 } " << std::endl;
-        // std::cout << list2 << " | on attend { AL:1, CN:0 } " << std ::endl;
-        // // On a donc fait 2 copies (les deux Person dans list2)
-        // assert_copy_count_since_last_check("Concatenate 1", 2);
-        // //                        et on a 6 Person en mémoire
-        // assert_mem_count("Concatenate 2", 6);
+        list1.concatenate_back(list2);
+        ++(list2.front());
+        std::cout << list1 << " | on attend { VM:0, HD:0, AL:0, CN:0 } " << std::endl;
+        std::cout << list2 << " | on attend { AL:1, CN:0 } " << std ::endl;
+        // On a donc fait 2 copies (les deux Person dans list2)
+        assert_copy_count_since_last_check("Concatenate 1", 2);
+        //                        et on a 6 Person en mémoire
+        assert_mem_count("Concatenate 2", 6);
 
-        // list1.concatenate_back(std::move(list2));
-        // std::cout << list1 << " | on attend { VM:0, HD:0, AL:0, CN:0, AL:1, CN:0 }" << std ::endl;
-        // std::cout << list2 << " | on attend { }" << std ::endl;
-        // // Ici, on déplace, donc pas de copie en plus
-        // assert_no_copy_since_last_check("Concatenate 3");
-        // //               et on a toujours 6 Person en mémoire
-        // assert_mem_count("Concatenate 4", 6);
+        list1.concatenate_back(std::move(list2));
+        std::cout << list1 << " | on attend { VM:0, HD:0, AL:0, CN:0, AL:1, CN:0 }" << std ::endl;
+        std::cout << list2 << " | on attend { }" << std ::endl;
+        // Ici, on déplace, donc pas de copie en plus
+        assert_no_copy_since_last_check("Concatenate 3");
+        //               et on a toujours 6 Person en mémoire
+        assert_mem_count("Concatenate 4", 6);
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("Concatenate fin", 0);

@@ -130,3 +130,27 @@ LinkedList& LinkedList::operator=(LinkedList&& other)
     }
     return *this;
 }
+
+void LinkedList::concatenate_back(LinkedList other)
+{
+    if (other.empty())
+    {
+        return;
+    }
+
+    if (empty())
+    {
+        *this = std::move(other);
+    }
+    else
+    {
+        _back->_next = other._front;
+        other._front->_prev = _back;
+        _back = other._back;
+
+        other._front = nullptr;
+        other._back  = nullptr;
+        other._size  = 0;
+    }
+
+}

@@ -29,7 +29,7 @@ public:
     LinkedList(LinkedList&&);
     LinkedList& operator=(LinkedList&&);
 
-    // void concatenate_back(LinkedList);
+    void concatenate_back(LinkedList);
 
     // bool contains(Person);
 
