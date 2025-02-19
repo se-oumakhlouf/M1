@@ -144,13 +144,51 @@ void LinkedList::concatenate_back(LinkedList other)
     }
     else
     {
-        _back->_next = other._front;
+        _back->_next        = other._front;
         other._front->_prev = _back;
-        _back = other._back;
+        _back               = other._back;
 
         other._front = nullptr;
         other._back  = nullptr;
         other._size  = 0;
     }
+}
 
+bool LinkedList::contains(const Person& person) const
+{
+    for (Link* it = _front; it != nullptr; it = it->_next)
+    {
+        if (it->value() == person)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void LinkedList::push_back_if_absent(Person&& person)
+{
+    if (contains(person) == true)
+    {
+        return;
+    }
+
+    push_back(std::move(person));
+}
+
+void LinkedList::push_back_if_absent(const Person& person)
+{
+    if (contains(person) == true)
+    {
+        return;
+    }
+
+    push_back(person);
+}
+
+void LinkedList::swap(LinkedList& first, LinkedList& second)
+{
+    auto tmp = std::move(first);
+    first = std::move(second);
+    second = std::move(tmp);
 }

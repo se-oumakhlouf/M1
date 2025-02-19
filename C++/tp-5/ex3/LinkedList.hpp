@@ -31,11 +31,12 @@ public:
 
     void concatenate_back(LinkedList);
 
-    // bool contains(Person);
+    bool contains(const Person&) const;
 
-    // void push_back_if_absent(Person);
+    void push_back_if_absent(Person&&);
+    void push_back_if_absent(const Person&);
 
-    // static void swap(LinkedList, LinkedList);
+    static void swap(LinkedList&, LinkedList&);
 
 private:
     Link* _front = nullptr;

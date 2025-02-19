@@ -141,21 +141,21 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 6 ====================================" << std::endl;
     {
-        // LinkedList list1;
-        // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
+        LinkedList list1;
+        list1.push_back(Person { "Victor", "Marsault" });
+        list1.push_back(Person { "Henri", "Dericke" });
 
-        // LinkedList list2;
-        // list2.push_back(Person { "Anthony", "Labarre" });
+        LinkedList list2;
+        list2.push_back(Person { "Anthony", "Labarre" });
 
-        // // On veut échanger les contenus des deux listes
-        // LinkedList::swap(list1, list2);
+        // On veut échanger les contenus des deux listes
+        LinkedList::swap(list1, list2);
 
-        // std::cout << list1 << " | on attend { AL:0 }" << std::endl;
-        // std::cout << list2 << " | on attend { VM:0, HD:0 }" << std::endl;
+        std::cout << list1 << " | on attend { AL:0 }" << std::endl;
+        std::cout << list2 << " | on attend { VM:0, HD:0 }" << std::endl;
 
-        // // ... sans copies
-        // assert_no_copy_since_last_check("Swap 1");
+        // ... sans copies
+        assert_no_copy_since_last_check("Swap 1");
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("Concatenate fin", 0);
@@ -163,20 +163,19 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 7 ====================================" << std::endl;
     {
-        // LinkedList list;
-        // list.push_back(Person { "Victor", "Marsault" });
-        // list.push_back(Person { "Henri", "Dericke" });
-        // list.push_back(Person { "Anthony", "Labarre" });
+        LinkedList list;
+        list.push_back(Person { "Victor", "Marsault" });
+        list.push_back(Person { "Henri", "Dericke" });
+        list.push_back(Person { "Anthony", "Labarre" });
 
-        // // Contains renvoie true si la Person recherchée est dans la liste
-        // std::cout << std::boolalpha << list.contains(Person { "Victor", "Marsault" }) << " | on attend:
-        // true"
-        //           << std::endl;
-        // const Person cn { "Céline", "Noël" };
-        // std::cout << std::boolalpha << list.contains(cn) << " | on attend: false" << std::endl;
+        // Contains renvoie true si la Person recherchée est dans la liste
+        std::cout << std::boolalpha << list.contains(Person { "Victor", "Marsault" }) << " | on attend: true"
+                  << std::endl;
+        const Person cn { "Céline", "Noël" };
+        std::cout << std::boolalpha << list.contains(cn) << " | on attend: false" << std::endl;
 
-        // // Tout ceci sans copies, évidemment
-        // assert_no_copy_since_last_check("Contains 1");
+        // Tout ceci sans copies, évidemment
+        assert_no_copy_since_last_check("Contains 1");
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("Contains fin", 0);
@@ -185,40 +184,40 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 8 ====================================" << std::endl;
     {
-        // LinkedList list;
-        // list.push_back(Person { "Victor", "Marsault" });
+        LinkedList list;
+        list.push_back(Person { "Victor", "Marsault" });
 
-        // // On veut que LinkedList::push_back_if_absent ajoute une Personn seulement
-        // // si elle n'est pas dedans.  Ici on est dans un cas où il est plus difficile
-        // // d'éviter toutes les copies inutiles car on ne sait pas à l'avance si
-        // // on aura besoin d'une copie !
+        // On veut que LinkedList::push_back_if_absent ajoute une Personn seulement
+        // si elle n'est pas dedans.  Ici on est dans un cas où il est plus difficile
+        // d'éviter toutes les copies inutiles car on ne sait pas à l'avance si
+        // on aura besoin d'une copie !
 
-        // // Cas 1 -> passage d'une R-value et pas besoin d'ajouter la Person
-        // list.push_back_if_absent(Person { "Victor", "Marsault" });
-        // std::cout << list.size() << " | on attend:  1 " << std::endl;
-        // // Pas besoin de copie dans ce cas
-        // assert_no_copy_since_last_check("if_absent 1");
+        // Cas 1 -> passage d'une R-value et pas besoin d'ajouter la Person
+        list.push_back_if_absent(Person { "Victor", "Marsault" });
+        std::cout << list.size() << " | on attend:  1 " << std::endl;
+        // Pas besoin de copie dans ce cas
+        assert_no_copy_since_last_check("if_absent 1");
 
-        // // Cas 2 -> passage d'une L-value et pas besoin d'ajouter la Person
-        // Person vm { "Victor", "Marsault" };
-        // list.push_back_if_absent(vm);
-        // // Pas besoin de copie dans ce cas
-        // assert_no_copy_since_last_check("if_absent 2");
+        // Cas 2 -> passage d'une L-value et pas besoin d'ajouter la Person
+        Person vm { "Victor", "Marsault" };
+        list.push_back_if_absent(vm);
+        // Pas besoin de copie dans ce cas
+        assert_no_copy_since_last_check("if_absent 2");
 
-        // // Cas 3 -> passage d'une R-value et il faut ajouter la Person
-        // list.push_back_if_absent(Person { "Henri", "Derycke" });
-        // std::cout << list.size() << " | on attend:  2 " << std::endl;
-        // // Pas besoin de copie dans ce cas
-        // assert_no_copy_since_last_check("if_absent 3");
+        // Cas 3 -> passage d'une R-value et il faut ajouter la Person
+        list.push_back_if_absent(Person { "Henri", "Derycke" });
+        std::cout << list.size() << " | on attend:  2 " << std::endl;
+        // Pas besoin de copie dans ce cas
+        assert_no_copy_since_last_check("if_absent 3");
 
-        // // Cas 4 -> passage d'une L-value et il faut ajouter la Person
-        // Person al { "Anthony", "Labarre" };
-        // list.push_back_if_absent(al);
-        // std::cout << list.size() << " | on attend:  3" << std::endl;
-        // // Dans ce cas, on est bien obligé de faire une copie :'(
-        // assert_copy_count_since_last_check("if_absent 4", 1);
+        // Cas 4 -> passage d'une L-value et il faut ajouter la Person
+        Person al { "Anthony", "Labarre" };
+        list.push_back_if_absent(al);
+        std::cout << list.size() << " | on attend:  3" << std::endl;
+        // Dans ce cas, on est bien obligé de faire une copie :'(
+        assert_copy_count_since_last_check("if_absent 4", 1);
 
-        // std::cout << list << " | on attend { VM:0, HD:0, AL:0 } " << std::endl;
+        std::cout << list << " | on attend { VM:0, HD:0, AL:0 } " << std::endl;
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("if_absent fin", 0);
