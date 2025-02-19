@@ -5,6 +5,8 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HTTPReader {
 
@@ -27,8 +29,40 @@ public class HTTPReader {
 	 *                     could be read
 	 */
 	public String readLineCRLF() throws IOException {
-		// TODO
-		return null;
+		buffer.flip();
+		var foundCR = false;
+		var builder = new StringBuilder();
+		while (true) {
+
+			while (buffer.hasRemaining()) {
+
+				char c = (char) buffer.get();
+
+				if (foundCR == true) {
+					if (c == '\n') {
+						buffer.compact();
+						return builder.toString();
+					}
+					builder.append('\r');
+					foundCR = false;
+				}
+
+				if (c == '\r') {
+					foundCR = true;
+				} else {
+					builder.append(c);
+				}
+
+			}
+
+			buffer.clear();
+			var bytesRead = sc.read(buffer);
+			if (bytesRead == -1) {
+				throw new HTTPException("Connexion fermé avant une lecture complète d'une ligne");
+			}
+
+			buffer.flip();
+		}
 	}
 
 	/**
@@ -37,8 +71,26 @@ public class HTTPReader {
 	 *                     could be read or if the header is ill-formed
 	 */
 	public HTTPHeader readHeader() throws IOException {
-		// TODO
-		return null;
+		Map<String, String> headers = new HashMap<>();
+
+		String statusLine = readLineCRLF();
+		if (statusLine == null) {
+			throw new HTTPException("Connexion fermé avant de lire la ligne de status");
+		}
+
+		String line;
+		while (!(line = readLineCRLF()).isEmpty()) {
+
+			int colonIndex = line.indexOf(":");
+			if (colonIndex == -1) {
+				throw new HTTPException("Header malformé: " + line);
+			}
+			String key = line.substring(0, colonIndex);
+			String value = line.substring(colonIndex + 1);
+			headers.merge(key, value, (currentValue, newValue) -> currentValue + "; " + newValue);
+		}
+
+		return HTTPHeader.create(statusLine, headers);
 	}
 
 	/**
@@ -52,8 +104,25 @@ public class HTTPReader {
 	 *                     bytes could be read
 	 */
 	public ByteBuffer readBytes(int size) throws IOException {
-		// TODO
-		return null;
+		ByteBuffer destBuffer = ByteBuffer.allocate(size);
+		while (destBuffer.hasRemaining()) {
+
+			buffer.flip();
+			while (buffer.hasRemaining() && destBuffer.hasRemaining()) {
+				destBuffer.put(buffer.get());
+			}
+
+			if (!buffer.hasRemaining()) {
+				buffer.clear();
+				int bytesRead = sc.read(buffer);
+				if (bytesRead == -1) {
+					throw new HTTPException("Connexion perdue avant la lecture de " + size + " octets.");
+				}
+			}
+
+		}
+		buffer.compact();
+		return destBuffer;
 	}
 
 	/**
