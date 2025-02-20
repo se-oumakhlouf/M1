@@ -10,16 +10,16 @@ import java.nio.channels.SocketChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class IterativeLongSumServer {
+public class OnDemandConcurrentLongSumServer {
 
-	private static final Logger logger = Logger.getLogger(IterativeLongSumServer.class.getName());
+	private static final Logger logger = Logger.getLogger(OnDemandConcurrentLongSumServer.class.getName());
 	private final ServerSocketChannel serverSocketChannel;
-	
-	public static void usage() {
-		System.out.println("Usage: IterativeLongSumServer port");
-	}
 
-	public IterativeLongSumServer(int port) throws IOException {
+	public static void usage() {
+		System.out.println("Usage: OnDemandConcurrentLongSumServer port");
+	}
+	
+	public OnDemandConcurrentLongSumServer(int port) throws IOException {
 		serverSocketChannel = ServerSocketChannel.open();
 		serverSocketChannel.bind(new InetSocketAddress(port));
 		logger.info(this.getClass().getName() + " starts on port " + port);
@@ -35,15 +35,16 @@ public class IterativeLongSumServer {
 		logger.info("Server started");
 		while (!Thread.interrupted()) {
 			SocketChannel client = serverSocketChannel.accept();
-			
-			try {
-				logger.info("Connection accepted from " + client.getRemoteAddress());
-				serve(client);
-			} catch (IOException ioe) {
-				logger.log(Level.SEVERE, "Connection terminated with client by IOException", ioe.getCause());
-			} finally {
-				silentlyClose(client);
-			}
+			logger.info("Connection accepted from " + client.getRemoteAddress());
+			Thread.ofPlatform().start(() -> {
+				try {
+					serve(client);
+				} catch (IOException ioe) {
+					logger.log(Level.SEVERE, "Connection terminated with client by IOException", ioe.getCause());
+				} finally {
+					silentlyClose(client);
+				}
+			});
 		}
 	}
 
@@ -116,7 +117,7 @@ public class IterativeLongSumServer {
 			usage();
 			return;
 		}
-		var server = new IterativeLongSumServer(Integer.parseInt(args[0]));
+		var server = new OnDemandConcurrentLongSumServer(Integer.parseInt(args[0]));
 		server.launch();
 	}
 }

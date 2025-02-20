@@ -7,22 +7,26 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class IterativeLongSumServer {
+public class BoundedOnDemandConcurrentLongSumServer {
 
-	private static final Logger logger = Logger.getLogger(IterativeLongSumServer.class.getName());
+	private static final Logger logger = Logger.getLogger(BoundedOnDemandConcurrentLongSumServer.class.getName());
 	private final ServerSocketChannel serverSocketChannel;
-	
-	public static void usage() {
-		System.out.println("Usage: IterativeLongSumServer port");
-	}
 
-	public IterativeLongSumServer(int port) throws IOException {
+	private final Semaphore semaphore;
+
+	public BoundedOnDemandConcurrentLongSumServer(int port, int maxConcurrentThread) throws IOException {
 		serverSocketChannel = ServerSocketChannel.open();
 		serverSocketChannel.bind(new InetSocketAddress(port));
 		logger.info(this.getClass().getName() + " starts on port " + port);
+		semaphore = new Semaphore(maxConcurrentThread);
+	}
+
+	public static void usage() {
+		System.out.println("Usage: BoundedOnDemandConcurrentLongSumServer port maxConcurrentThread");
 	}
 
 	/**
@@ -33,17 +37,37 @@ public class IterativeLongSumServer {
 
 	public void launch() throws IOException {
 		logger.info("Server started");
-		while (!Thread.interrupted()) {
-			SocketChannel client = serverSocketChannel.accept();
-			
-			try {
+		try {
+
+			while (!Thread.interrupted()) {
+
+				SocketChannel client = serverSocketChannel.accept();
 				logger.info("Connection accepted from " + client.getRemoteAddress());
-				serve(client);
-			} catch (IOException ioe) {
-				logger.log(Level.SEVERE, "Connection terminated with client by IOException", ioe.getCause());
-			} finally {
-				silentlyClose(client);
+
+				try {
+					semaphore.acquire();
+
+					Thread.ofPlatform().start(() -> {
+						try {
+							serve(client);
+						} catch (IOException ioe) {
+							logger.log(Level.SEVERE, "Connection terminated with client by IOException", ioe.getCause());
+						} finally {
+							semaphore.release();
+							silentlyClose(client);
+						}
+					});
+
+				} catch (InterruptedException e) {
+					logger.info("Server interrupted");
+					Thread.currentThread().interrupt();
+					break;
+				}
+
 			}
+
+		} finally {
+			silentlyClose(serverSocketChannel);
 		}
 	}
 
@@ -112,11 +136,11 @@ public class IterativeLongSumServer {
 	}
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
-		if (args.length != 1) {
+		if (args.length != 2) {
 			usage();
 			return;
 		}
-		var server = new IterativeLongSumServer(Integer.parseInt(args[0]));
+		var server = new BoundedOnDemandConcurrentLongSumServer(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 		server.launch();
 	}
 }
