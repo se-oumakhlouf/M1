@@ -46,7 +46,7 @@ public class FixedPrestartedLongSumServerWithTimeout {
 		private SocketChannel sc;
 		private long lastActive = System.currentTimeMillis();
 		private final ReentrantLock lock = new ReentrantLock();
-		
+
 		@Override
 		public String toString() {
 			var scString = sc == null ? "null" : "not null";
@@ -150,7 +150,7 @@ public class FixedPrestartedLongSumServerWithTimeout {
 				}
 
 			});
-			
+
 			threads.add(thread);
 
 		}
