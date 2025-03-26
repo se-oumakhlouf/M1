@@ -6,7 +6,7 @@ use CGI;
 use DBI;
 
 my $source = 'dbi:Pg:host=sqledu.univ-eiffel.fr;dbname=selym.oumakhlouf_db';
-my $base = DBI->connect($source, 'selym.oumakhlouf', '.SelymBmx15o.') or die($DBI::errstr);
+my $base = DBI->connect($source, 'login', 'motdepasse') or die($DBI::errstr);
 my $insert = 'insert into annuaire(prenom_nom, numero_tel) values(?, ?);';
 my $req = $base->prepare($insert) or die($DBI::errstr);
 my $del = 'delete from annuaire where prenom_nom = ?;';
