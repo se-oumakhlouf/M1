@@ -12,6 +12,7 @@ void usage()
               << "./gray path/to/images/folder" << std::endl;
 }
 
+// pour compiler: g++ gray.cpp ../lib/image_lib.cpp -o gray
 int main(int argc, char** argv)
 {
     if (argc < 2)

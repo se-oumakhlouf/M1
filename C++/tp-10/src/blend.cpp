@@ -12,6 +12,7 @@ void usage()
               << "./blend path/to/images/folder" << std::endl;
 }
 
+// pour compiler: g++ blend.cpp ../lib/image_lib.cpp -o blend
 int main(int argc, char** argv)
 {
     if (argc < 2)

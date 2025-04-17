@@ -12,6 +12,7 @@ void usage()
               << "./transparency_mask path/to/images/folder" << std::endl;
 }
 
+// pour compiler: g++ transparency_mask.cpp ../lib/image_lib.cpp -o mask
 int main(int argc, char** argv)
 {
     if (argc < 2)
