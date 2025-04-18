@@ -47,16 +47,19 @@ Ret to_string(const T& data, priority_tag<3>)
     return data.to_string();
 }
 
+// Fonction spécifique à un seul type
 auto to_string(const std::string& data)
 {
     return data;
 }
 
+// Fonction spécifique à un seul type
 auto to_string(const char* data)
 {
     return std::string(data);
 }
 
+// Appel de la surcharge valide avec la plus grande priorité
 template <typename T>
 auto to_string(const T& data)
 {
