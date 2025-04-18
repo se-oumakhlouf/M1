@@ -4,12 +4,63 @@
 #include <string>
 #include <vector>
 
+template <unsigned N>
+struct priority_tag : priority_tag<N - 1>
+{};
+
+template <>
+struct priority_tag<0>
+{};
+
+priority_tag<3> priority_highest_value;
+
+// Défaut
 template <typename T>
-auto to_string(const T& data)
+auto to_string(const T& data, priority_tag<0>)
 {
     std::stringstream ss;
     ss << "<" << typeid(data).name() << ": " << &data << ">";
     return ss.str();
+}
+
+// 1 - Opérateur de flux <<
+template <typename T, typename = decltype(std::declval<std::ostream&>() << std::declval<T>())>
+std::string to_string(const T& data, priority_tag<1>)
+{
+    std::stringstream ss;
+    ss << data;
+    return ss.str();
+}
+
+// 2 - Compatible std::to_string()
+template <typename T>
+std::enable_if_t<std::is_same_v<decltype(std::to_string(std::declval<T>())), std::string>, std::string>
+to_string(const T& data, priority_tag<2>)
+{
+    return std::to_string(data);
+}
+
+// 3 - Fonction membre to_string()
+template <typename T, typename Ret = decltype(std::declval<T>().to_string())>
+Ret to_string(const T& data, priority_tag<3>)
+{
+    return data.to_string();
+}
+
+auto to_string(const std::string& data)
+{
+    return data;
+}
+
+auto to_string(const char* data)
+{
+    return std::string(data);
+}
+
+template <typename T>
+auto to_string(const T& data)
+{
+    return to_string(data, priority_highest_value);
 }
 
 class Empty
@@ -39,7 +90,8 @@ class Both : public Streamable, public Convertible
 {};
 
 template <typename T>
-void print_test(std::string type, T&& value) {
+void print_test(std::string type, T&& value)
+{
     std::cout << type << std::endl;
     std::cout << "** Error: value is not a std::string" << std::endl;
 }
