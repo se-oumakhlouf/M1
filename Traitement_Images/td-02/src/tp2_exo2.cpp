@@ -22,7 +22,16 @@ void apply_component_scale(const cv::Mat &input, cv::Mat &output, const float r,
 //////////////////////////////////////////////////////////////////////////////////
 cv::Point3d grayWorld(const cv::Mat &image)
 {
-  return cv::Point3d(0.820032, 1, 1.35008);  // for wb_incandescent.png
+  cv::Point3d mean{0.0, 0.0, 0.0};
+  for (int i = 0; i < image.rows; i++) {
+    for (int j = 0; j < image.cols; j++) {
+      mean.x += image.at<cv::Vec3b>(i, j)[0];
+      mean.y += image.at<cv::Vec3b>(i, j)[1];
+      mean.z += image.at<cv::Vec3b>(i, j)[2];
+    }
+  }
+
+  return cv::Point3d(mean.y / mean.x, 1.0, mean.y / mean.z);
 }
 
 
@@ -48,25 +57,21 @@ int main(int argc, char ** argv)
   cv::namedWindow("une image");
   //cv::moveWindow("une image", 2000,20);
   cv::imshow("une image", image);
-  std::cout << "appuyer sur une touche ..." << std::endl;
-  cv::waitKey();
-
-
 
   // auto white balance here ...
+  std::cout << "appuyer sur une touche pour effectuer la balance des blancs ..." << std::endl;
+  cv::waitKey();
   cv::Point3d wb = grayWorld(image);
   cv::Mat output;
   apply_component_scale(image, output, wb.x, wb.y, wb.z);
-
-
-
-  // display the image
   cv::imshow("une image", output);
-  std::cout << "appuyer sur une touche ..." << std::endl;
+
+  
+  std::cout << "appuyer sur une touche pour quitter le programme ..." << std::endl;
   cv::waitKey();
 
   // save the image
-  cv::imwrite("output/tp2ex2.jpg",output);
+  cv::imwrite("/home/M1/Traitement_Images/td-02/output/tp2ex2.jpg",output);
 
   return 1;
 }
