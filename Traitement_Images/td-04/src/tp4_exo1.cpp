@@ -109,7 +109,8 @@ cv::Mat laplacian()
   return kernel;
 }
 
-cv::Mat contours() {
+cv::Mat contours()
+{
   cv::Mat kernel(3, 3, CV_64F, cv::Scalar(0));
   kernel.at<double>(0, 1) = -1.0;
 
@@ -120,6 +121,63 @@ cv::Mat contours() {
   kernel.at<double>(2, 1) = -1.0;
 
   return kernel;
+}
+
+cv::Mat average(const unsigned int n)
+{
+  return cv::Mat(n, n, CV_64F, cv::Scalar(1.0 / (n * n)));
+}
+
+/*
+  Question 3 :
+  la somme de tous les coefficients doit être égale à 1,
+  sinon ça modifie la luminosité globale de l'image après convolution.
+*/
+cv::Mat gaussian(int size, double sigma)
+{
+
+  cv::Mat kernel(size, size, CV_64F, cv::Scalar(0.0));
+
+  int half = size / 2;
+  double sum = 0.0;
+
+  for (int i = -half; i <= half; i++)
+  {
+    for (int j = -half; j <= half; j++)
+    {
+      double value = exp(-(i * i + j * j) / (2 * sigma * sigma));
+      kernel.at<double>(i + half, j + half) = value;
+      sum += value;
+    }
+  }
+
+  kernel /= sum;
+  return kernel;
+}
+
+void median_filter(const cv::Mat &src, cv::Mat &dst, const int size)
+{
+  dst = cv::Mat(src.size(), CV_8UC1, cv::Scalar(0));
+  const int half_size = size / 2;
+
+  std::vector<unsigned char> vec(size * size);
+  for (int i = half_size; i < dst.rows - half_size; ++i)
+  {
+    for (int j = half_size; j < dst.cols - half_size; ++j)
+    {
+      int k = 0;
+      for (int u = -half_size; u <= half_size; ++u)
+      {
+        for (int v = -half_size; v <= half_size; ++v)
+        {
+          vec[k] = src.at<unsigned char>(i + u, j + v);
+          k++;
+        }
+      }
+      std::sort(vec.begin(), vec.end());
+      dst.at<unsigned char>(i, j) = vec[size * size / 2];
+    }
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,13 +226,55 @@ int main(int argc, char **argv)
   // Question 8 : Laplcacian
   apply_convolution(image, filtered_image, laplacian(), 128);
   std::cout << "appuyer sur une touche pour voir la dérivée seconde (Laplacian)" << std::endl;
+  cv::waitKey();
   cv::imshow("image", filtered_image);
+
+  std::cout << "appuyer sur une touche pour voir l'ajout des contours" << std::endl;
+  apply_convolution(image, filtered_image, contours(), 0);
+  cv::waitKey();
+  cv::imshow("image", filtered_image);
+
+  std::cout << "appuyer sur une touche pour voir l'image de base" << std::endl;
+  cv::waitKey();
+  cv::imshow("image", image);
+
+  for (unsigned int n = 3; n < 15; n += 2)
+  {
+    std::cout << "appuyer sur une touche pour voir l'application du filtre moyenneur avec un noyau de taille " << n << std::endl;
+    apply_convolution(image, filtered_image, average(n), 0);
+    cv::waitKey();
+    cv::imshow("image", filtered_image);
+  }
+
+  for (unsigned int n = 4; n < 15; n += 2)
+  {
+    std::cout << "appuyer sur une touche pour voir l'application du filtre moyenneur avec un noyau de taille " << n << std::endl;
+    apply_convolution(image, filtered_image, average(n), 0);
+    cv::waitKey();
+    cv::imshow("image", filtered_image);
+  }
+
+  int size = 13;
+  std::cout << "appuyer sur une touche pour voir l'application de la gaussienne avec un noyau de taille " << size << std::endl;
+  apply_convolution(image, filtered_image, gaussian(size, 10), 0);
+  cv::waitKey();
+  cv::imshow("image", filtered_image);
+
+  std::cout << "appuyer sur une touche pour voir l'image de base" << std::endl;
+  cv::imshow("image", image);
   cv::waitKey();
 
-  apply_convolution(image, filtered_image, contours(), 0);
-  std::cout << "appuyer sur une touche pour voir l'ajout des contours" << std::endl;
-  cv::imshow("image", filtered_image);
+  int med_size = 3;
+  std::cout << "appuyer sur une touche pour voir le filtre median de taille " << med_size << std::endl;
+  median_filter(image, filtered_image, med_size);
   cv::waitKey();
+  cv::imshow("image", filtered_image);
+
+  med_size = 7;
+  std::cout << "appuyer sur une touche pour voir le filtre median de taille " << med_size << std::endl;
+  median_filter(image, filtered_image, med_size);
+  cv::waitKey();
+  cv::imshow("image", filtered_image);
 
   ////////////////////////////////
 
