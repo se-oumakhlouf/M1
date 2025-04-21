@@ -180,6 +180,38 @@ void median_filter(const cv::Mat &src, cv::Mat &dst, const int size)
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+cv::Mat image_integral(const cv::Mat &image)
+{
+  cv::Mat dst = cv::Mat(image.size(), CV_32S, cv::Scalar(0));
+  for (int i = 0; i < dst.rows; ++i)
+  {
+    for (int j = 0; j < dst.cols; ++j)
+    {
+      dst.at<int>(i, j) = int(image.at<unsigned char>(i, j)) + dst.at<int>(std::max(i - 1, 0), j) + dst.at<int>(i, std::max(j - 1, 0)) - dst.at<int>(std::max(i - 1, 0), std::max(j - 1, 0));
+    }
+  }
+  return dst;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+cv::Mat blur_integral(const cv::Mat &image, const int size)
+{
+  cv::Mat integral = image_integral(image);
+  cv::Mat dst(image.size(), CV_8UC1, cv::Scalar(0));
+
+  const int half_size = size / 2;
+  for (int i = half_size; i < dst.rows - half_size; ++i)
+  {
+    for (int j = half_size; j < dst.cols - half_size; ++j)
+    {
+
+      dst.at<unsigned char>(i, j) = (integral.at<int>(i - half_size, j - half_size) + integral.at<int>(i + half_size, j + half_size) - integral.at<int>(i - half_size, j + half_size) - integral.at<int>(i + half_size, j - half_size)) / ((size - 1) * (size - 1));
+    }
+  }
+  return dst;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
@@ -274,6 +306,12 @@ int main(int argc, char **argv)
   std::cout << "appuyer sur une touche pour voir le filtre median de taille " << med_size << std::endl;
   median_filter(image, filtered_image, med_size);
   cv::waitKey();
+  cv::imshow("image", filtered_image);
+
+  // blur integral image
+  std::cout << "appuyer sur une touche pour voir le blur integral" << std::endl;
+  cv::waitKey();
+  filtered_image = blur_integral(image, 11);
   cv::imshow("image", filtered_image);
 
   ////////////////////////////////
