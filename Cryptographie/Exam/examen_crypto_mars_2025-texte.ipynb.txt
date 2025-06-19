@@ -1,0 +1,136 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "873c0fee-3f30-42a3-8b5f-0a81cc1d828d",
+   "metadata": {},
+   "source": [
+    "# M1 Cryptographie - TP noté - Mars 2025\n",
+    "\n",
+    "## Exercice 1 - Chiffrement affine\n",
+    "\n",
+    "On veut effectuer un chiffrement affine sur l'alphabet des octets. On prend pour module $n=257$, et on passe des octets aux entiers au moyen des fonctions `ord` et `chr`. Par exemple, `ord('A')=65` et `chr(64)=@`. Les clefs sont des couples $(a,b)$ et un octet $c$ est chiffré par l'octet d'ordre $y=ax+b\\mod n$ où $x=$`ord(c)`. On renverra le résultat encodé en `hex`. L'entier 256 n'apparaîtra jamais dans le tete clair, mais il pourra apparaître dans le texte chiffré, dans ce cas le chiffré pourra contenir plus d'octets que le clair.\n",
+    "\n",
+    "0. Combien y a t-il des clefs possibles ? Pourquoi avoir choisi 257 plutôt que 256 ?\n",
+    "\n",
+    "1. Écrire une classe `Affine` implémentant ce système. On devra obtenir par exemple avec $(a,b)=(17,51)$\n",
+    "```Python\n",
+    ">>> A = Affine(17,51,257)\n",
+    ">>> A.crypt('Ça marche !')\n",
+    "b'5d9e51699ebec014e25162'\n",
+    ">>> A.uncrypt(_)\n",
+    "'Ça marche !'\n",
+    "```\n",
+    "\n",
+    "2. Vous avez intercepté le cryptogramme `b'c4cfe02dc0e251adf1e251c0e251cf34cfe08c69e251e2cfe05101be9e2569e27ae051cfcebe515e'`.\n",
+    "Vous savez qu'il chiffre une question, et que son auteur respecte toujours la règle typographique française qui demande que le point d'interrogation soit précédé d'un espace. Retrouvez la clef utilisée, et déchiffrez le message.\n",
+    "\n",
+    "3. La réponse à la question étant manifestement non, un ingénieur vous propose d'améliorer la sécurité en utilisant successivement 3 clés différentes : au lieu de chiffrer x par $y =ax+b \\mod n$, on calcule ensuite $y_1 = a_1y+b_1\\mod n$ puis $y_2=a_2y_1+b_2\\mod n$, et on chiffre $x$ par $y_2$. Est-ce une bonne idéee ? Combien croit-il avoir de clés  possibles  et combien y en a t-il en réalité ? \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3fb37109-c194-4251-b084-f2ba045cf208",
+   "metadata": {},
+   "source": [
+    "## Exercice 2\n",
+    "\n",
+    "On se propose d'étudier le groupe des éléments inversibles modulo $n=2025$, $G_{2025}=({\\mathbb Z}/2025{\\mathbb Z})^\\times$. \n",
+    "\n",
+    "1. Combien a t-il d'éléments ?\n",
+    "2. Expliquer pourquoi on peut représenter ses éléments par des couples $(x,y)\\in G_{25}\\times G_{81}$.\n",
+    "3. Quels sont les ordres possibles pour un élément de $G_{2025}$ ?\n",
+    "4. Calculer les ordres des éléments de $G_{25}$ et de $G_{81}$ sous forme de dictionnaires `{x:ordre(x)}`.\n",
+    "5. En examinant ces dictionnaires, trouver la représentation $g = (x,y)$ d'un élément d'ordre maximal de $G_{2025}$. Quel est cet ordre ?\n",
+    "6. Donner la représentation de $g$ comme entier modulo 2025."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f397486a-0809-41c5-83f4-f1acd8a8a9ec",
+   "metadata": {},
+   "source": [
+    "## Exercice 3\n",
+    "\n",
+    "\n",
+    "On se propose d'utiliser le nombre premier $p = 9973$ et l'élément primitif $g = 11$ pour\n",
+    "appliquer le protocole de Diffie-Hellman.\n",
+    "\n",
+    "1. Vérifier que $p$ est bien un nombre premier et que $g$ est bien un générateur de $(\\mathbb{Z}/p\\mathbb{Z})^\\times$.\n",
+    "\n",
+    "2. Quelles sont les étapes du protocole entre Alice et Bob si ils ont respectivement tiré les entiers aléatoires \n",
+    "$a = 4096$ et Bob choisit $b = 8192$ ?\n",
+    "Quelle sera la clef de session ?\n",
+    "\n",
+    "3. Un espion capture la valeur $y=1985$ pour $11^x\\mod p$ avec $x$ inconnu. Combien existe-t-il de tels $x$ ?\n",
+    "Pourquoi ? Combien de valeurs devez vous essayer pour trouver $x$ ?\n",
+    "\n",
+    "4. Même question, mais cette fois on cherche $x$ tel que $2^x \\mod p = 1985$.       \n",
+    "\n",
+    "On utilise maintenant les paramètres $(g, p) = (11, 9973)$ pour un système ElGamal, avec la clef privée\n",
+    "$x = 2014$.\n",
+    "\n",
+    "5. Calculer la clef publique correspondante.\n",
+    "\n",
+    "6. Chiffrer $m=1000$ avec l'entier aléatoire $k=997$. On note $c=(c_1,c_2)$ le cryptogramme obtenu. \n",
+    "\n",
+    "7. Effectuer le déchiffrement de $c$ et vérifier qu'il coincide bien avec $m$.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "976a5de4-7bea-48dd-9413-8e09c3b13d7d",
+   "metadata": {},
+   "source": [
+    "## Exercice 4\n",
+    "\n",
+    "Alice et Bob utilisent le système RSA avec le même module \n",
+    "$$n=44942328371557897693232629769725618340449424473557664318357520289433168951376793301269420039537032984768490972523105225431814138814743207661237908612575797345527702331326154127973247339275267455017925266947859565330300466219511848274105937770404243736776279645977773354774471837951077171852876195897050910997$$ \n",
+    "et des exposants publics différents $e_A=65537$, $e_B=257$.\n",
+    "\n",
+    "Charlie envoie aux deux le même message $m$, chiffré avec leurs exposants publics respectifs ($c_A=m^{e_A}\\mod n$, $c_B=m^{e_B}\\mod n$).\n",
+    "$$c_A = 2890175820129140464421271269861698748449229874405706990608996215638222560555743387679966245105557589866543352795483766592568308732472524057696260767984428813519528244685713708244871995498190525412859153072046589353094552419526026840798718154367204358051849492540940629466343393712897862044908783414179376386$$\n",
+    "\n",
+    "\n",
+    "$$\n",
+    "c_B=43736179885540107207493558622960705928338591136288802324719801974463720249118565070918447174406319292206085924320653916554819421705334735346169416433241964170391709483595944865786545370344786549972427812990059592911322805653924995273059835083164854418981094151177291028305309520045142252292318056474971045813$$\n",
+    "\n",
+    "Vous avez intercepté les deux messages.\n",
+    "\n",
+    "1. Peut-on trouver $u,v$ tels que $ue_A+ve_B=1$ ?\n",
+    "2. Si oui, peut-on les utiliser pour retrouver $m$ sans connaitre autre chose que les clefs publiques ?\n",
+    "3. Le faire, et retrouver la phrase en ascii représentée par l'hexadécimal de $m$.\n",
+    "   \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5997fce8-2a75-42fe-a2f4-05b70f37656e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
